@@ -1,10 +1,11 @@
 package model;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 @Entity
-@Table(name = "business")
-public class Business {
+@Table(name = "customer")
+public class Customer {
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,15 +17,11 @@ public class Business {
     @Column
     private String password;
     @Column
-    private ArrayList<Object> business_services;
-    @Column
-    private String description;
-    @Column
     private String phone;
     @Column
     private String address;
 
-    public Business() {
+    public Customer() {
     }
 
     public int getId() {
@@ -59,22 +56,6 @@ public class Business {
         this.password = password;
     }
 
-    public ArrayList<Object> getBusiness_services() {
-        return business_services;
-    }
-
-    public void setBusiness_services(ArrayList<Object> business_services) {
-        this.business_services = business_services;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -91,6 +72,3 @@ public class Business {
         this.address = address;
     }
 }
-
-
-

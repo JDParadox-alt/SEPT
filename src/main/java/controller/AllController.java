@@ -61,55 +61,29 @@ public class AllController {
         allService.deleteBusiness(businessId);
     }
 
-    //Service
-    @RequestMapping(path="serviceItems", method = RequestMethod.GET)
-    public List<ServiceItem> getServiceItems() {
-        return allService.getAllServiceItems();
+    //Customer
+    @RequestMapping(path="customers", method = RequestMethod.GET)
+    public List<Customer> getCustomers() {
+        return allService.getAllCustomers();
     }
 
-    @RequestMapping(path = "serviceItems/{serviceItemId}", method = RequestMethod.GET)
-    public ServiceItem getServiceItem(@PathVariable int serviceItemId){
-        return allService.getServiceItem(serviceItemId);
+    @RequestMapping(path = "customers/{customerId}", method = RequestMethod.GET)
+    public Customer getCustomer(@PathVariable int customerId){
+        return allService.getCustomer(customerId);
     }
 
-    @RequestMapping(path = "serviceItems", method = RequestMethod.POST)
-    public ServiceItem addServiceItem(@RequestBody ServiceItem serviceItem){
-        return allService.saveServiceItem(serviceItem);
+    @RequestMapping(path = "customers", method = RequestMethod.POST)
+    public Customer addCustomer(@RequestBody Customer customer){
+        return allService.saveCustomer(customer);
     }
 
-    @RequestMapping(path = "serviceItems", method = RequestMethod.PUT)
-    public void updateServiceItem(@RequestBody  ServiceItem serviceItem){
-        allService.updateServiceItem(serviceItem);
+    @RequestMapping(path = "customers", method = RequestMethod.PUT)
+    public void updateCustomer(@RequestBody  Customer customer){
+        allService.updateCustomer(customer);
     }
 
-    @RequestMapping(path = "serviceItems/{serviceItemId}", method = RequestMethod.DELETE)
-    public void deleteServiceItem(@PathVariable int serviceItemId){
-        allService.deleteServiceItem(serviceItemId);
-    }
-
-    //Booking
-    @RequestMapping(path="bookings", method = RequestMethod.GET)
-    public List<Booking> getBookings() {
-        return allService.getAllBookings();
-    }
-
-    @RequestMapping(path = "bookings/{bookingId}", method = RequestMethod.GET)
-    public Booking getBooking(@PathVariable int bookingId){
-        return allService.getBooking(bookingId);
-    }
-
-    @RequestMapping(path = "bookings", method = RequestMethod.POST)
-    public Booking addBooking(@RequestBody Booking booking){
-        return allService.saveBooking(booking);
-    }
-
-    @RequestMapping(path = "bookings", method = RequestMethod.PUT)
-    public void updateBooking(@RequestBody  Booking booking){
-        allService.updateBooking(booking);
-    }
-
-    @RequestMapping(path = "bookings/{bookingId}", method = RequestMethod.DELETE)
-    public void deleteBooking(@PathVariable int bookingId){
-        allService.deleteBooking(bookingId);
+    @RequestMapping(path = "customers/{customerId}", method = RequestMethod.DELETE)
+    public void deleteCustomer(@PathVariable int customerId){
+        allService.deleteCustomer(customerId);
     }
 }

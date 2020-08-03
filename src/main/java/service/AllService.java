@@ -60,22 +60,13 @@ public class AllService {
         return (Business) sessionFactory.getCurrentSession().get(Business.class, businessId);
     }
 
-    //GET Service
-    public List<ServiceItem> getAllServiceItems(){
-        return sessionFactory.getCurrentSession().createQuery("from ServiceItem").list();
+    //GET Customer
+    public List<Customer> getAllCustomers(){
+        return sessionFactory.getCurrentSession().createQuery("from Customer").list();
     }
 
-    public ServiceItem getServiceItem(int serviceItemId){
-        return (ServiceItem) sessionFactory.getCurrentSession().get(ServiceItem.class, serviceItemId);
-    }
-
-    //GET Booking
-    public List<Booking> getAllBookings(){
-        return sessionFactory.getCurrentSession().createQuery("from Booking").list();
-    }
-
-    public Booking getBooking(int bookingId){
-        return (Booking) sessionFactory.getCurrentSession().get(Booking.class, bookingId);
+    public Customer getCustomer(int customerId){
+        return (Customer) sessionFactory.getCurrentSession().get(Customer.class, customerId);
     }
 
     //POST Business
@@ -84,16 +75,10 @@ public class AllService {
         return business;
     }
 
-    //POST ServiceItem
-    public ServiceItem saveServiceItem(ServiceItem serviceItem){
-        sessionFactory.getCurrentSession().save(serviceItem);
-        return serviceItem;
-    }
-
-    //POST Booking
-    public Booking saveBooking(Booking booking){
-        sessionFactory.getCurrentSession().save(booking);
-        return booking;
+    //POST Customer
+    public Customer saveCustomer(Customer customer){
+        sessionFactory.getCurrentSession().save(customer);
+        return customer;
     }
 
     //UPDATE Business
@@ -101,14 +86,9 @@ public class AllService {
         sessionFactory.getCurrentSession().update(business);
     }
 
-    //UPDATE ServiceItem
-    public void updateServiceItem(ServiceItem serviceItem){
-        sessionFactory.getCurrentSession().update(serviceItem);
-    }
-
-    //UPDATE Booking
-    public void updateBooking(Booking booking){
-        sessionFactory.getCurrentSession().update(booking);
+    //UPDATE Customer
+    public void updateCustomer(Customer customer){
+        sessionFactory.getCurrentSession().update(customer);
     }
 
     //DELETE Business
@@ -117,15 +97,9 @@ public class AllService {
         sessionFactory.getCurrentSession().delete(business);
     }
 
-    //DELETE ServiceItem
-    public void deleteServiceItem(int  serviceItemId){
-        ServiceItem serviceItem = getServiceItem(serviceItemId);
-        sessionFactory.getCurrentSession().delete(serviceItem);
-    }
-
-    //DELETE Booking
-    public void deleteBooking(int  bookingId){
-        Booking booking = getBooking(bookingId);
-        sessionFactory.getCurrentSession().delete(booking);
+    //DELETE Customer
+    public void deleteCustomer(int  customerId){
+        Customer customer = getCustomer(customerId);
+        sessionFactory.getCurrentSession().delete(customer);
     }
 }
