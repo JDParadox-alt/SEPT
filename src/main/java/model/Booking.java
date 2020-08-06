@@ -1,7 +1,5 @@
 package model;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
