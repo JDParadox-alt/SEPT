@@ -31,6 +31,10 @@ public class BusinessServiceController {
         businessServiceService.saveBusinessService(businessService);
     }
 
+    @RequestMapping(path = "businessServices/{id}", method = RequestMethod.GET)
+    public BusinessService getBusinessService(@PathVariable int id){
+        return businessServiceService.getBusinessService(id);
+    }
 
     @RequestMapping(path = "businessServices/{id}", method = RequestMethod.DELETE)
     public void saveBusinessService(@PathVariable int id){

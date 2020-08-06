@@ -3,10 +3,14 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "booking")
+@JsonIdentityInfo(
+  generator = ObjectIdGenerators.PropertyGenerator.class, 
+  property = "id")
 public class Booking {
     @Id
     @Column
@@ -14,7 +18,7 @@ public class Booking {
     private int id;
 
     @ManyToOne
-    @JsonIgnore
+    // @JsonIgnore
     private BusinessService businessService;
     
     @Column
