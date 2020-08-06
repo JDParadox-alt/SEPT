@@ -1,25 +1,35 @@
 package model;
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Arrays;
 
 @Entity
 @Table(name = "customer")
 public class Customer {
+
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column
     private String account_id;
+
     @Column
     private String email;
+
     @Column
     private String password;
+
     @Column
     private String phone;
+
     @Column
     private String address;
+
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<Booking> bookings;
 
     public Customer() {
     }
@@ -70,5 +80,13 @@ public class Customer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public List<Booking> getBookings() {
+        return bookings;
+    }
+
+    public void setBookings(List<Booking> bookings) {
+        this.bookings = bookings;
     }
 }
