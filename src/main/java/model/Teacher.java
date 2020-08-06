@@ -1,7 +1,5 @@
 package model;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-
 import javax.persistence.*;
 
 /**
