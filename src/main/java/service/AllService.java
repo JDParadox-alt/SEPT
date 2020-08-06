@@ -49,4 +49,57 @@ public class AllService {
         return receiptDetail;
     }
 
+    //Assign Services
+
+    //GET Business
+    public List<Business> getAllBusinesses(){
+        return sessionFactory.getCurrentSession().createQuery("from Business").list();
+    }
+
+    public Business getBusiness(int businessId){
+        return (Business) sessionFactory.getCurrentSession().get(Business.class, businessId);
+    }
+
+    //GET Customer
+    public List<Customer> getAllCustomers(){
+        return sessionFactory.getCurrentSession().createQuery("from Customer").list();
+    }
+
+    public Customer getCustomer(int customerId){
+        return (Customer) sessionFactory.getCurrentSession().get(Customer.class, customerId);
+    }
+
+    //POST Business
+    public Business saveBusiness(Business business){
+        sessionFactory.getCurrentSession().save(business);
+        return business;
+    }
+
+    //POST Customer
+    public Customer saveCustomer(Customer customer){
+        sessionFactory.getCurrentSession().save(customer);
+        return customer;
+    }
+
+    //UPDATE Business
+    public void updateBusiness(Business business){
+        sessionFactory.getCurrentSession().update(business);
+    }
+
+    //UPDATE Customer
+    public void updateCustomer(Customer customer){
+        sessionFactory.getCurrentSession().update(customer);
+    }
+
+    //DELETE Business
+    public void deleteBusiness(int  businessId){
+        Business business = getBusiness(businessId);
+        sessionFactory.getCurrentSession().delete(business);
+    }
+
+    //DELETE Customer
+    public void deleteCustomer(int  customerId){
+        Customer customer = getCustomer(customerId);
+        sessionFactory.getCurrentSession().delete(customer);
+    }
 }
