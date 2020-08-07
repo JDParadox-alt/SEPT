@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "businessService")
-@JsonIdentityInfo(
+@JsonIdentityInfo(scope = BusinessService.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class BusinessService {
@@ -35,8 +35,25 @@ public class BusinessService {
 
     public BusinessService() {
     }
+    
+    public BusinessService(String description) {
+		this.description = description;
+	}
 
-    public int getId() {
+	public BusinessService(int id, Business business, String description, String workingHours,
+			ArrayList<String> employees, List<Booking> bookings) {
+		super();
+		this.id = id;
+		this.business = business;
+		this.description = description;
+		this.workingHours = workingHours;
+		this.employees = employees;
+		this.bookings = bookings;
+	}
+
+
+
+	public int getId() {
         return id;
     }
 

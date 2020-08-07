@@ -22,30 +22,31 @@ public class BusinessServiceService {
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
-
-    //CREATE
-    public void saveBusinessService(BusinessService businessService){
-        sessionFactory.getCurrentSession().save(businessService);
-    }
-
-    //GET BY ID
-    public BusinessService getBusinessService(int id){
-        Query query = sessionFactory.getCurrentSession().createQuery("from BusinessService where id=:id");
-        query.setInteger("id", id);
-        return (BusinessService) query.uniqueResult();
-    }
-
+    
     //GET ALL
     public List<BusinessService> getAllBusinessServices(){
         Query query = sessionFactory.getCurrentSession().createQuery("from BusinessService");
         return query.list();
     }
+    
+    //GET BY ID
+    public BusinessService getBusinessService(int id){
+    	return (BusinessService) sessionFactory.getCurrentSession().get(BusinessService.class, id);
+    }
+
+    //CREATE
+    public void saveBusinessService(BusinessService businessService){
+        sessionFactory.getCurrentSession().save(businessService);
+    }
+    
+    //UPDATE
+    public void updateBusinessService(BusinessService businessService){
+        sessionFactory.getCurrentSession().update(businessService);
+    }
 
     //DELETE
     public void deleteBusinessService(int id){
-        Query query = sessionFactory.getCurrentSession().createQuery("from BusinessService where id=:id");
-        query.setInteger("id", id);
-        BusinessService businessService = (BusinessService) query.uniqueResult();
+    	BusinessService businessService = getBusinessService(id);
         sessionFactory.getCurrentSession().delete(businessService);
     }
 

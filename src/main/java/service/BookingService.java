@@ -1,6 +1,8 @@
 package service;
 
 import model.Booking;
+import model.BusinessService;
+
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,29 +25,30 @@ public class BookingService {
         this.sessionFactory = sessionFactory;
     }
 
-    //CREATE
-    public void saveBooking(Booking booking){
-        sessionFactory.getCurrentSession().save(booking);
-    }
-
-    //GET BY ID
-    public Booking getBooking(int id){
-        Query query = sessionFactory.getCurrentSession().createQuery("from Booking where id=:id");
-        query.setInteger("id", id);
-        return (Booking) query.uniqueResult();
-    }
-
     //GET ALL
     public List<Booking> getAllBookings(){
         Query query = sessionFactory.getCurrentSession().createQuery("from Booking");
         return query.list();
     }
-
+    
+    //GET BY ID
+    public Booking getBooking(int id){
+    	return (Booking) sessionFactory.getCurrentSession().get(Booking.class, id);
+    }
+    
+    //CREATE
+    public void saveBooking(Booking booking){
+        sessionFactory.getCurrentSession().save(booking);
+    }
+    
+    //UPDATE
+    public void updateBooking(Booking booking){
+        sessionFactory.getCurrentSession().update(booking);
+    }
+    
     //DELETE
     public void deleteBooking(int id){
-        Query query = sessionFactory.getCurrentSession().createQuery("from Booking where id=:id");
-        query.setInteger("id", id);
-        Booking booking = (Booking) query.uniqueResult();
+    	Booking booking = getBooking(id);
         sessionFactory.getCurrentSession().delete(booking);
     }
 
