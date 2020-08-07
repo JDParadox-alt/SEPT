@@ -7,7 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "business")
-@JsonIdentityInfo(
+@JsonIdentityInfo(scope = Business.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class Business {
@@ -15,11 +15,14 @@ public class Business {
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    
+    @Column
+    private String name;
 
     @Column
     private String email;
 
-    @Column
+	@Column
     private String password;
 
     @OneToMany(mappedBy = "business", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -36,13 +39,40 @@ public class Business {
 
     public Business() {
     }
+    
+    public Business(String name) {
+		this.name = name;
+	}
+    
+    public Business(int id, String name, String email, String password, List<BusinessService> businessServices,
+			String description, String phone, String address) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.email = email;
+		this.password = password;
+		this.businessServices = businessServices;
+		this.description = description;
+		this.phone = phone;
+		this.address = address;
+	}
 
-    public int getId() {
+
+
+	public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
+    }
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmail() {

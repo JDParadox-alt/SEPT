@@ -6,8 +6,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Entity
 @Table(name = "booking")
-@JsonIdentityInfo(
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
+@JsonIdentityInfo(scope=Booking.class, generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
 public class Booking {
     @Id
@@ -16,7 +15,7 @@ public class Booking {
     private int id;
 
     @ManyToOne
-    // @JsonIgnore
+//    @JsonIgnore
     private BusinessService businessService;
     
     @Column
@@ -26,7 +25,7 @@ public class Booking {
     private String endDateTime;
     
     @ManyToOne
-    @JsonIgnore
+//    @JsonIgnore
     private Customer customer;
     
     @Column
@@ -40,8 +39,27 @@ public class Booking {
 
     public Booking() {
     }
+    
+    public Booking(String notes) {
+		this.notes = notes;
+	}
 
-    public int getId() {
+    public Booking(int id, BusinessService businessService, String startDateTime, String endDateTime, Customer customer,
+			String notes, Boolean notify, String status) {
+		super();
+		this.id = id;
+		this.businessService = businessService;
+		this.startDateTime = startDateTime;
+		this.endDateTime = endDateTime;
+		this.customer = customer;
+		this.notes = notes;
+		this.notify = notify;
+		this.status = status;
+	}
+
+
+
+	public int getId() {
         return id;
     }
 

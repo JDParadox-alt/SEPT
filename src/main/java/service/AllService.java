@@ -1,6 +1,8 @@
 package service;
 
 import model.*;
+
+import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,33 +24,10 @@ public class AllService {
         this.sessionFactory = sessionFactory;
     }
 
-    public Product saveProduct(Product product){
-        sessionFactory.getCurrentSession().save(product);
-        return product;
-    }
-
-
-    public Receipt saveReceipt(Receipt receipt){
-
-        for(ReceiptDetail rd: receipt.getReceiptDetails()){
-            rd.setReceipt(receipt);
-        }
-
-        sessionFactory.getCurrentSession().save(receipt);
-
-
-        return receipt;
-    }
-
-
-    public ReceiptDetail saveReceiptDetail(ReceiptDetail receiptDetail){
-        sessionFactory.getCurrentSession().save(receiptDetail);
-        return receiptDetail;
-    }
-
+    
     //Assign Services
 
-    //GET Business
+    //Businesses
     public List<Business> getAllBusinesses(){
         return sessionFactory.getCurrentSession().createQuery("from Business").list();
     }
@@ -56,8 +35,22 @@ public class AllService {
     public Business getBusiness(int businessId){
         return (Business) sessionFactory.getCurrentSession().get(Business.class, businessId);
     }
+    
+    public void saveBusiness(Business business){
+        sessionFactory.getCurrentSession().save(business);
+    }
+    
+    public void updateBusiness(Business business){
+        sessionFactory.getCurrentSession().update(business);
+    }
+    
+    public void deleteBusiness(int  businessId){
+        Business business = getBusiness(businessId);
+        sessionFactory.getCurrentSession().delete(business);
+    }
 
-    //GET Customer
+    
+    //Customer
     public List<Customer> getAllCustomers(){
         return sessionFactory.getCurrentSession().createQuery("from Customer").list();
     }
@@ -65,38 +58,27 @@ public class AllService {
     public Customer getCustomer(int customerId){
         return (Customer) sessionFactory.getCurrentSession().get(Customer.class, customerId);
     }
-
-    //POST Business
-    public Business saveBusiness(Business business){
-        sessionFactory.getCurrentSession().save(business);
-        return business;
+    
+    public Customer getCustomerByUsername(String username) {
+    	Query query = sessionFactory.getCurrentSession().createQuery("from Customer s where s.username like :username");
+    	query.setString("username", "%"+username+"%");
+    	return (Customer) query.uniqueResult();
     }
-
-    //POST Customer
-    public Customer saveCustomer(Customer customer){
+    
+    public void saveCustomer(Customer customer){
         sessionFactory.getCurrentSession().save(customer);
-        return customer;
     }
 
-    //UPDATE Business
-    public void updateBusiness(Business business){
-        sessionFactory.getCurrentSession().update(business);
-    }
-
-    //UPDATE Customer
     public void updateCustomer(Customer customer){
         sessionFactory.getCurrentSession().update(customer);
     }
 
-    //DELETE Business
-    public void deleteBusiness(int  businessId){
-        Business business = getBusiness(businessId);
-        sessionFactory.getCurrentSession().delete(business);
-    }
-
-    //DELETE Customer
-    public void deleteCustomer(int  customerId){
+    public void deleteCustomer(int customerId){
         Customer customer = getCustomer(customerId);
         sessionFactory.getCurrentSession().delete(customer);
+    }
+    
+    public boolean customerExists(String username) {
+    	return getCustomerByUsername(username) != null;
     }
 }
