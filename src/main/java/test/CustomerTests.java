@@ -7,14 +7,11 @@ import controller.AllController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.Assert;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.*;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import java.util.Arrays;
 import java.util.List;
@@ -130,6 +127,19 @@ public class CustomerTests {
 	}
 	
 	@Test
+	public void testUpdateCustomerNotFound() throws Exception {
+		Customer customer = new Customer(1, "JoeBiden", null, null, null, null, null);
+	    when(allService.getCustomer(customer.getId())).thenReturn(null);
+	    mockMvc.perform(
+	            put("/customers", customer.getId())
+	                    .contentType(MediaType.APPLICATION_JSON)
+	                    .content(asJsonString(customer)))
+	            .andExpect(status().isNotFound());
+	    verify(allService, times(1)).getCustomer(customer.getId());
+	    verifyNoMoreInteractions(allService);
+	}
+	
+	@Test
 	public void testDeleteCustomer() throws Exception {
 		Customer customer = new Customer(1, "GoodbyeWorld", null, null, null, null, null);
 	    when(allService.getCustomer(customer.getId())).thenReturn(customer);
@@ -141,6 +151,18 @@ public class CustomerTests {
 	    verify(allService, times(1)).deleteCustomer(customer.getId());
 	    verifyNoMoreInteractions(allService);
 	}
+	
+	@Test
+	public void testDeleteCustomerNotFound() throws Exception {
+		Customer customer = new Customer(1, "JoeBiden", null, null, null, null, null);
+	    when(allService.getCustomer(customer.getId())).thenReturn(null);
+	    mockMvc.perform(
+	            delete("/customers/{id}", customer.getId()))
+	            .andExpect(status().isNotFound());
+	    verify(allService, times(1)).getCustomer(customer.getId());
+	    verifyNoMoreInteractions(allService);
+	}
+	
 
 	public static String asJsonString(final Object obj) {
 	    try {

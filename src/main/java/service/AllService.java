@@ -36,9 +36,8 @@ public class AllService {
         return (Business) sessionFactory.getCurrentSession().get(Business.class, businessId);
     }
     
-    public Business saveBusiness(Business business){
+    public void saveBusiness(Business business){
         sessionFactory.getCurrentSession().save(business);
-        return business;
     }
     
     public void updateBusiness(Business business){

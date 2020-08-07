@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import service.AllService;
-import service.StudentService;
-
 import java.util.List;
 
 /**
@@ -32,23 +30,50 @@ public class AllController {
     }
 
     @RequestMapping(path = "businesses/{businessId}", method = RequestMethod.GET)
-    public Business getBusiness(@PathVariable int businessId){
-        return allService.getBusiness(businessId);
+    public ResponseEntity<Business> getBusiness(@PathVariable("businessId") int businessId){
+    	Business business = allService.getBusiness(businessId);
+
+        if (business == null){
+            return new ResponseEntity<Business>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Business>(business, HttpStatus.OK);
     }
 
     @RequestMapping(path = "businesses", method = RequestMethod.POST)
-    public Business addBusiness(@RequestBody Business business){
-        return allService.saveBusiness(business);
+    public ResponseEntity<Void> saveBusiness(@RequestBody Business business, UriComponentsBuilder ucBuilder){
+
+        allService.saveBusiness(business);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/businesses/{id}").buildAndExpand(business.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        
     }
 
     @RequestMapping(path = "businesses", method = RequestMethod.PUT)
-    public void updateBusiness(@RequestBody  Business business){
+    public ResponseEntity<Void> updateBusiness(@RequestBody Business business){
+        Business businessToBeUpdated = allService.getBusiness(business.getId());
+
+        if (businessToBeUpdated == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        
         allService.updateBusiness(business);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @RequestMapping(path = "businesses/{businessId}", method = RequestMethod.DELETE)
-    public void deleteBusiness(@PathVariable int businessId){
+    public ResponseEntity<Void> deleteBusiness(@PathVariable("businessId") int businessId){
+    	Business business = allService.getBusiness(businessId);
+
+        if (business == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
         allService.deleteBusiness(businessId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     //Customer
@@ -58,7 +83,7 @@ public class AllController {
     }
 
     @RequestMapping(path = "customers/{customerId}", method = RequestMethod.GET)
-    public ResponseEntity<Customer> get(@PathVariable("customerId") int customerId){
+    public ResponseEntity<Customer> getCustomer(@PathVariable("customerId") int customerId){
     	Customer customer = allService.getCustomer(customerId);
 
         if (customer == null){
@@ -67,14 +92,9 @@ public class AllController {
 
         return new ResponseEntity<Customer>(customer, HttpStatus.OK);
     }
-    
-    @RequestMapping(path = "customers/byUsername/{username}", method = RequestMethod.GET)
-    public Customer getCustomer(@PathVariable String username){
-        return allService.getCustomerByUsername(username);
-    }
 
     @RequestMapping(path = "customers", method = RequestMethod.POST)
-    public ResponseEntity<Void> create(@RequestBody Customer customer, UriComponentsBuilder ucBuilder){
+    public ResponseEntity<Void> saveCustomer(@RequestBody Customer customer, UriComponentsBuilder ucBuilder){
 
         if (allService.customerExists(customer.getUsername())){
             return new ResponseEntity<Void>(HttpStatus.CONFLICT);
