@@ -17,7 +17,7 @@ public class Customer {
     private int id;
 
     @Column
-    private String account_id;
+    private String username;
 
     @Column
     private String email;
@@ -35,9 +35,26 @@ public class Customer {
     private List<Booking> bookings;
 
     public Customer() {
+    	
     }
+    
+    public Customer(String username) {
+        this.username = username;
+    }
+    
+    public Customer(int id, String username, String email, String password, String phone, String address,
+			List<Booking> bookings) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.email = email;
+		this.password = password;
+		this.phone = phone;
+		this.address = address;
+		this.bookings = bookings;
+	}
 
-    public int getId() {
+	public int getId() {
         return id;
     }
 
@@ -45,12 +62,12 @@ public class Customer {
         this.id = id;
     }
 
-    public String getAccount_id() {
-        return account_id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setAccount_id(String account_id) {
-        this.account_id = account_id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getEmail() {

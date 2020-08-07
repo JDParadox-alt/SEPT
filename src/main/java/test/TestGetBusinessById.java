@@ -1,9 +1,11 @@
 package test;
 import com.google.gson.Gson;
+
 import com.google.gson.reflect.TypeToken;
 import model.Business;
 import org.junit.Assert;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -15,6 +17,7 @@ import java.net.URL;
 import java.util.List;
 
 public class TestGetBusinessById {
+	
     @Test
     public void test1() throws IOException {
 
@@ -40,10 +43,9 @@ public class TestGetBusinessById {
 
             //Expecting first stored business data object has attributes assigned to "test" value in db
             Assert.assertEquals(business.getId(), 1);
-            // Assert.assertEquals(business.getAccount_id(), "test");
             Assert.assertEquals(business.getEmail(), "test");
             Assert.assertEquals(business.getPassword(), "test");
-            // Assert.assertEquals(business.getBusiness_services().size(), 2); //Expecting 2 objects are inserted into this array
+            Assert.assertEquals(business.getBusinessServices().size(), 2); //Expecting 2 objects are inserted into this array
             Assert.assertEquals(business.getDescription(), "test");
             Assert.assertEquals(business.getPhone(), "test");
             Assert.assertEquals(business.getAddress(), "test");

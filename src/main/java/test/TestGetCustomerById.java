@@ -40,7 +40,7 @@ public class TestGetCustomerById {
 
             //Expecting first stored customer data object has attributes assigned to "test" value in db
             Assert.assertEquals(customer.getId(), 1);
-            Assert.assertEquals(customer.getAccount_id(), "test");
+            Assert.assertEquals(customer.getUsername(), "test");
             Assert.assertEquals(customer.getEmail(), "test");
             Assert.assertEquals(customer.getPassword(), "test");
             Assert.assertEquals(customer.getPhone(), "test");

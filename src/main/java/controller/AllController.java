@@ -2,7 +2,12 @@ package controller;
 
 import model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import service.AllService;
 import service.StudentService;
 
@@ -17,21 +22,6 @@ public class AllController {
 
     @Autowired
     private AllService allService;
-
-    @RequestMapping(path = "products", method = RequestMethod.POST)
-    public Product addProduct(@RequestBody Product product){
-        return allService.saveProduct(product);
-    }
-
-    @RequestMapping(path = "receipts", method = RequestMethod.POST)
-    public Receipt addReceipt(@RequestBody Receipt receipt){
-        return allService.saveReceipt(receipt);
-    }
-
-    @RequestMapping(path = "receiptDetails", method = RequestMethod.POST)
-    public ReceiptDetail addReceipt(@RequestBody ReceiptDetail receiptDetail){
-        return allService.saveReceiptDetail(receiptDetail);
-    }
 
     //Assign Controllers
 
@@ -68,22 +58,58 @@ public class AllController {
     }
 
     @RequestMapping(path = "customers/{customerId}", method = RequestMethod.GET)
-    public Customer getCustomer(@PathVariable int customerId){
-        return allService.getCustomer(customerId);
+    public ResponseEntity<Customer> get(@PathVariable("customerId") int customerId){
+    	Customer customer = allService.getCustomer(customerId);
+
+        if (customer == null){
+            return new ResponseEntity<Customer>(HttpStatus.NOT_FOUND);
+        }
+
+        return new ResponseEntity<Customer>(customer, HttpStatus.OK);
+    }
+    
+    @RequestMapping(path = "customers/byUsername/{username}", method = RequestMethod.GET)
+    public Customer getCustomer(@PathVariable String username){
+        return allService.getCustomerByUsername(username);
     }
 
     @RequestMapping(path = "customers", method = RequestMethod.POST)
-    public Customer addCustomer(@RequestBody Customer customer){
-        return allService.saveCustomer(customer);
+    public ResponseEntity<Void> create(@RequestBody Customer customer, UriComponentsBuilder ucBuilder){
+
+        if (allService.customerExists(customer.getUsername())){
+            return new ResponseEntity<Void>(HttpStatus.CONFLICT);
+        }
+
+        allService.saveCustomer(customer);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(ucBuilder.path("/customers/{id}").buildAndExpand(customer.getId()).toUri());
+        return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+        
     }
 
     @RequestMapping(path = "customers", method = RequestMethod.PUT)
-    public void updateCustomer(@RequestBody  Customer customer){
+    public ResponseEntity<Void> updateCustomer(@RequestBody Customer customer){
+        Customer customerToBeUpdated = allService.getCustomer(customer.getId());
+
+        if (customerToBeUpdated == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+        
         allService.updateCustomer(customer);
+
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 
     @RequestMapping(path = "customers/{customerId}", method = RequestMethod.DELETE)
-    public void deleteCustomer(@PathVariable int customerId){
+    public ResponseEntity<Void> deleteCustomer(@PathVariable("customerId") int customerId){
+    	Customer customer = allService.getCustomer(customerId);
+
+        if (customer == null){
+            return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+        }
+
         allService.deleteCustomer(customerId);
+        return new ResponseEntity<Void>(HttpStatus.OK);
     }
 }
