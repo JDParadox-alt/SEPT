@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Auth } from 'aws-amplify';
 
 export default class Navbar extends Component {
@@ -33,13 +33,18 @@ export default class Navbar extends Component {
               Admin
             </a> */}
             {this.props.auth.isAuthenticated && this.props.auth.user && (
-              <a href="/userprofile" className="navbar-item">
-                Profile
-              </a>
+              <Fragment>
+                <a href="/userprofile" className="navbar-item">
+                  Profile
+                </a>
+                <a href="/calendar" className="navbar-item">
+                  Calendar
+                </a>
+                <a href="/booking" className="navbar-item">
+                  Booking
+                </a>
+              </Fragment>
             )}
-            <a href="/calendar" className="navbar-item">
-                Calendar
-            </a>
           </div>
 
           <div className="navbar-end">

@@ -24,7 +24,7 @@ public class BusinessService1 {
     private String description;
 
     @Column
-    private String workingHours;
+    private ArrayList<Object> workingHours;
 
     @Column
     private ArrayList<String> employees;
@@ -59,11 +59,11 @@ public class BusinessService1 {
         this.description = description;
     }
 
-    public String getWorkingHours() {
+    public ArrayList<Object> getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(String workingHours) {
+    public void setWorkingHours(ArrayList<Object> workingHours) {
         this.workingHours = workingHours;
     }
 

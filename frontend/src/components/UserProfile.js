@@ -473,7 +473,7 @@ export default class UserProfile extends Component {
                                 </div>
                                 <div className="col-md-2">
                                     {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
-                                    <div className="dropdown">
+                                    <div className="dropdown ml-5">
                                         <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
                                         </button>
@@ -678,7 +678,7 @@ export default class UserProfile extends Component {
                                 </div>
                                 <div className="col-md-2">
                                     {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
-                                    <div className="dropdown">
+                                    <div className="dropdown ml-5">
                                         <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
                                         </button>
@@ -938,7 +938,7 @@ export default class UserProfile extends Component {
                                     </div>
                                     <div className="col-md-2">
                                         {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
-                                        <div className="dropdown">
+                                        <div className="dropdown ml-5">
                                             <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
                                             </button>
@@ -1189,7 +1189,7 @@ export default class UserProfile extends Component {
                                     </div>
                                     <div className="col-md-2">
                                         {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
-                                        <div className="dropdown">
+                                        <div className="dropdown ml-5">
                                             <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                 <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
                                             </button>

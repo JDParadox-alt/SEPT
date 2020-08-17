@@ -37,7 +37,7 @@ export default class CalendarDisplay extends Component {
         const holidaysList = []
         var bookings = this.state.bookings
         for (var i = 0; i < bookings.length; i++) {
-            let color = '#ff0000'
+            let color = '#1E90FF'
             var event_obj = {
                 id: bookings[i].id,
                 businessService_Id: bookings[i].businessService_Id,
@@ -65,18 +65,29 @@ export default class CalendarDisplay extends Component {
             holidays.push({ id: holiday.id, title: holiday.notes, start: start_at, end: end_at, color: holiday.color, resource: 'false', type: 'holiday', allDay: 'true' })
         })
         return (
-            <Calendar
-                localizer={localizer}
-                events={holidays}
-                defaultDate={moment().toDate()}
-                startAccessor="start"
-                endAccessor="end"
-                eventPropGetter={event => {
-                    const eventData = holidays.find(ot => ot.id === event.id);
-                    const backgroundColor = eventData && eventData.color;
-                    return { style: { backgroundColor } };
-                }}
-           />
+            <div className="container-fluid profile-container-bg py-3">
+                <div className="row">
+                    <div className="col-1"></div>
+                    <div className="col-10">
+                        <div className="jumbotron mt-4">
+                            <Calendar
+                                localizer={localizer}
+                                events={holidays}
+                                defaultDate={moment().toDate()}
+                                defaultView="week"
+                                startAccessor="start"
+                                endAccessor="end"
+                                eventPropGetter={event => {
+                                    const eventData = holidays.find(ot => ot.id === event.id);
+                                    const backgroundColor = eventData && eventData.color;
+                                    return { style: { backgroundColor } };
+                                }}
+                            />
+                        </div>
+                    </div>
+                    <div className="col-1"></div>
+                </div>
+            </div>
         )
     }
 }
