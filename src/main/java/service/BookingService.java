@@ -2,6 +2,8 @@ package service;
 
 import model.Booking;
 import model.BusinessService;
+import model.Customer;
+import model.BusinessService;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -48,7 +50,20 @@ public class BookingService {
     
     //DELETE
     public void deleteBooking(int id){
-    	Booking booking = getBooking(id);
+        Booking booking = getBooking(id);
+
+        BusinessService businessService = booking.getBusinessService();
+        Customer customer = booking.getCustomer();
+
+        if (businessService != null) {
+            businessService.removeBooking(booking);
+            sessionFactory.getCurrentSession().update(businessService);
+        }
+        if (customer != null) {
+            customer.removeBooking(booking);
+            sessionFactory.getCurrentSession().update(customer);        
+        }
+
         sessionFactory.getCurrentSession().delete(booking);
     }
 

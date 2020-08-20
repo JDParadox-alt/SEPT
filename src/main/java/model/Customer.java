@@ -31,7 +31,7 @@ public class Customer {
     @Column
     private String address;
 
-    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "customer", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private List<Booking> bookings;
 
     public Customer() {
@@ -108,5 +108,9 @@ public class Customer {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public void removeBooking(Booking booking) {
+        this.getBookings().remove(booking);
     }
 }

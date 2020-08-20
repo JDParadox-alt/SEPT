@@ -122,6 +122,10 @@ public class Business {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public void removeBusinessService(BusinessService businessService){
+        this.getBusinessServices().remove(businessService);
+    }
 }
 
 

@@ -30,7 +30,7 @@ public class BusinessService {
     @Column
     private ArrayList<String> employees;
 
-    @OneToMany(mappedBy = "businessService", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "businessService", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private List<Booking> bookings;
 
     public BusinessService() {
@@ -99,5 +99,9 @@ public class BusinessService {
 
     public void setBookings(List<Booking> bookings) {
         this.bookings = bookings;
+    }
+
+    public void removeBooking (Booking booking) {
+        this.getBookings().remove(booking);
     }
 }

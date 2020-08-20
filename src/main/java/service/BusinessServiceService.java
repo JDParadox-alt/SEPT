@@ -1,6 +1,7 @@
 package service;
 
 import model.BusinessService;
+import model.Business;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,15 @@ public class BusinessServiceService {
 
     //DELETE
     public void deleteBusinessService(int id){
-    	BusinessService businessService = getBusinessService(id);
+        BusinessService businessService = getBusinessService(id);
+        
+        Business business = businessService.getBusiness();
+
+        if (business != null) {
+            business.removeBusinessService(businessService);
+            sessionFactory.getCurrentSession().update(business);
+        }
+
         sessionFactory.getCurrentSession().delete(businessService);
     }
 
