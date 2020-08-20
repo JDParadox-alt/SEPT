@@ -75,6 +75,19 @@ public class AllService {
 
     public void deleteCustomer(int customerId){
         Customer customer = getCustomer(customerId);
+
+        List<Booking> bookings = customer.getBookings();
+
+        for (Booking booking : bookings) {
+
+            booking.setCustomer(null);
+            sessionFactory.getCurrentSession().update(booking);
+
+            if (booking.getCustomer() == null & booking.getBusinessService() == null) {
+                sessionFactory.getCurrentSession().delete(booking);
+            }
+        }
+
         sessionFactory.getCurrentSession().delete(customer);
     }
     

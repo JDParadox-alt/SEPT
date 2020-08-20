@@ -1,6 +1,7 @@
 package service;
 
 import model.BusinessService;
+import model.Booking;
 import model.Business;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -50,10 +51,20 @@ public class BusinessServiceService {
         BusinessService businessService = getBusinessService(id);
         
         Business business = businessService.getBusiness();
+        List<Booking> bookings = businessService.getBookings();
 
         if (business != null) {
             business.removeBusinessService(businessService);
             sessionFactory.getCurrentSession().update(business);
+        }
+
+        for (Booking booking : bookings) {
+            booking.setBusinessService(null);
+            sessionFactory.getCurrentSession().update(booking);
+
+            if (booking.getCustomer() == null & booking.getBusinessService() == null) {
+                sessionFactory.getCurrentSession().delete(booking);
+            }
         }
 
         sessionFactory.getCurrentSession().delete(businessService);
