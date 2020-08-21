@@ -1,6 +1,6 @@
 package model;
 
-// import utils.CustomerSerialiser;
+import utils.CustomerSerialiser;
 
 import javax.persistence.*;
 import java.util.List;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 @JsonIdentityInfo(scope = Customer.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
-// @JsonSerialize(using = CustomerSerialiser.class)
+@JsonSerialize(using = CustomerSerialiser.class)
 public class Customer {
 
     @Id
