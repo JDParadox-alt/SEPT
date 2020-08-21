@@ -3,11 +3,15 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import utils.BookingSerialiser;
 
 @Entity
 @Table(name = "booking")
-@JsonIdentityInfo(scope=Booking.class, generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
+// @JsonIdentityInfo(scope=Booking.class, generator = ObjectIdGenerators.PropertyGenerator.class, 
+//   property = "id")
+@JsonSerialize(using = BookingSerialiser.class)
 public class Booking {
     @Id
     @Column
