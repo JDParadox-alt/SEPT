@@ -50,6 +50,9 @@ public class BusinessServiceSerialiser extends StdSerializer<BusinessService>{
         jgen.writeObjectField("employees", businessService.getEmployees());
 
         jgen.writeFieldName("bookings");
+        if (!bookings.isEmpty()) {
+            
+        }
         jgen.writeStartArray();
         for (Booking booking : bookings) {
             jgen.writeStartObject();
@@ -59,13 +62,18 @@ public class BusinessServiceSerialiser extends StdSerializer<BusinessService>{
             jgen.writeStringField("endDateTime", booking.getEndDateTime());
 
             jgen.writeFieldName("customer");
-            jgen.writeStartObject();
-            jgen.writeNumberField("id", booking.getCustomer().getId());
-            jgen.writeStringField("username", booking.getCustomer().getUsername());
-            jgen.writeStringField("email", booking.getCustomer().getEmail());
-            jgen.writeStringField("phone", booking.getCustomer().getPhone());
-            jgen.writeStringField("address", booking.getCustomer().getAddress());
-            jgen.writeEndObject();
+            if (booking.getCustomer() != null) {
+                jgen.writeStartObject();
+                jgen.writeNumberField("id", booking.getCustomer().getId());
+                jgen.writeStringField("username", booking.getCustomer().getUsername());
+                jgen.writeStringField("email", booking.getCustomer().getEmail());
+                jgen.writeStringField("phone", booking.getCustomer().getPhone());
+                jgen.writeStringField("address", booking.getCustomer().getAddress());
+                jgen.writeEndObject();
+            }
+            else{
+                jgen.writeNull();
+            }
 
             jgen.writeStringField("notes", booking.getNotes());
 

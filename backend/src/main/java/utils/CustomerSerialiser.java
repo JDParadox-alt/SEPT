@@ -45,17 +45,24 @@ public class CustomerSerialiser extends StdSerializer<Customer>{
             jgen.writeNumberField("id", booking.getId());
         
             jgen.writeFieldName("businessService");
-            jgen.writeStartObject();
-            jgen.writeNumberField("id", booking.getBusinessService().getId());
-            jgen.writeStringField("name", booking.getBusinessService().getName());
-        
-            jgen.writeFieldName("business");
-            jgen.writeStartObject();
-            jgen.writeNumberField("id", booking.getBusinessService().getBusiness().getId());
-            jgen.writeStringField("name", booking.getBusinessService().getBusiness().getName());
-            jgen.writeEndObject();
-            jgen.writeEndObject();
-        
+            if (booking.getBusinessService() != null) {
+                jgen.writeStartObject();
+                jgen.writeNumberField("id", booking.getBusinessService().getId());
+                jgen.writeStringField("name", booking.getBusinessService().getName());
+            
+                jgen.writeFieldName("business");
+                if (booking.getBusinessService().getBusiness() != null) {
+                    jgen.writeStartObject();
+                    jgen.writeNumberField("id", booking.getBusinessService().getBusiness().getId());
+                    jgen.writeStringField("name", booking.getBusinessService().getBusiness().getName());
+                    jgen.writeEndObject();
+                }       
+                jgen.writeEndObject();
+            }
+            else{
+                jgen.writeNull();
+            }
+           
             jgen.writeStringField("startDateTime", booking.getStartDateTime());
             jgen.writeStringField("endDateTime", booking.getEndDateTime());
 

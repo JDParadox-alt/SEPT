@@ -35,28 +35,37 @@ public class BookingSerialiser extends StdSerializer<Booking>{
         jgen.writeNumberField("id", booking.getId());
         
         jgen.writeFieldName("businessService");
-        jgen.writeStartObject();
-        jgen.writeNumberField("id", businessService.getId());
-        jgen.writeStringField("name", businessService.getName());
-        
-        jgen.writeFieldName("business");
-        jgen.writeStartObject();
-        jgen.writeNumberField("id", business.getId());
-        jgen.writeStringField("name", business.getName());
-        jgen.writeEndObject();
-        jgen.writeEndObject();
+        if (businessService != null) {
+            jgen.writeStartObject();
+            jgen.writeNumberField("id", businessService.getId());
+            jgen.writeStringField("name", businessService.getName());
+            
+            jgen.writeFieldName("business");
+            if (business != null) {
+                jgen.writeStartObject();
+                jgen.writeNumberField("id", business.getId());
+                jgen.writeStringField("name", business.getName());
+                jgen.writeEndObject();
+            }
+            jgen.writeEndObject();
+        }
         
         jgen.writeStringField("startDateTime", booking.getStartDateTime());
         jgen.writeStringField("endDateTime", booking.getEndDateTime());
 
         jgen.writeFieldName("customer");
-        jgen.writeStartObject();
-        jgen.writeNumberField("id", customer.getId());
-        jgen.writeStringField("username", customer.getUsername());
-        jgen.writeStringField("email", customer.getEmail());
-        jgen.writeStringField("phone", customer.getPhone());
-        jgen.writeStringField("address", customer.getAddress());
-        jgen.writeEndObject();
+        if (customer != null){
+            jgen.writeStartObject();
+            jgen.writeNumberField("id", customer.getId());
+            jgen.writeStringField("username", customer.getUsername());
+            jgen.writeStringField("email", customer.getEmail());
+            jgen.writeStringField("phone", customer.getPhone());
+            jgen.writeStringField("address", customer.getAddress());
+            jgen.writeEndObject();
+        }
+        else {
+            jgen.writeNull();
+        }
 
         jgen.writeStringField("notes", booking.getNotes());
 

@@ -41,6 +41,7 @@ public class BusinessSerialiser extends StdSerializer<Business>{
 
         for (BusinessService businessService : businessServices) {
             jgen.writeStartObject();
+
             jgen.writeNumberField("id", businessService.getId());
             jgen.writeStringField("name", businessService.getName());
 
@@ -48,10 +49,13 @@ public class BusinessSerialiser extends StdSerializer<Business>{
             jgen.writeStringField("workingHours", businessService.getWorkingHours());
             jgen.writeObjectField("employees", businessService.getEmployees());
 
-        jgen.writeEndObject();
+            jgen.writeEndObject();
         }
-
         jgen.writeEndArray();
+
+        jgen.writeStringField("description", business.getDescription());
+        jgen.writeStringField("phone", business.getPhone());
+        jgen.writeStringField("address", business.getAddress());
 
         jgen.writeEndObject();
     }
