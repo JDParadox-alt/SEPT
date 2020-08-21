@@ -9,8 +9,8 @@ import utils.BookingSerialiser;
 
 @Entity
 @Table(name = "booking")
-@JsonIdentityInfo(scope=Booking.class, generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
+// @JsonIdentityInfo(scope=Booking.class, generator = ObjectIdGenerators.PropertyGenerator.class, 
+//   property = "id")
 @JsonSerialize(using = BookingSerialiser.class)
 public class Booking {
     @Id

@@ -10,9 +10,9 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "customer")
-@JsonIdentityInfo(scope = Customer.class,
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
+// @JsonIdentityInfo(scope = Customer.class,
+//   generator = ObjectIdGenerators.PropertyGenerator.class, 
+//   property = "id")
 @JsonSerialize(using = CustomerSerialiser.class)
 public class Customer {
 

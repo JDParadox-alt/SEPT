@@ -11,9 +11,9 @@ import utils.BusinessSerialiser;
 
 @Entity
 @Table(name = "business")
-@JsonIdentityInfo(scope = Business.class,
-  generator = ObjectIdGenerators.PropertyGenerator.class, 
-  property = "id")
+// @JsonIdentityInfo(scope = Business.class,
+//   generator = ObjectIdGenerators.PropertyGenerator.class, 
+//   property = "id")
 @JsonSerialize(using = BusinessSerialiser.class)
 public class Business {
     @Id
