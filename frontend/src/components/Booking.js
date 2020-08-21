@@ -191,8 +191,8 @@ export default class Booking extends Component {
                         temp_businessServiceExists=true
                         this.setState({ businessServiceExists: true}, ()=>{
                             console.log(this.state.businessServiceExists)
-                            this.checkCustomerProfile()
-                            this.checkBusinessProfile()
+                            // this.checkCustomerProfile()
+                            // this.checkBusinessProfile()
                             // this.updateBusinessProfileAfterServiceCreation()
                             // this.checkServiceByProfile1()
                             console.log("Check01!!!")
@@ -599,6 +599,9 @@ export default class Booking extends Component {
         console.log("Mounted!!!")
         console.log(this.state.businessServiceExists)
         // this.updateBusinessProfileAfterServiceCreation()
+    }
+    componentDidUpdate(){
+        console.log("Updated!!!")
     }
     render() {
         return(
