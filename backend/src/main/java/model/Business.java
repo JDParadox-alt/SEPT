@@ -1,15 +1,20 @@
 package model;
+
 import javax.persistence.*;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import utils.BusinessSerialiser;
 
 @Entity
 @Table(name = "business")
 @JsonIdentityInfo(scope = Business.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
+@JsonSerialize(using = BusinessSerialiser.class)
 public class Business {
     @Id
     @Column

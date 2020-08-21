@@ -1,14 +1,19 @@
 package model;
+
+// import utils.CustomerSerialiser;
+
 import javax.persistence.*;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 @Entity
 @Table(name = "customer")
 @JsonIdentityInfo(scope = Customer.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
+// @JsonSerialize(using = CustomerSerialiser.class)
 public class Customer {
 
     @Id

@@ -1,21 +1,29 @@
 package model;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
+import utils.BusinessServiceSerialiser;
 
 @Entity
 @Table(name = "businessService")
 @JsonIdentityInfo(scope = BusinessService.class,
   generator = ObjectIdGenerators.PropertyGenerator.class, 
   property = "id")
+@JsonSerialize(using = BusinessServiceSerialiser.class)
 public class BusinessService {
 
     @Id
     @Column
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column
+    private String name;
     
     @ManyToOne
     // @JsonIgnore
@@ -59,6 +67,14 @@ public class BusinessService {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public Business getBusiness() {
