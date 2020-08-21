@@ -23,9 +23,6 @@ public class Customer {
     private String email;
 
     @Column
-    private String password;
-
-    @Column
     private String phone;
 
     @Column
@@ -48,7 +45,6 @@ public class Customer {
 		this.id = id;
 		this.username = username;
 		this.email = email;
-		this.password = password;
 		this.phone = phone;
 		this.address = address;
 		this.bookings = bookings;
@@ -76,14 +72,6 @@ public class Customer {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getPhone() {

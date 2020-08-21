@@ -22,10 +22,7 @@ public class Business {
     @Column
     private String email;
 
-	@Column
-    private String password;
-
-    @OneToMany(mappedBy = "business", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "business", fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.REFRESH, CascadeType.MERGE})
     private List<BusinessService> businessServices;
 
     @Column
@@ -50,7 +47,6 @@ public class Business {
 		this.id = id;
 		this.name = name;
 		this.email = email;
-		this.password = password;
 		this.businessServices = businessServices;
 		this.description = description;
 		this.phone = phone;
@@ -81,14 +77,6 @@ public class Business {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public List<BusinessService> getBusinessServices() {

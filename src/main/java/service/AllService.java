@@ -24,6 +24,11 @@ public class AllService {
         this.sessionFactory = sessionFactory;
     }
 
+    @Autowired
+    private BusinessServiceService businessServiceService;
+
+    @Autowired
+    private BookingService bookingService;
     
     //Assign Services
 
@@ -46,7 +51,19 @@ public class AllService {
     
     public void deleteBusiness(int  businessId){
         Business business = getBusiness(businessId);
+
+        List<BusinessService> services = business.getBusinessServices();
+
+        for (BusinessService service : services) {
+            service.setBusiness(null);
+            sessionFactory.getCurrentSession().update(service);
+        }
+
         sessionFactory.getCurrentSession().delete(business);
+
+        for (BusinessService service : services) {
+            businessServiceService.deleteBusinessService(service.getId());
+        }
     }
 
     
@@ -84,7 +101,7 @@ public class AllService {
             sessionFactory.getCurrentSession().update(booking);
 
             if (booking.getCustomer() == null & booking.getBusinessService() == null) {
-                sessionFactory.getCurrentSession().delete(booking);
+                bookingService.deleteBooking(booking.getId());
             }
         }
 

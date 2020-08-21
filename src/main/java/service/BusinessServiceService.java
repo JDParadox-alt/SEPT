@@ -21,6 +21,9 @@ public class BusinessServiceService {
     @Autowired
     private SessionFactory sessionFactory;
 
+    @Autowired
+    private BookingService bookingService;
+
     public void setSessionFactory(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -63,7 +66,7 @@ public class BusinessServiceService {
             sessionFactory.getCurrentSession().update(booking);
 
             if (booking.getCustomer() == null & booking.getBusinessService() == null) {
-                sessionFactory.getCurrentSession().delete(booking);
+                bookingService.deleteBooking(booking.getId());
             }
         }
 
