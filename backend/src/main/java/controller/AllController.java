@@ -24,11 +24,13 @@ public class AllController {
     //Assign Controllers
 
     //Business
+    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(path="businesses", method = RequestMethod.GET)
     public List<Business> getBusinesses() {
         return allService.getAllBusinesses();
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @RequestMapping(path = "businesses/{businessId}", method = RequestMethod.GET)
     public ResponseEntity<Business> getBusiness(@PathVariable("businessId") int businessId){
     	Business business = allService.getBusiness(businessId);

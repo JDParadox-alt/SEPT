@@ -443,94 +443,94 @@ export default class UserProfile extends Component {
                         <div className="container emp-profile">
                             <form method="post">
                                 <div className="row">
-                                <div className="col-md-4">
-                                    <div className="profile-img">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                                    <div className="file btn btn-lg btn-primary">
-                                        Change Photo
-                                        <input type="file" name="file" />
-                                    </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
-                                    <div className="profile-head">
-                                    <h5>
-                                        {this.state.customerProfile.username}
-                                    </h5>
-                                    {/* <h6>
-                                        Web Developer and Designer
-                                    </h6> */}
-                                    {/* <p className="proile-rating">RANKINGS : <span>8/10</span></p> */}
-                                    <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                        <li className="nav-item">
-                                        <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                                        </li>
-                                        <li className="nav-item">
-                                        <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div className="col-md-2">
-                                    {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
-                                    <div className="dropdown ml-5">
-                                        <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                        </button>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            {/* <a className="dropdown-item" href="true">Edit</a> */}
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.handleShow.bind(this)}>
-                                                    Edit
-                                                </Button>
-                                            </a>
-                                            <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-                                                <Modal.Header closeButton>
-                                                <Modal.Title>Edit Form</Modal.Title>
-                                                </Modal.Header>
-                                                <Modal.Body>
-                                                    <form onSubmit={this.editCustomerProfile.bind(this)}>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput1">Username</label>
-                                                            <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" />
-                                                            <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput2">Email Address</label>
-                                                            <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                            <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput3">Password</label>
-                                                            <input type="password" value={this.state.customerPassword1} onChange={this.handleChangeCustomerPassword1.bind(this)} className="form-control" id="exampleInput3" aria-describedby="passwordHelp" placeholder="Enter password" />
-                                                            <small id="passwordHelp" className="form-text text-muted">Make sure you enter the same password that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput4">Phone Number</label>
-                                                            <input type="text" value={this.state.customerPhone1} onChange={this.handleChangeCustomerPhone1.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput5">Address</label>
-                                                            <input type="text" value={this.state.customerAddress1} onChange={this.handleChangeCustomerAddress1.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
-                                                        </div>
-                                                        <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                    </form>                                                     
-                                                </Modal.Body>
-                                                <Modal.Footer>
-                                                <Button variant="secondary" onClick={this.handleClose.bind(this)}>
-                                                    Close
-                                                </Button>
-                                                </Modal.Footer>
-                                            </Modal>
-                                            {/* <a className="dropdown-item" href="true">Remove this profile</a> */}
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.deleteCustomerProfile.bind(this)}>
-                                                    Delete
-                                                </Button>
-                                            </a>
+                                    <div className="col-md-4">
+                                        <div className="profile-img">
+                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                                            <div className="file btn btn-lg btn-primary">
+                                                Change Photo
+                                                <input type="file" name="file" />
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                    <div className="col-md-6">
+                                        <div className="profile-head">
+                                            <h5>
+                                                {this.state.customerProfile.username}
+                                            </h5>
+                                            {/* <h6>
+                                                Web Developer and Designer
+                                            </h6> */}
+                                            {/* <p className="proile-rating">RANKINGS : <span>8/10</span></p> */}
+                                            <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                                <li className="nav-item">
+                                                    <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                                </li>
+                                                <li className="nav-item">
+                                                    <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div className="col-md-2">
+                                        {/* <input type="submit" className="profile-edit-btn" name="btnAddMore" defaultValue="Edit Profile" /> */}
+                                        <div className="dropdown ml-5">
+                                            <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                            </button>
+                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                                {/* <a className="dropdown-item" href="true">Edit</a> */}
+                                                <a className="dropdown-item" href="#">
+                                                    <Button variant="white" onClick={this.handleShow.bind(this)}>
+                                                        Edit
+                                                    </Button>
+                                                </a>
+                                                <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
+                                                    <Modal.Header closeButton>
+                                                    <Modal.Title>Edit Form</Modal.Title>
+                                                    </Modal.Header>
+                                                    <Modal.Body>
+                                                        <form onSubmit={this.editCustomerProfile.bind(this)}>
+                                                            <div className="form-group">
+                                                                <label htmlFor="exampleInput1">Username</label>
+                                                                <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" />
+                                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="exampleInput2">Email Address</label>
+                                                                <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" />
+                                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="exampleInput3">Password</label>
+                                                                <input type="password" value={this.state.customerPassword1} onChange={this.handleChangeCustomerPassword1.bind(this)} className="form-control" id="exampleInput3" aria-describedby="passwordHelp" placeholder="Enter password" />
+                                                                <small id="passwordHelp" className="form-text text-muted">Make sure you enter the same password that you used to sign up/login</small>
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="exampleInput4">Phone Number</label>
+                                                                <input type="text" value={this.state.customerPhone1} onChange={this.handleChangeCustomerPhone1.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
+                                                            </div>
+                                                            <div className="form-group">
+                                                                <label htmlFor="exampleInput5">Address</label>
+                                                                <input type="text" value={this.state.customerAddress1} onChange={this.handleChangeCustomerAddress1.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
+                                                            </div>
+                                                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                                                        </form>                                                     
+                                                    </Modal.Body>
+                                                    <Modal.Footer>
+                                                    <Button variant="secondary" onClick={this.handleClose.bind(this)}>
+                                                        Close
+                                                    </Button>
+                                                    </Modal.Footer>
+                                                </Modal>
+                                                {/* <a className="dropdown-item" href="true">Remove this profile</a> */}
+                                                <a className="dropdown-item" href="#">
+                                                    <Button variant="white" onClick={this.deleteCustomerProfile.bind(this)}>
+                                                        Delete
+                                                    </Button>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <div className="row">
                                 <div className="col-md-4">
