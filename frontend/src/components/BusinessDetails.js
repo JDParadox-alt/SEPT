@@ -145,6 +145,7 @@ export default class BusinessDetails extends Component {
                                                         <th scope="col">Description</th>
                                                     </tr>
                                                 </thead>
+                                                {this.state.services.length !== 0?
                                                 <tbody>
                                                     {this.state.services.map((service) =>
                                                         <tr key={service.id} href={`/services/${service.id}`}>
@@ -153,7 +154,10 @@ export default class BusinessDetails extends Component {
                                                             <td>{service.description}</td>
                                                         </tr>
                                                     )}
-                                                </tbody>
+                                                </tbody> :
+                                                <h6>This business does not offer any services yet</h6>
+                                                }
+                                                
                                             </table>
                                         </div>
                                     </div>
