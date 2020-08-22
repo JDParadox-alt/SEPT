@@ -28,7 +28,6 @@ public class BookingSerialiser extends StdSerializer<Booking>{
         Booking booking, JsonGenerator jgen, SerializerProvider provider)
       throws IOException, JsonProcessingException {
         BusinessService businessService = booking.getBusinessService();
-        Business business = businessService.getBusiness();
         Customer customer = booking.getCustomer();
  
         jgen.writeStartObject();
@@ -41,14 +40,21 @@ public class BookingSerialiser extends StdSerializer<Booking>{
             jgen.writeStringField("name", businessService.getName());
             
             jgen.writeFieldName("business");
-            if (business != null) {
+            if (businessService.getBusiness() != null) {
                 jgen.writeStartObject();
-                jgen.writeNumberField("id", business.getId());
-                jgen.writeStringField("name", business.getName());
+                jgen.writeNumberField("id", businessService.getBusiness().getId());
+                jgen.writeStringField("name", businessService.getBusiness().getName());
                 jgen.writeEndObject();
             }
+            else {
+                jgen.writeNull();
+            }    
             jgen.writeEndObject();
         }
+        else {
+            jgen.writeNull();
+        }
+
         
         jgen.writeStringField("startDateTime", booking.getStartDateTime());
         jgen.writeStringField("endDateTime", booking.getEndDateTime());

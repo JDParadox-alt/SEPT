@@ -56,6 +56,9 @@ public class CustomerSerialiser extends StdSerializer<Customer>{
                     jgen.writeNumberField("id", booking.getBusinessService().getBusiness().getId());
                     jgen.writeStringField("name", booking.getBusinessService().getBusiness().getName());
                     jgen.writeEndObject();
+                }
+                else{
+                    jgen.writeNull();
                 }       
                 jgen.writeEndObject();
             }
