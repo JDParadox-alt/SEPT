@@ -33,7 +33,7 @@ public class BusinessService {
     private String description;
     
     @Column
-    private String workingHours;
+    private ArrayList<Object> workingHours;
     
     @Column
     private ArrayList<String> employees;
@@ -48,7 +48,7 @@ public class BusinessService {
 		this.description = description;
 	}
 
-	public BusinessService(int id, Business business, String description, String workingHours,
+	public BusinessService(int id, Business business, String description, ArrayList<Object> workingHours,
 			ArrayList<String> employees, List<Booking> bookings) {
 		super();
 		this.id = id;
@@ -93,11 +93,11 @@ public class BusinessService {
         this.description = description;
     }
 
-    public String getWorkingHours() {
+    public ArrayList<Object> getWorkingHours() {
         return workingHours;
     }
 
-    public void setWorkingHours(String workingHours) {
+    public void setWorkingHours(ArrayList<Object> workingHours) {
         this.workingHours = workingHours;
     }
 

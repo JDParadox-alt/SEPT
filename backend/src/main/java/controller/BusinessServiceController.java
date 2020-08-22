@@ -17,7 +17,7 @@ import java.util.List;
  * Created by CoT on 7/29/18.
  */
 @RestController
-@RequestMapping(path = "/")
+@RequestMapping(path = "/api/")
 public class BusinessServiceController {
 
     @Autowired

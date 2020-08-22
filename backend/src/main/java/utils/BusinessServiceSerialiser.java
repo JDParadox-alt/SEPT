@@ -46,7 +46,7 @@ public class BusinessServiceSerialiser extends StdSerializer<BusinessService>{
         jgen.writeEndObject();
 
         jgen.writeStringField("description", businessService.getDescription());
-        jgen.writeStringField("workingHours", businessService.getWorkingHours());
+        jgen.writeObjectField("workingHours", businessService.getWorkingHours());
         jgen.writeObjectField("employees", businessService.getEmployees());
 
         jgen.writeFieldName("bookings");
