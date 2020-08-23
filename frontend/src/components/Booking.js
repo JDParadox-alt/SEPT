@@ -121,7 +121,7 @@ export default class Booking extends Component {
             console.log(json)
             // this.setState({ import1: json}, ()=>{console.log(this.state.import1)})
             var new_data=json
-            if(this.state.businessProfile && new_data.length>0){
+            if(this.state.businessProfileExists && new_data.length>0){
                 console.log(this.state.businessProfile)
                 console.log(new_data)
                 var temp_arr2=[]
@@ -296,6 +296,9 @@ export default class Booking extends Component {
     }
     createService(event){
         var checkValidSum=0
+        if(this.state.businessProfileExists){
+            checkValidSum++
+        }
         if(this.state.serviceName){
             checkValidSum++
         }
@@ -314,7 +317,7 @@ export default class Booking extends Component {
         if(this.state.endHour && this.state.endHour>=this.state.startHour && this.state.endMin){
             checkValidSum++
         }
-        if(checkValidSum!==6){
+        if(checkValidSum!==7){
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
             event.preventDefault();
         } else {
@@ -515,9 +518,9 @@ export default class Booking extends Component {
             checkValidSum++
             console.log(businessServiceId)
         }
-        if(this.state.businessProfile){
+        if(this.state.customerProfileExists){
             checkValidSum++
-            console.log(this.state.businessProfile.id)
+            console.log(this.state.customerProfile.id)
         }
         if(this.state.bookingNotes){
             checkValidSum++
@@ -564,7 +567,7 @@ export default class Booking extends Component {
                 businessService: {id: businessServiceId},
                 startDateTime: String(this.state.date),
                 endDateTime: String(this.state.date1),
-                customer: {id: this.state.businessProfile.id},
+                customer: {id: this.state.customerProfile.id},
                 notes: this.state.bookingNotes,
                 notify: this.state.bookingNotify,
                 status: status1
@@ -613,7 +616,7 @@ export default class Booking extends Component {
                         <div className="card my-3">
                             <h3 className="mt-3 ml-3">All Business Services</h3>
                             <div className="card-body">
-                                {this.state.allServices&&<div>
+                                {this.state.allServices.length>0&&<div>
                                     {this.state.allServices.map((sv,j)=>{
                                         return(
                                             <div key={j} className="card my-3">
@@ -660,11 +663,17 @@ export default class Booking extends Component {
                                                             )
                                                         })}
                                                     </div>
+                                                    {this.state.customerProfileExists&&
                                                     <Button variant="primary float-right" onClick={(i)=>{
                                                         this.handleShow2()
                                                     }}>
                                                         Book
-                                                    </Button>
+                                                    </Button>}
+                                                    {/* <Button variant="primary float-right" onClick={(i)=>{
+                                                        this.handleShow2()
+                                                    }}>
+                                                        Book
+                                                    </Button> */}
                                                     <Modal show={this.state.show2} onHide={this.handleClose2.bind(this)}>
                                                         <Modal.Header closeButton>
                                                             <Modal.Title>Booking Form</Modal.Title>
@@ -729,7 +738,7 @@ export default class Booking extends Component {
                             <div className="card my-3">
                                 <h3 className="mt-3 ml-3">Your Business Services</h3>
                                 <div className="card-body">      
-                                    {this.state.businessService && <div>
+                                    {this.state.businessServiceExists && <div>
                                         {this.state.businessService.map((service, i)=>{
                                             return(
                                                 <div key={i} className="card my-3">
@@ -921,9 +930,9 @@ export default class Booking extends Component {
                                             )
                                         })}
                                     </div>}
-                                    <button className="btn btn-white btn-sm ml-5 float-right" type="button" onClick={this.handleShow.bind(this)}>
+                                    {this.state.businessProfileExists&&<button className="btn btn-white btn-sm ml-5 float-right" type="button" onClick={this.handleShow.bind(this)}>
                                         <Icon className="fa fa-plus" style={{ fontSize: 20, color: "dark" }}/>
-                                    </button>
+                                    </button>}
                                     <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
                                         <Modal.Header closeButton>
                                             <Modal.Title>Create Your Service</Modal.Title>
