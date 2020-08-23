@@ -546,7 +546,7 @@ export default class UserProfile extends Component {
                                     <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                         Put schedule calender later here.
                                         <div className="card">
-                                        {this.state.customerProfile.bookings && <div className="card-body">
+                                        {this.state.customerProfile.bookings.length>0 && <div className="card-body">
                                             {this.state.customerProfile.bookings.map((b, r)=>{
                                                 return(
                                                     <div className="card" key={r}>
@@ -892,6 +892,49 @@ export default class UserProfile extends Component {
                                         </div>
                                         <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             Put schedule calender later here.
+                                            <div className="card">
+                                            {this.state.customerProfile.bookings.length>0 && <div className="card-body">
+                                                {this.state.customerProfile.bookings.map((b, r)=>{
+                                                    return(
+                                                        <div className="card" key={r}>
+                                                            <div className="card-body">
+                                                                <div className="row">
+                                                                    <div className="col-10">
+                                                                        <h5>BookingID/ServiceID</h5>
+                                                                        <p>{b.id}/{b.businessService&&b.businessService.id}</p>
+                                                                        <h5>Date/Time</h5>
+                                                                        <p>From: {b.startDateTime}</p>
+                                                                        <p>To: {b.endDateTime}</p>
+                                                                        <h5>Notes</h5>
+                                                                        <p>{b.notes}</p>
+                                                                        <h5>Set Reminder</h5>
+                                                                        <p>{b.notify}</p>
+                                                                        <h5>Status</h5>
+                                                                        <p>{b.status}</p>
+                                                                    </div>
+                                                                    <div className="col-2">
+                                                                        <div className="dropdown">
+                                                                            <button className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                                <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                                            </button>
+                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
+                                                                                <a className="dropdown-item" href="#">
+                                                                                    {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                                                    <Link to={{pathname:'/calendar', state: {carrier: this.state.carrier}}}className="btn btn-white">View In Calendar</Link>
+                                                                                </a>
+                                                                                <a className="dropdown-item" href="#">
+                                                                                    <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
+                                                                                </a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                })}
+                                            </div>}
+                                            </div>
                                         </div>
                                         </div>
                                     </div>
