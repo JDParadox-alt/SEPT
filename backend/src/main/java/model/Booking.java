@@ -36,7 +36,7 @@ public class Booking {
     private String notes;
 
     @Column 
-    private Boolean notify;
+    private String notify;
 
     @Column
     private String status;
@@ -49,7 +49,7 @@ public class Booking {
 	}
 
     public Booking(int id, BusinessService businessService, String startDateTime, String endDateTime, Customer customer,
-			String notes, Boolean notify, String status) {
+			String notes, String notify, String status) {
 		super();
 		this.id = id;
 		this.businessService = businessService;
@@ -111,11 +111,11 @@ public class Booking {
         this.notes = notes;
     }
 
-    public Boolean getNotify() {
+    public String getNotify() {
         return notify;
     }
 
-    public void setNotify(Boolean notify) {
+    public void setNotify(String notify) {
         this.notify = notify;
     }
 
