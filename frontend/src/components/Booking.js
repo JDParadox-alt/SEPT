@@ -546,6 +546,7 @@ export default class Booking extends Component {
             for (var i = 0; i < new_days_arr.length; i++) {
                 if(str_startDate.slice(0,3)===new_days_arr[i]&&str_endDate.slice(0,3)===new_days_arr[i]){
                     checkValidSum++
+                    console.log(checkValidSum)
                 }
             }
             if(parseInt(str_startDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))){
@@ -555,7 +556,8 @@ export default class Booking extends Component {
                         checkValidSum=checkValidSum-1
                     }
                 }
-                checkValidSum++
+                checkValidSum++//check if hour is within available service working hour
+                console.log(checkValidSum)
             }
         }
         if(checkValidSum!==6){
