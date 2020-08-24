@@ -68,19 +68,19 @@ export default class BusinessList extends Component {
 
                 <h1 style={{ textAlign: "center" }}> Business List</h1>
 
-                <Grid container style={{ textAlign: "center" }}
-                direction="row" justify="flex-start" alignItems="center"
+                <Grid container spacing={2} 
+                //direction="row" justify="flex-start" style={{ marginTop: '30px' }} 
                 >
-                    <Grid item spacing={2} xs={12} sm={6}>
+                    <Grid item xs={12} sm={6} md={4}>
 
                         {businesses.map(business => (
                             <Card>
                                 <CardContent>
-                                    <h3 key={business.uid} style={{fontSize:20, marginTop:8, letterSpacing:'0.5px'}}>{business.name}</h3>
+                                    <h3 key={business.uid} style={{fontSize:20, fontWeight:'bold', marginTop:8, letterSpacing:'0.5px'}}>{business.name}</h3>
                                 </CardContent>
                                 <Box display={'flex'}>
-                                    <NavLink to={'/api/businesses/' + business.id} style={{ textAlign: "center" }} >
-                                        <p style={{fontSize:16, marginBottom:4, margin:0}}>View Details</p>
+                                    <NavLink to={'/api/businesses/' + business.id}>
+                                        <p style={{fontSize:16, fontWeight:'bold', marginBottom:4, margin:0}}>View Details</p>
                                     </NavLink>
                                 </Box>
                             </Card>

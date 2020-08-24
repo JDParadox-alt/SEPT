@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Card, CardContent, Divider, Grid, Paper, makeStyles, Box } from '@material-ui/core'
+import { Card, CardContent, Divider, Grid, Paper, makeStyles, Chip, Input, Box } from '@material-ui/core'
 import { NavLink } from 'react-router-dom'
 // import classes from '*.module.css';
 
@@ -7,12 +7,12 @@ const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
     },
-    paper: {
-        height: 140,
-        width: 100,
-        display: 'flex',
-        flexWrap: 'wrap',
-    },
+    // paper: {
+    //     height: 140,
+    //     width: 100,
+    //     display: 'flex',
+    //     flexWrap: 'wrap',
+    // },
     card: {
         borderRadius: 12,
         minWidth: 256,
@@ -61,6 +61,9 @@ export default class BusinessList extends Component {
     render() {
         // const classes = useStyles();
         // const { value } = props;
+        // const data = props.data ? props.data[business.id] : null;
+        // const businessList = data ? data.BusinessList : null;
+        // console.log(businessList)
         var { businesses } = this.state;
 
         return (
@@ -68,22 +71,17 @@ export default class BusinessList extends Component {
 
                 <h1 style={{ textAlign: "center" }}> Business List</h1>
 
-                <Grid container style={{ textAlign: "center" }}
-                direction="row" justify="flex-start" alignItems="center"
-                >
-                    <Grid item spacing={2} xs={12} sm={6}>
+                <Grid container spacing={2} direction="row" justify="flex-start" style={{ marginTop: '30px' }} >
+                    <Grid item xs={12} sm={6} md={4}>
 
                         {businesses.map(business => (
-                            <Card>
-                                <CardContent>
-                                    <h3 key={business.uid} style={{fontSize:20, marginTop:8, letterSpacing:'0.5px'}}>{business.name}</h3>
-                                </CardContent>
-                                <Box display={'flex'}>
-                                    <NavLink to={'/api/businesses/' + business.id} style={{ textAlign: "center" }} >
-                                        <p style={{fontSize:16, marginBottom:4, margin:0}}>View Details</p>
-                                    </NavLink>
-                                </Box>
-                            </Card>
+                            <Paper>
+                                <h3 key={business.id}> Business Name: {business.name}</h3>
+
+                                <NavLink to={'/api/businesses/' + business.id}>
+                                    <p>View Details</p>
+                                </NavLink>
+                            </Paper>
                         ))}
 
 
@@ -94,3 +92,12 @@ export default class BusinessList extends Component {
         )
     }
 }
+
+
+
+
+// .map(value) business.name
+
+// view details
+
+// fetch business list from backend

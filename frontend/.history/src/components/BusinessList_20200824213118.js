@@ -71,7 +71,7 @@ export default class BusinessList extends Component {
                 <Grid container style={{ textAlign: "center" }}
                 direction="row" justify="flex-start" alignItems="center"
                 >
-                    <Grid item spacing={2} xs={12} sm={6}>
+                    <Grid item>
 
                         {businesses.map(business => (
                             <Card>
