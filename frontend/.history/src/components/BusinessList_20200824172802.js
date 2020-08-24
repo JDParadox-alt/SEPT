@@ -104,7 +104,7 @@ export default class BusinessList extends Component {
                 <ul>
                     {businesses.map(business => (
                         <li key={business.id}> Business Name: {business.name}</li>
-                    ))}
+                    ))};
                 </ul>
 
             </div>

@@ -31,8 +31,7 @@ export default class BusinessList extends Component {
         super(props);
         this.state = {
             id: 0,
-            name: "",
-            businesses: []
+            name: ""
         }
     }
 
@@ -66,11 +65,6 @@ export default class BusinessList extends Component {
                 console.log(json)
                 this.setState({ id: json.id })
                 this.setState({ name: json.name })
-                this.setState({ services: json.businessServices })
-                this.setState({ description: json.id })
-                this.setState({ phone: json.phone })
-                this.setState({ address: json.address })
-                this.setState({ businesses: json })
                 console.log(this.state)
             })
     }
@@ -81,7 +75,6 @@ export default class BusinessList extends Component {
         // const data = props.data ? props.data[business.id] : null;
         // const businessList = data ? data.BusinessList : null;
         // console.log(businessList)
-        var { businesses } = this.state;
 
         return (
             <div className="container">
@@ -99,13 +92,12 @@ export default class BusinessList extends Component {
                 {/* ) : null} */}
                 {/* </Grid> */}
 
-
-                <h1 style={{ textAlign: "center" }}> Business List</h1>
-                <ul>
-                    {businesses.map(business => (
-                        <li key={business.id}> Business Name: {business.name}</li>
-                    ))}
-                </ul>
+                {/* <ul>
+                    {item.map(item => (
+                        <li key={this.state.id}> Business Name: {this.state.name}</li>
+                    ))};
+                </ul> */}
+                <h2> Loaded</h2>
 
             </div>
         )

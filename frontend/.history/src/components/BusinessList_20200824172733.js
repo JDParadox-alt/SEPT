@@ -70,7 +70,7 @@ export default class BusinessList extends Component {
                 this.setState({ description: json.id })
                 this.setState({ phone: json.phone })
                 this.setState({ address: json.address })
-                this.setState({ businesses: json })
+                this.setState({ businesses: json})
                 console.log(this.state)
             })
     }
@@ -81,7 +81,6 @@ export default class BusinessList extends Component {
         // const data = props.data ? props.data[business.id] : null;
         // const businessList = data ? data.BusinessList : null;
         // console.log(businessList)
-        var { businesses } = this.state;
 
         return (
             <div className="container">
@@ -104,7 +103,7 @@ export default class BusinessList extends Component {
                 <ul>
                     {businesses.map(business => (
                         <li key={business.id}> Business Name: {business.name}</li>
-                    ))}
+                    ))};
                 </ul>
 
             </div>

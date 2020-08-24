@@ -31,8 +31,7 @@ export default class BusinessList extends Component {
         super(props);
         this.state = {
             id: 0,
-            name: "",
-            businesses: []
+            name: ""
         }
     }
 
@@ -60,17 +59,12 @@ export default class BusinessList extends Component {
     // }
 
     componentDidMount() {
-        fetch(`http://localhost:8080/api/businesses/`)
+        fetch(`http://localhost:8080/businesses/`)
             .then(res => res.json())
             .then(json => {
                 console.log(json)
                 this.setState({ id: json.id })
                 this.setState({ name: json.name })
-                this.setState({ services: json.businessServices })
-                this.setState({ description: json.id })
-                this.setState({ phone: json.phone })
-                this.setState({ address: json.address })
-                this.setState({ businesses: json })
                 console.log(this.state)
             })
     }
@@ -81,10 +75,9 @@ export default class BusinessList extends Component {
         // const data = props.data ? props.data[business.id] : null;
         // const businessList = data ? data.BusinessList : null;
         // console.log(businessList)
-        var { businesses } = this.state;
 
         return (
-            <div className="container">
+            <div className="container" alignItems="center" texStAlign="center">
 
                 {/* <Grid */}
                 {/* container spacing={2} direction="row" justify="flex-start" alignItems="center" style={{ marginTop: '30px' }} */}
@@ -99,13 +92,12 @@ export default class BusinessList extends Component {
                 {/* ) : null} */}
                 {/* </Grid> */}
 
-
-                <h1 style={{ textAlign: "center" }}> Business List</h1>
-                <ul>
-                    {businesses.map(business => (
-                        <li key={business.id}> Business Name: {business.name}</li>
-                    ))}
-                </ul>
+                {/* <ul>
+                    {item.map(item => (
+                        <li key={this.state.id}> Business Name: {this.state.name}</li>
+                    ))};
+                </ul> */}
+                <h2> Loaded</h2>
 
             </div>
         )
