@@ -76,7 +76,7 @@ public class BookingSerialiser extends StdSerializer<Booking>{
         jgen.writeStringField("notes", booking.getNotes());
 
         if (booking.getNotify() != null) {
-            jgen.writeBooleanField("notify", booking.getNotify());
+            jgen.writeStringField("notify", booking.getNotify());
         }
         else {
             jgen.writeNullField("notify");
