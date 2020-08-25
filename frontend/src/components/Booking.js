@@ -311,11 +311,16 @@ export default class Booking extends Component {
         if(this.state.serviceDays.length>0){
             checkValidSum++
         }
-        if(this.state.startHour && this.state.startHour<this.state.endHour && this.state.startMin){
+        if(this.state.startHour && this.state.startHour<=this.state.endHour && this.state.startMin){
             checkValidSum++
         }
         if(this.state.endHour && this.state.endHour>=this.state.startHour && this.state.endMin){
             checkValidSum++
+        }
+        if(this.state.startHour===this.state.endHour){
+            if((this.state.endMin-this.state.startMin)<0){
+                checkValidSum=checkValidSum-1
+            }
         }
         if(checkValidSum!==7){
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
@@ -371,11 +376,16 @@ export default class Booking extends Component {
         if(this.state.serviceDays1.length>0){
             checkValidSum++
         }
-        if(this.state.startHour1 && this.state.startHour1<this.state.endHour1 && this.state.startMin1){
+        if(this.state.startHour1 && this.state.startHour1<=this.state.endHour1 && this.state.startMin1){
             checkValidSum++
         }
         if(this.state.endHour1 && this.state.endHour1>=this.state.startHour1 && this.state.endMin1){
             checkValidSum++
+        }
+        if(this.state.startHour1===this.state.endHour1){
+            if((this.state.endMin1-this.state.startMin1)<0){
+                checkValidSum=checkValidSum-1
+            }
         }
         if(checkValidSum!==6){
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
@@ -546,16 +556,24 @@ export default class Booking extends Component {
             for (var i = 0; i < new_days_arr.length; i++) {
                 if(str_startDate.slice(0,3)===new_days_arr[i]&&str_endDate.slice(0,3)===new_days_arr[i]){
                     checkValidSum++
+                    console.log(checkValidSum)
                 }
             }
-            if(parseInt(str_startDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))){
+            if(parseInt(str_startDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_startDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))){
                 if(parseInt(str_startDate.slice(16,18))===parseInt(target_service.workingHours[0].startTime.slice(0,2))){
-                    if(parseInt(str_startDate.slice(19,21))>=parseInt(target_service.workingHours[0].startTime.slice(-2))&&parseInt(str_endDate.slice(19,21))<=parseInt(target_service.workingHours[0].endTime.slice(-2))){
+                    if(parseInt(str_startDate.slice(19,21))>=parseInt(target_service.workingHours[0].startTime.slice(-2))){
                     } else {
                         checkValidSum=checkValidSum-1
                     }
                 }
-                checkValidSum++
+                if(parseInt(str_endDate.slice(16,18))===parseInt(target_service.workingHours[0].endTime.slice(0,2))){
+                    if(parseInt(str_endDate.slice(19,21))<=parseInt(target_service.workingHours[0].endTime.slice(-2))){
+                    } else {
+                        checkValidSum=checkValidSum-1
+                    }
+                }
+                checkValidSum++//check if hour is within available service working hour
+                console.log(checkValidSum)
             }
         }
         if(checkValidSum!==6){
