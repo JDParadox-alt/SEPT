@@ -7,4 +7,5 @@ matrix:
       before_script:
         - cd frontend
       script:
+        - npm install
         - npm run build
