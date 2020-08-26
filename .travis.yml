@@ -10,4 +10,4 @@ matrix:
       script:
         - npm install
         - npm test
-        - npm run build
+        - CI=false npm run build
