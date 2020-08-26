@@ -546,7 +546,7 @@ export default class UserProfile extends Component {
                                     <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                         Put schedule calender later here.
                                         <div className="card">
-                                        {this.state.customerProfile.bookings.length>0 && <div className="card-body">
+                                        {this.state.customerProfile.bookings && <div className="card-body">
                                             {this.state.customerProfile.bookings.map((b, r)=>{
                                                 return(
                                                     <div className="card" key={r}>
@@ -893,7 +893,7 @@ export default class UserProfile extends Component {
                                         <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                             Put schedule calender later here.
                                             <div className="card">
-                                            {this.state.customerProfile.bookings.length>0 && <div className="card-body">
+                                            {this.state.customerProfile.bookings && <div className="card-body">
                                                 {this.state.customerProfile.bookings.map((b, r)=>{
                                                     return(
                                                         <div className="card" key={r}>
