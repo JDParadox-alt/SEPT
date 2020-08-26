@@ -1,8 +1,5 @@
 matrix:
   include:
     - language: java
-    jdk:
-      - openjdk10
-      - openjdk11
-    before_script:
-      - cd backend
+      before_script:
+        - cd backend
