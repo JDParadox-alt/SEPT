@@ -4,5 +4,5 @@ matrix:
     - jdk:
       - openjdk10
       - openjdk11
-    before_scripts:
+    before_script:
       - cd backend
