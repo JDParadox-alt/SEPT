@@ -4,8 +4,12 @@ matrix:
       before_script:
         - cd backend
     - language: node_js
+      node_js: "stable"
+      cache:
+        directories:
+          - node_modules
       before_script:
         - cd frontend
       script:
-        - npm install
+        - npm test
         - npm run build
