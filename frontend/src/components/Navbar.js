@@ -17,7 +17,7 @@ export default class Navbar extends Component {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
-            <img src="app-logo.png" width="112" height="28" alt="hexal logo" />
+            <img src={process.env.PUBLIC_URL + "/app-logo.png"} width="112" height="28" alt="hexal logo" />
           </a>
         </div>
 
@@ -34,8 +34,8 @@ export default class Navbar extends Component {
             </a> */}
             {this.props.auth.isAuthenticated && this.props.auth.user && (
               <Fragment>
-                <a href="/userprofile" className="navbar-item">
-                  Profile
+                <a href="/business" className="navbar-item">
+                  Businesses
                 </a>
                 <a href="/calendar" className="navbar-item">
                   Calendar
