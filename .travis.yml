@@ -3,3 +3,6 @@ matrix:
     - language: java
       before_script:
         - cd backend
+    - language: node_js
+      before_script:
+        - cd frontend
