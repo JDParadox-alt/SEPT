@@ -36,8 +36,13 @@ public class BusinessServiceService {
     
     //GET BY ID
     public BusinessService getBusinessService(int id){
-    	return (BusinessService) sessionFactory.getCurrentSession().get(BusinessService.class, id);
-    }
+        List<BusinessService> results = sessionFactory.getCurrentSession().createQuery("from BusinessService where id=" + id).list();
+        if (results.size() == 1) {
+            return (BusinessService) results.get(0);
+        }
+        else {
+            return null;
+        }    }
 
     //CREATE
     public void saveBusinessService(BusinessService businessService){

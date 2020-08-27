@@ -38,7 +38,13 @@ public class AllService {
     }
 
     public Business getBusiness(int businessId){
-        return (Business) sessionFactory.getCurrentSession().get(Business.class, businessId);
+        List<Business> results = sessionFactory.getCurrentSession().createQuery("from Business where id=" + businessId).list();
+        if (results.size() == 1) {
+            return (Business) results.get(0);
+        }
+        else {
+            return null;
+        }
     }
     
     public void saveBusiness(Business business){
@@ -73,8 +79,13 @@ public class AllService {
     }
 
     public Customer getCustomer(int customerId){
-        return (Customer) sessionFactory.getCurrentSession().get(Customer.class, customerId);
-    }
+        List<Customer> results = sessionFactory.getCurrentSession().createQuery("from Customer where id=" + customerId).list();
+        if (results.size() == 1) {
+            return (Customer) results.get(0);
+        }
+        else {
+            return null;
+        }    }
     
     public Customer getCustomerByUsername(String username) {
     	Query query = sessionFactory.getCurrentSession().createQuery("from Customer s where s.username like :username");

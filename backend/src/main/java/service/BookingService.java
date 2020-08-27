@@ -35,8 +35,13 @@ public class BookingService {
     
     //GET BY ID
     public Booking getBooking(int id){
-    	return (Booking) sessionFactory.getCurrentSession().get(Booking.class, id);
-    }
+        List<Booking> results = sessionFactory.getCurrentSession().createQuery("from Booking where id=" + id).list();
+        if (results.size() == 1) {
+            return (Booking) results.get(0);
+        }
+        else {
+            return null;
+        }    }
     
     //CREATE
     public void saveBooking(Booking booking){
