@@ -38,7 +38,7 @@ export default class BusinessDetails extends Component {
                 this.setState({name:json.name})
                 this.setState({email:json.email})
                 this.setState({services:json.businessServices})
-                this.setState({description:json.id})
+                this.setState({description:json.description})
                 this.setState({phone:json.phone})
                 this.setState({address:json.address})
                 console.log(this.state)
@@ -53,15 +53,15 @@ export default class BusinessDetails extends Component {
         const render_business = ()=>{
             if (this.state.found === "loading"){
                 return (
-                    <div className="container emp-profile">
-                        It's still loading mate
+                    <div className="container emp-profile" style={{textAlign: 'center'}}>
+                        <h3>The page is still loading.</h3>
                     </div>
                 )
             }
             else if (this.state.found === "notFound") {
                 return (
-                    <div className="container emp-profile">
-                        It's fucked mate. Try again
+                    <div className="container emp-profile" style={{textAlign: 'center'}}>
+                        <h3>An error occured while loading the page. Please try again.</h3>
                     </div>
                 )
             }
@@ -117,6 +117,14 @@ export default class BusinessDetails extends Component {
                                                     </div>
                                                     <div className="col-md-6">
                                                         <p>{this.state.email}</p>
+                                                    </div>
+                                                </div>
+                                                <div className="row">
+                                                    <div className="col-md-6">
+                                                        <label>Description</label>
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <p>{this.state.description}</p>
                                                     </div>
                                                 </div>
                                                 <div className="row">

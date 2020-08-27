@@ -64,14 +64,14 @@ export default class CalendarDisplay extends Component {
         this.state.holidaysList.forEach((holiday) => {
             let start_at = (new Date(holiday.startDateTime))
             let end_at = (new Date(holiday.endDateTime))
-            holidays.push({ id: holiday.id, title: holiday.notes, start: start_at, end: end_at, color: holiday.color, resource: 'false', type: 'holiday', allDay: 'true' })
+            holidays.push({ id: holiday.id, title: holiday.notes, start: start_at, end: end_at, color: holiday.color, resource: 'false', type: 'holiday', allDay: false })
         })
         const customerSchedule = []
         if(this.state.customerProfile){
             this.state.customerProfile.bookings.forEach((booking) => {
                 let start_at1 = (new Date(booking.startDateTime))
                 let end_at1 = (new Date(booking.endDateTime))
-                customerSchedule.push({ id: booking.id, title: booking.notes, start: start_at1, end: end_at1, color: '#1E90FF', resource: 'false', type: 'appointment', allDay: 'true' })
+                customerSchedule.push({ id: booking.id, title: booking.notes, start: start_at1, end: end_at1, color: '#1E90FF', resource: 'false', type: 'appointment', allDay: false })
             })
         }
         return (

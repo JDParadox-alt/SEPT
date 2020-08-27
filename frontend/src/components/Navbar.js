@@ -37,11 +37,11 @@ export default class Navbar extends Component {
                 <a href="/business" className="navbar-item">
                   Businesses
                 </a>
+                <a href="/booking" className="navbar-item">
+                  Services
+                </a>
                 <a href="/calendar" className="navbar-item">
                   Calendar
-                </a>
-                <a href="/booking" className="navbar-item">
-                  Booking
                 </a>
               </Fragment>
             )}
