@@ -36,8 +36,6 @@ export default class BusinessList extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            id: 0,
-            name: "",
             businesses: []
         }
     }
@@ -47,49 +45,48 @@ export default class BusinessList extends Component {
             .then(res => res.json())
             .then(json => {
                 console.log(json)
-                this.setState({ id: json.id })
-                this.setState({ name: json.name })
-                this.setState({ services: json.businessServices })
-                this.setState({ description: json.id })
-                this.setState({ phone: json.phone })
-                this.setState({ address: json.address })
                 this.setState({ businesses: json })
                 console.log(this.state)
             })
     }
 
     render() {
-        // const classes = useStyles();
-        // const { value } = props;
         var { businesses } = this.state;
 
         return (
-            <div className="container">
+            <div className="container-fluid profile-container-bg py-3"> 
+                <div className="container emp-profile">
 
                 <h1 style={{ textAlign: "center" }}> Business List</h1>
-
-                <Grid container style={{ textAlign: "center" }}
-                direction="row" justify="flex-start" alignItems="center"
-                >
-                    <Grid item spacing={2} xs={12} sm={6}>
-
-                        {businesses.map(business => (
-                            <Card>
-                                <CardContent>
-                                    <h3 key={business.uid} style={{fontSize:20, marginTop:8, letterSpacing:'0.5px'}}>{business.name}</h3>
-                                </CardContent>
-                                <Box display={'flex'}>
-                                    <NavLink to={'/business/' + business.id} style={{ textAlign: "center" }} >
-                                        <p style={{fontSize:16, marginBottom:4, margin:0}}>View Details</p>
-                                    </NavLink>
-                                </Box>
-                            </Card>
-                        ))}
-
-
-                    </Grid>
-                </Grid>
-
+                        <div className="card my-3">
+                            <div className="card-body">
+                                <table className="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Name</th>
+                                            <th scope="col">Description</th>
+                                            <th scope="col">ID</th>
+                                            <th scope="col">Details</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    {businesses.map(business => (
+                                        <tr key={business.id}>
+                                            <td>{business.name}</td>
+                                            <td>{business.description}</td>
+                                            <td>{business.id}</td>
+                                            <td>
+                                                <NavLink to={'business/' + business.id}>
+                                                    View Details
+                                                </NavLink>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                </table>
+                            </div>
+                        </div>
+            </div>
             </div>
         )
     }
