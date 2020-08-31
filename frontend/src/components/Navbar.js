@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import { Auth } from 'aws-amplify';
 
 export default class Navbar extends Component {
@@ -16,9 +16,9 @@ export default class Navbar extends Component {
     return (
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
-          {/* <a className="navbar-item" href="/">
-            <img src="hexal-logo.png" width="112" height="28" alt="hexal logo" />
-          </a> */}
+          <a className="navbar-item" href="/">
+            <img src={process.env.PUBLIC_URL + "/app-logo.png"} width="112" height="28" alt="hexal logo" />
+          </a>
         </div>
 
         <div id="navbarBasicExample" className="navbar-menu">
@@ -32,14 +32,27 @@ export default class Navbar extends Component {
             <a href="/admin" className="navbar-item">
               Admin
             </a> */}
+            {this.props.auth.isAuthenticated && this.props.auth.user && (
+              <Fragment>
+                <a href="/business" className="navbar-item">
+                  Businesses
+                </a>
+                <a href="/booking" className="navbar-item">
+                  Services
+                </a>
+                <a href="/calendar" className="navbar-item">
+                  Calendar
+                </a>
+              </Fragment>
+            )}
           </div>
 
           <div className="navbar-end">
             <div className="navbar-item">
               {this.props.auth.isAuthenticated && this.props.auth.user && (
-                <p>
+                <a href="/userprofile" className="navbar-item">
                   Hello {this.props.auth.user.username}
-                </p>
+                </a>
               )}
               <div className="buttons">
                 {!this.props.auth.isAuthenticated && (
@@ -53,7 +66,7 @@ export default class Navbar extends Component {
                   </div>
                 )}
                 {this.props.auth.isAuthenticated && (
-                  <a href="/" onClick={this.handleLogOut} className="button is-light mb-4">
+                  <a href="/" onClick={this.handleLogOut} className="button is-light">
                     Log out
                   </a>
                 )}

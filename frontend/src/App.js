@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.js';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
 import Products from './components/Products';
@@ -12,10 +14,15 @@ import ForgotPasswordVerification from './components/auth/ForgotPasswordVerifica
 import ChangePassword from './components/auth/ChangePassword';
 import ChangePasswordConfirm from './components/auth/ChangePasswordConfirm';
 import Welcome from './components/auth/Welcome';
+import UserProfile from './components/UserProfile';
 import Footer from './components/Footer';
 import { Auth } from 'aws-amplify';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
+import CalendarDisplay from './components/CalendarDisplay';
+import Booking from './components/Booking';
+import BusinessList from './components/BusinessList'
+import BusinessDetails from './components/BusinessDetails'
 library.add(faEdit);
 
 class App extends Component {
@@ -40,6 +47,7 @@ class App extends Component {
       console.log(session);
       const user = await Auth.currentAuthenticatedUser();
       this.setUser(user);
+      console.log(user)
     }catch(error) {
       console.log(error);
     }
@@ -69,6 +77,11 @@ class App extends Component {
               <Route exact path="/changepassword" render={(props) => <ChangePassword {...props} auth={authProps} />} />
               <Route exact path="/changepasswordconfirm" render={(props) => <ChangePasswordConfirm {...props} auth={authProps} />} />
               <Route exact path="/welcome" render={(props) => <Welcome {...props} auth={authProps} />} />
+              <Route exact path="/userprofile" render={(props) => <UserProfile {...props} auth={authProps} />} />
+              <Route exact path="/calendar" render={(props) => <CalendarDisplay {...props} auth={authProps} />} />
+              <Route exact path="/booking" render={(props) => <Booking {...props} auth={authProps} />} />
+              <Route exact path="/business" render={(props) => <BusinessList {...props} auth={authProps} />} />
+              <Route exact path="/business/:id" render={(props) => <BusinessDetails {...props} auth={authProps} />} />
             </Switch>
             <Footer />
           </div>

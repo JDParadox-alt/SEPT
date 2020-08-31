@@ -5,7 +5,8 @@ export default function Hero() {
     <section className="hero is-primary">
       <div className="hero-body">
         <div className="container">
-          <img className="bg-hero-img" src={require('./assets/img/bg-masthead.jpg')} />
+          {/* <img className="bg-hero-img" src={require('./assets/img/bg-masthead.jpg')} /> */}
+          <img className="bg-hero-img" src={process.env.PUBLIC_URL + "/bg-masthead.jpg"} alt="Masthead" />
         </div>
       </div>
     </section>
