@@ -73,6 +73,72 @@ export default class BusinessServiceDetails extends Component {
             }
             else {
                 return (
+                    //     <div className="container emp-profile">
+                    //         <div className="row">
+                    //             <div className="col-md-3">
+                    //                 <div className="profile-img">
+                    //                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                    //                     {/* <div className="file btn btn-lg btn-primary">
+                    //                         Change Photo
+                    //                                 <input type="file" name="file" />
+                    //                     </div> */}
+                    //                 </div>
+                    //             </div>
+                    //             <div className="col-md-8">
+                    //                 <div className="profile-head">
+                    //                     <h5>{this.state.business.name}</h5>
+                    //                     <h6 style={{ color: "black" }}>{this.state.name}</h6>
+                    //                     <ul className="nav nav-tabs" id="myTab" role="tablist">
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link active" id="desc-tab" data-toggle="tab" href="#desc" role="tab" aria-controls="desc" aria-selected="true">Description</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="wh-tab" data-toggle="tab" href="#wh" role="tab" aria-controls="wh" aria-selected="false">Working Hours</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="employees-tab" data-toggle="tab" href="#employees" role="tab" aria-controls="employees" aria-selected="false">Employees</a>
+                    //                         </li>
+                    //                         <li className="nav-item">
+                    //                             <a className="nav-link" id="bookings-tab" data-toggle="tab" href="#bookings" role="tab" aria-controls="bookings" aria-selected="false">Bookings</a>
+                    //                         </li>
+                    //                     </ul>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //         <div className="row">
+                    //             <div className="col-md-3" />
+                    //             <div className="col-md-9">
+                    //                 <div className="tab-content profile-tab" id="myTabContent">
+                    //                     <div className="tab-pane fade show active" id="desc" role="tabpanel" aria-labelledby="desc-tab" >
+                    //                         <div className="row">
+                    //                             <label>{this.state.description}</label>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="wh" role="tabpanel" aria-labelledby="wh-tab">
+                    //                         <div className="row">
+                    //                             <p>Array ception give me a while to figure this out k thx</p>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="employees" role="tabpanel" aria-labelledby="employees-tab">
+                    //                         <div className="row">
+                    //                             <div >
+                    //                                 {this.state.employees.map((employee) =>
+                    //                                     <label key={employee.id}>
+                    //                                         <label scope="row">{employee}</label>
+                    //                                     </label>
+                    //                                 )}
+                    //                             </div>
+                    //                         </div>
+                    //                     </div>
+                    //                     <div className="tab-pane fade" id="bookings" role="tabpanel" aria-labelledby="bookings-tab">
+                    //                         <div className="row">
+                    //                             <p>Okay how the fuck do you display time shit</p>
+                    //                         </div>
+                    //                     </div>
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //     </div>
                     <div className="container-fluid profile-container-bg py-3">
                         <div className="row">
                             <div className="col-1"></div>
@@ -133,79 +199,16 @@ export default class BusinessServiceDetails extends Component {
                             <div className="col-1"></div>
                         </div>
                         <div className="row">
-                            <div className="col-1"></div>
-                            <div className="col-10">
-                                <div className="card my-3">
-                                    <h3 className="mt-3 ml-3"> {this.state.name}'s Booked Appointments List</h3>
-                                    <div className="card-body">
-                                        {this.state.bookings.map((booking, i) => {
-                                            return (
-                                                <div key={i} className="card my-3">
-                                                    <div className="card-body">
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Id</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.id}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Start Date Time</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.startDateTime}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>End Date Time</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.endDateTime}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Customer</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.customer}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Notes</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.notes}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Notify?</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.notify}</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="row">
-                                                            <div className="col-md-3">
-                                                                <label>Status</label>
-                                                            </div>
-                                                            <div className="col-md-9">
-                                                                <p>{booking.status}</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
-                                    </div>
+                        <div className="col-1"></div>
+                        <div className="col-10">
+                        <div className="card my-3">
+                        <h3 className="mt-3 ml-3">Booked Appointments List</h3>
+                                <div className="card-body">
+                                 
                                 </div>
-                            </div>
-                            <div className="col-1"></div>
+                        </div>
+                        </div>
+                        <div className="col-1"></div>
                         </div>
 
                     </div>
