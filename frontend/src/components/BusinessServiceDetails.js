@@ -40,14 +40,16 @@ export default class BusinessServiceDetails extends Component {
                     this.setState({ name: json.name })
                     this.setState({ business: json.business })
                     this.setState({ description: json.description })
-                    this.setState({ workingHours: json.workingHours })
-                    this.setState({ serviceDays: json.workingHours.days })
+                    this.setState({ workingHours: json.workingHours[0] })
+                    this.setState({ serviceDays: json.workingHours[0].days })
                     this.setState({ startHour: json.workingHours[0].startTime.slice(0, 2) })
                     this.setState({ startMin: json.workingHours[0].startTime.slice(3, 5) })
                     this.setState({ endHour: json.workingHours[0].endTime.slice(0, 2) })
                     this.setState({ endMin: json.workingHours[0].endTime.slice(3, 5) })
                     this.setState({ employees: json.employees })
                     this.setState({ bookings: json.bookings })
+                    console.log(json.workingHours[0])
+                    console.log(json.workingHours[0].days)
                     console.log(this.state)
                 }
             })
@@ -104,11 +106,11 @@ export default class BusinessServiceDetails extends Component {
                                                     </tbody>
                                                 </table>
                                                 <h5>Available On</h5>
-                                                {/* <div className="row mb-3">{this.state.workingHours.days.length > 0 && this.state.workingHours.days.map((d, v) => {
+                                                <div className="row mb-3">{this.state.serviceDays.length > 0 && this.state.serviceDays.map((d, v) => {
                                                     return (
                                                         <div className="col-2 text-left" key={v}>{d}</div>
                                                     )
-                                                })}</div> */}
+                                                })}</div>
                                                 <h5>Available Staff</h5>
                                                 <div className="row mb-3">
                                                     {this.state.employees.length > 0 && this.state.employees.map((e, n) => {
@@ -117,14 +119,6 @@ export default class BusinessServiceDetails extends Component {
                                                         )
                                                     })}
                                                 </div>
-                                                {/* <h5>Booked Appointments</h5>
-                                                <div className="row">
-                                                    {this.state.bookings.length > 0 && this.state.bookings.map((b, m) => {
-                                                        return (
-                                                            <div className="col-1" key={m}>{b.id}</div>
-                                                        )
-                                                    })}
-                                                </div> */}
                                             </div>
                                         </div>
                                     </div>
@@ -138,9 +132,9 @@ export default class BusinessServiceDetails extends Component {
                                 <div className="card my-3">
                                     <h3 className="mt-3 ml-3"> {this.state.name}'s Booked Appointments List</h3>
                                     <div className="card-body">
-                                        {this.state.bookings.map((booking, i) => {
+                                        {this.state.bookings.map(booking => {
                                             return (
-                                                <div key={i} className="card my-3">
+                                                <div key={booking.id} className="card my-3">
                                                     <div className="card-body">
                                                         <div className="row">
                                                             <div className="col-md-3">
@@ -171,7 +165,7 @@ export default class BusinessServiceDetails extends Component {
                                                                 <label>Customer</label>
                                                             </div>
                                                             <div className="col-md-9">
-                                                                <p>{booking.customer}</p>
+                                                                <p>{booking.customer.id} | {booking.customer.username}</p>
                                                             </div>
                                                         </div>
                                                         <div className="row">
