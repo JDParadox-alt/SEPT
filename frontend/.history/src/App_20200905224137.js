@@ -83,7 +83,7 @@ class App extends Component {
               <Route exact path="/booking" render={(props) => <Booking {...props} auth={authProps} />} />
               <Route exact path="/business" render={(props) => <BusinessList {...props} auth={authProps} />} />
               <Route exact path="/business/:id" render={(props) => <BusinessDetails {...props} auth={authProps} />} />
-              <Route exact path="/services/:id" render={(props) => <BusinessServiceDetails {...props} auth={authProps} /> } />
+              <Route exact path="/service/:id" render={(props) => <BusinessServiceDetails {...props} auth={authProps} /> } />
             </Switch>
             <Footer />
           </div>

@@ -85,7 +85,7 @@ class ForgotPassword extends Component {
             <div className="field">
               <p className="control">
                 <button className="button is-success">
-                  Submit
+                  Login
                 </button>
               </p>
             </div>
