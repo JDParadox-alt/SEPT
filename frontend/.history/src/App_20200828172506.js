@@ -21,9 +21,8 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import CalendarDisplay from './components/CalendarDisplay';
 import Booking from './components/Booking';
-import BusinessList from './components/BusinessList';
-import BusinessDetails from './components/BusinessDetails';
-import BusinessServiceDetails from './components/BusinessServiceDetails';
+import BusinessList from './components/BusinessList'
+import BusinessDetails from './components/BusinessDetails'
 library.add(faEdit);
 
 class App extends Component {
@@ -83,7 +82,6 @@ class App extends Component {
               <Route exact path="/booking" render={(props) => <Booking {...props} auth={authProps} />} />
               <Route exact path="/business" render={(props) => <BusinessList {...props} auth={authProps} />} />
               <Route exact path="/business/:id" render={(props) => <BusinessDetails {...props} auth={authProps} />} />
-              <Route exact path="/services/:id" render={(props) => <BusinessServiceDetails {...props} auth={authProps} /> } />
             </Switch>
             <Footer />
           </div>
