@@ -176,25 +176,26 @@ export default class UserProfile extends Component {
     }
     submitCustomerProfile(event){
         var checkValidSum=0
-        if(this.state.customerUsername){
-            checkValidSum++
-        }
-        if(this.state.customerEmail){
-            checkValidSum++
-        }
+        // if(this.state.customerUsername){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerEmail){
+        //     checkValidSum++
+        // }
         if(this.state.customerPhone){
             checkValidSum++
         }
         if(this.state.customerAddress){
             checkValidSum++
         }
-        if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
+        if(checkValidSum!==2){
+            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(2-checkValidSum)+" errors)")
             event.preventDefault();
-        } else {
+        } 
+        else {
             var new_obj = {
-                username: this.state.customerUsername,
-                email: this.state.customerEmail,
+                username: this.props.auth.user.username,
+                email: this.props.auth.user.attributes.email,
                 phone: this.state.customerPhone,
                 address: this.state.customerAddress,
                 bookings: []
@@ -222,9 +223,9 @@ export default class UserProfile extends Component {
         if(this.state.businessName){
             checkValidSum++
         }
-        if(this.state.businessEmail){
-            checkValidSum++
-        }
+        // if(this.state.businessEmail){
+        //     checkValidSum++
+        // }
         if(this.state.businessDescription){
             checkValidSum++
         }
@@ -234,13 +235,13 @@ export default class UserProfile extends Component {
         if(this.state.businessAddress){
             checkValidSum++
         }
-        if(checkValidSum!==5){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(6-checkValidSum)+" errors)")
+        if(checkValidSum!==4){
+            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
             event.preventDefault();
         } else {
             var new_obj = {
                 name: this.state.businessName,
-                email: this.state.businessEmail,
+                email: this.props.auth.user.attributes.email,
                 description: this.state.businessDescription,
                 phone: this.state.businessPhone,
                 address: this.state.businessAddress,
@@ -279,7 +280,7 @@ export default class UserProfile extends Component {
             checkValidSum++
         }
         if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
+            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
             event.preventDefault();
         } else {
             var new_obj = {
@@ -326,7 +327,7 @@ export default class UserProfile extends Component {
             checkValidSum++
         }
         if(checkValidSum!==5){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(6-checkValidSum)+" errors)")
+            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
             event.preventDefault();
         } else {
             var new_obj = {
@@ -470,13 +471,11 @@ export default class UserProfile extends Component {
                                                     <form onSubmit={this.editCustomerProfile.bind(this)}>
                                                         <div className="form-group">
                                                             <label htmlFor="exampleInput1">Username</label>
-                                                            <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
-                                                            <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
+                                                            <input readOnly value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
                                                         </div>
                                                         <div className="form-group">
                                                             <label htmlFor="exampleInput2">Email Address</label>
-                                                            <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                            <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                            <input readOnly value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
                                                         </div>
                                                         <div className="form-group">
                                                             <label htmlFor="exampleInput4">Phone Number</label>
@@ -640,11 +639,11 @@ export default class UserProfile extends Component {
                                                     <form onSubmit={this.editBusinessProfile.bind(this)}>
                                                         <div className="form-group">
                                                             <label htmlFor="exampleInput10">Name</label>
-                                                            <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput10" placeholder="Enter username" />
+                                                            <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput10" placeholder="Enter the name of your business" />
                                                         </div>
                                                         <div className="form-group">
                                                             <label htmlFor="exampleInput20">Email Address</label>
-                                                            <input value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput20" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
+                                                            <input readOnly value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput20" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
                                                             <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
                                                         </div>
                                                         <div className="form-group">
@@ -745,12 +744,11 @@ export default class UserProfile extends Component {
                                         <form onSubmit={this.submitBusinessProfile.bind(this)}>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput11">Name</label>
-                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput11" placeholder="Enter username" />
+                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput11" placeholder="Enter the name of your business" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput21">Email Address</label>
-                                                <input value={this.state.businessEmail} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput21" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                <input readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput21" aria-describedby="emailHelp" placeholder="Enter email" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput61">Description</label>
@@ -817,13 +815,11 @@ export default class UserProfile extends Component {
                                                         <form onSubmit={this.editCustomerProfile.bind(this)}>
                                                             <div className="form-group">
                                                                 <label htmlFor="exampleInput15">Username</label>
-                                                                <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput15" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
-                                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
+                                                                <input readOnly value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput15" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
                                                             </div>
                                                             <div className="form-group">
                                                                 <label htmlFor="exampleInput25">Email Address</label>
-                                                                <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput25" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                                <input readOnly value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput25" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
                                                             </div>
                                                             <div className="form-group">
                                                                 <label htmlFor="exampleInput45">Phone Number</label>
@@ -959,12 +955,11 @@ export default class UserProfile extends Component {
                                         <form onSubmit={this.submitCustomerProfile.bind(this)}>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput12">Username</label>
-                                                <input value={this.state.customerUsername} onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput12" aria-describedby="usernameHelp" placeholder="Enter username" />
-                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
+                                                <input readOnly onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput12" aria-describedby="usernameHelp" defaultValue={this.props.auth.user.username} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput22">Email Address</label>
-                                                <input value={this.state.customerEmail} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput22" aria-describedby="emailHelp" placeholder="Enter email" />
+                                                <input readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput22" aria-describedby="emailHelp" placeholder="Enter email" />
                                                 <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
                                             </div>
                                             <div className="form-group">
@@ -1028,11 +1023,11 @@ export default class UserProfile extends Component {
                                                         <form onSubmit={this.editBusinessProfile.bind(this)}>
                                                             <div className="form-group">
                                                                 <label htmlFor="exampleInput16">Name</label>
-                                                                <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput16" placeholder="Enter username" />
+                                                                <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput16" placeholder="Enter the name of your business" />
                                                             </div>
                                                             <div className="form-group">
                                                                 <label htmlFor="exampleInput26">Email Address</label>
-                                                                <input value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput26" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
+                                                                <input readOnly value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput26" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
                                                                 <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
                                                             </div>
                                                             <div className="form-group">
@@ -1160,13 +1155,11 @@ export default class UserProfile extends Component {
                                         <form onSubmit={this.submitCustomerProfile.bind(this)}>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput13">Username</label>
-                                                <input value={this.state.customerUsername} onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput13" aria-describedby="usernameHelp" placeholder="Enter username" />
-                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
+                                                <input readOnly onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput13" aria-describedby="usernameHelp" defaultValue={this.props.auth.user.username} />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput23">Email Address</label>
-                                                <input value={this.state.customerEmail} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput23" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                <input readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput23" aria-describedby="emailHelp" placeholder="Enter email" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput43">Phone Number</label>
@@ -1191,12 +1184,11 @@ export default class UserProfile extends Component {
                                         <form onSubmit={this.submitBusinessProfile.bind(this)}>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput14">Name</label>
-                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter username" />
+                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput24">Email Address</label>
-                                                <input value={this.state.businessEmail} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
+                                                <input readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
                                             </div>
                                             <div className="form-group">
                                                 <label htmlFor="exampleInput64">Description</label>
