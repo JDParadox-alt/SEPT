@@ -6,4 +6,5 @@ COPY . .
 ENV PORT=3001
 EXPOSE 3001
 CMD ["npm", "start"]
+# docker build -t image_name
 # docker run -it -p3001:3000 image_name
