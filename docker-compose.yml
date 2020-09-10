@@ -47,5 +47,10 @@ services:
         restart: unless-stopped
         stdin_open: true
         command: npm start
-# volumes: 
-#     appbook-data: 
+###################
+# Instruction
+###################
+
+# docker-compose build
+# docker-compose up
+
