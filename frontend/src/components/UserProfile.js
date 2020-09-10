@@ -596,7 +596,12 @@ export default class UserProfile extends Component {
                                                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
                                                                     <a className="dropdown-item" href="#">
                                                                         {/* <button className="btn btn-white">View In Calendar</button> */}
-                                                                        <Link to={{pathname:'/calendar', state: {carrier: this.state.carrier}}}className="btn btn-white">View In Calendar</Link>
+                                                                        <Link className="btn btn-white" 
+                                                                            to={{pathname:'/mycalendar'
+                                                                            // , state: {carrier: this.state.carrier}
+                                                                            }}>
+                                                                            View In Calendar
+                                                                        </Link>
                                                                     </a>
                                                                     <a className="dropdown-item" href="#">
                                                                         <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
