@@ -59,6 +59,11 @@ export default class CalendarDisplay extends Component {
         this.getHolidaysList()
         console.log(this.state.customerProfile)
     }
+
+    redirectToBooking(id) {
+        this.props.history.push(`/booking/${id}`)
+    }
+
     render() {
         const holidays = []
         this.state.holidaysList.forEach((holiday) => {
@@ -87,6 +92,7 @@ export default class CalendarDisplay extends Component {
                                 defaultView="week"
                                 startAccessor="start"
                                 endAccessor="end"
+                                onSelectEvent={event => this.redirectToBooking(event.id)}
                                 // eventPropGetter={event => {
                                 //     const eventData = holidays.find(ot => ot.id === event.id);
                                 //     const backgroundColor = eventData && eventData.color;

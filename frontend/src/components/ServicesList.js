@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 
-export default class Booking extends Component {
+export default class ServicesList extends Component {
     constructor(props) {
         super(props)
         this.state = {
