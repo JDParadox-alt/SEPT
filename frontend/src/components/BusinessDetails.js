@@ -156,9 +156,9 @@ export default class BusinessDetails extends Component {
                                                 </thead>
                                                 <tbody>
                                                     {this.state.services.map((service) =>
-                                                        <tr key={service.id} href={`/services/${service.id}`}>
+                                                        <tr key={service.id} href={`/service/${service.id}`}>
                                                             <th scope="row">{service.id}</th>
-                                                            <td><a href={`/services/${service.id}`}>{service.name ? service.name : 'Placeholder'}</a></td>
+                                                            <td><a href={`/service/${service.id}`}>{service.name ? service.name : 'Placeholder'}</a></td>
                                                             <td>{service.description}</td>
                                                         </tr>
                                                     )}
