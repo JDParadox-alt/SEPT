@@ -4,8 +4,10 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
+import { Link, NavLink } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
 
-export default class ServicesList extends Component {
+export default class ServiceList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,8 +45,8 @@ export default class ServicesList extends Component {
             businessServiceItem: {},
             updateId: 0,
             show: false,
-            show1: false,
-            show2: false,
+            show1: 0,
+            show2: 0,
             allServices: [],
             //Booking Form
             bookingNotes: "",
@@ -496,17 +498,17 @@ export default class ServicesList extends Component {
     handleClose(){
         this.setState({ show: false })
     }
-    handleShow1(){
-        this.setState({ show1: true })
+    handleShow1 = value => {
+        this.setState({ show1: value })
     }
-    handleClose1(){
-        this.setState({ show1: false })
+    handleClose1 = value => {
+        this.setState({ show1: 0 })
     }
-    handleShow2(){
-        this.setState({ show2: true })
+    handleShow2 = value => {
+        this.setState({ show2: value })
     }
-    handleClose2(){
-        this.setState({ show2: false })
+    handleClose2 = value => {
+        this.setState({ show2: 0 })
     }
     handleBookingNotes(event){
         this.setState({ bookingNotes: event.target.value })
@@ -677,22 +679,35 @@ export default class ServicesList extends Component {
                                                     <div className="row">
                                                         {sv.bookings.length>0 && sv.bookings.map((b, m)=>{
                                                             return(
-                                                                <div className="col-1" key={m}>{b.id}</div>
+                                                                <div className="col-1" key={m}>
+                                                                    <Link data-tip data-for="detail_1" to={'bookingdetail/' + b.id}>
+                                                                        {b.id}
+                                                                    </Link>
+                                                                    <ReactTooltip id="detail_1" place="top" effect="solid">
+                                                                        Click here to view this book detail
+                                                                    </ReactTooltip>
+                                                                </div>
                                                             )
                                                         })}
                                                     </div>
                                                     {this.state.customerProfileExists&&
-                                                    <Button variant="primary float-right" onClick={(i)=>{
-                                                        this.handleShow2()
+                                                    <Fragment>
+                                                    <Button data-tip data-for="bookButtonTip" variant="primary float-right" onClick={()=>{
+                                                        this.handleShow2(sv.id)
                                                     }}>
                                                         Book
-                                                    </Button>}
+                                                    </Button>
+                                                    <ReactTooltip id="bookButtonTip" place="top" effect="solid">
+                                                        Click here to make an appointment with service providers
+                                                    </ReactTooltip>
+                                                    </Fragment>
+                                                    }
                                                     {/* <Button variant="primary float-right" onClick={(i)=>{
                                                         this.handleShow2()
                                                     }}>
                                                         Book
                                                     </Button> */}
-                                                    <Modal show={this.state.show2} onHide={this.handleClose2.bind(this)}>
+                                                    <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
                                                         <Modal.Header closeButton>
                                                             <Modal.Title>Booking Form</Modal.Title>
                                                         </Modal.Header>
@@ -795,26 +810,36 @@ export default class ServicesList extends Component {
                                                         <div className="row">
                                                             {service.bookings.length>0 && service.bookings.map((booking, u)=>{
                                                                 return(
-                                                                    <div className="col-1" key={u}>{booking.id}</div>
+                                                                    <div className="col-1" key={u}>
+                                                                        <Link data-tip data-for="detail_2" to={'bookingdetail/' + booking.id}>
+                                                                            {booking.id}
+                                                                        </Link>
+                                                                        <ReactTooltip id="detail_2" place="top" effect="solid">
+                                                                            Click here to view this book detail 
+                                                                        </ReactTooltip>
+                                                                    </div>
                                                                 )
                                                             })}
                                                         </div>
                                                         </div>
                                                         <div className="col-2">
                                                             <div className="dropdown ml-5">
-                                                                <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <button data-tip data-for="bookingMoreTip" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                                    <ReactTooltip id="bookingMoreTip" place="top" effect="solid">
+                                                                        More Options
+                                                                    </ReactTooltip>
                                                                 </button>
                                                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                                     {/* <a className="dropdown-item" href="true">Edit</a> */}
                                                                     <a className="dropdown-item" href="#">
-                                                                        <Button variant="white" onClick={(i)=>{
-                                                                            this.handleShow1()
+                                                                        <Button variant="white" onClick={()=>{
+                                                                            this.handleShow1(service.id)
                                                                             this.getCurrentServiceItem(service.id)
                                                                         }}>
                                                                             Edit
                                                                         </Button>
-                                                                        <Modal show={this.state.show1} onHide={this.handleClose1.bind(this)}>
+                                                                        <Modal show={this.state.show1 === service.id} onHide={()=>this.handleClose1(service.id)}>
                                                                             <Modal.Header closeButton>
                                                                                 <Modal.Title>Edit Your Service</Modal.Title>
                                                                             </Modal.Header>
@@ -948,8 +973,11 @@ export default class ServicesList extends Component {
                                             )
                                         })}
                                     </div>}
-                                    {this.state.businessProfileExists&&<button className="btn btn-white btn-sm ml-5 float-right" type="button" onClick={this.handleShow.bind(this)}>
+                                    {this.state.businessProfileExists&&<button className="btn btn-white btn-sm ml-5 float-right" data-tip data-for="createServiceTip" type="button" onClick={this.handleShow.bind(this)}>
                                         <Icon className="fa fa-plus" style={{ fontSize: 20, color: "dark" }}/>
+                                        <ReactTooltip id="createServiceTip" place="top" effect="solid">
+                                            Click here to create a service for your business
+                                        </ReactTooltip>
                                     </button>}
                                     <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
                                         <Modal.Header closeButton>

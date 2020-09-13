@@ -3,6 +3,7 @@ import Icon from '@material-ui/core/Icon';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
 
 export default class UserProfile extends Component {
     constructor(props) {
@@ -502,15 +503,21 @@ export default class UserProfile extends Component {
                                 <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
                                 </li>
                                 <li className="nav-item">
-                                <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
+                                <a data-tip data-for="customerBookTip" className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
+                                <ReactTooltip id="customerBookTip" place="top" effect="solid">
+                                    Click here to view your booked appointments
+                                </ReactTooltip>
                                 </li>
                             </ul>
                             </div>
                         </div>
                         <div className="col-md-2">
                             <div className="dropdown ml-5">
-                                <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button data-tip data-for="moreOptions1" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                    <ReactTooltip id="moreOptions1" place="top" effect="solid">
+                                        More Options
+                                    </ReactTooltip>
                                 </button>
                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                     <a className="dropdown-item" href="#">
@@ -538,7 +545,10 @@ export default class UserProfile extends Component {
                                     <label>Username</label>
                                 </div>
                                 <div className="col-md-6">
-                                    <p>{this.props.auth.user.username} - {this.state.customerProfile.username}</p>
+                                    <p data-tip data-for="customerNameTip">{this.props.auth.user.username} - {this.state.customerProfile.username}</p>
+                                    <ReactTooltip id="customerNameTip" place="top" effect="solid">
+                                        Session Username - Profile Username
+                                    </ReactTooltip>
                                 </div>
                                 </div>
                                 <div className="row">
@@ -590,8 +600,11 @@ export default class UserProfile extends Component {
                                                         </div>
                                                         <div className="col-2">
                                                             <div className="dropdown">
-                                                                <button className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <button data-tip data-for="moreOptions2" className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                                    <ReactTooltip id="moreOptions2" place="top" effect="solid">
+                                                                        More Options
+                                                                    </ReactTooltip>
                                                                 </button>
                                                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
                                                                     <a className="dropdown-item" href="#">
@@ -603,6 +616,12 @@ export default class UserProfile extends Component {
                                                                             View In Calendar
                                                                         </Link>
                                                                     </a>
+                                                                    {b.businessService&&
+                                                                    <a className="dropdown-item" href="#">
+                                                                        <Link className="btn btn-white" to={'bookingeditform/' + b.id}>
+                                                                            Edit Booking
+                                                                        </Link>
+                                                                    </a>}
                                                                     <a className="dropdown-item" href="#">
                                                                         <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
                                                                     </a>
@@ -656,8 +675,11 @@ export default class UserProfile extends Component {
                         </div>
                         <div className="col-md-2">
                             <div className="dropdown ml-5">
-                                <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <button data-tip data-for="moreOptions3" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                    <ReactTooltip id="moreOptions3" place="top" effect="solid">
+                                        More Options
+                                    </ReactTooltip>
                                 </button>
                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                                     <a className="dropdown-item" href="#">
