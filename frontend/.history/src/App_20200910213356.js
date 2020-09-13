@@ -21,7 +21,7 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { faEdit } from '@fortawesome/free-solid-svg-icons';
 import CalendarDisplay from './components/CalendarDisplay';
 import Booking from './components/Booking';
-import BookingDetails from './components/BookingDetails';
+import BookingDetails from './components/BookingDetails'
 import BusinessList from './components/BusinessList';
 import BusinessDetails from './components/BusinessDetails';
 import BusinessServiceDetails from './components/BusinessServiceDetails';

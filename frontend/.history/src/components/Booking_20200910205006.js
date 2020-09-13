@@ -828,7 +828,7 @@ export default class Booking extends Component {
                                                                                 <Modal.Body>
                                                                                     <form onSubmit={(event) => { this.updateBusinessService(event, service.id) }}>
                                                                                         <div className="form-group">
-                                                                                            <label htmlFor="c">Name</label>
+                                                                                            <label htmlFor="exampleInput100st">Name</label>
                                                                                             <input value={this.state.serviceName1} onChange={this.handleServiceName1.bind(this)} type="text" className="form-control" id="exampleInput100st" placeholder="Enter service name" />
                                                                                         </div>
                                                                                         <div className="form-group">

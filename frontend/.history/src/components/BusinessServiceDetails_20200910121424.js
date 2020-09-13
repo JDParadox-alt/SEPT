@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
 
 export default class BusinessServiceDetails extends Component {
     constructor(props) {
@@ -193,7 +192,6 @@ export default class BusinessServiceDetails extends Component {
                                                                 <p>{booking.status}</p>
                                                             </div>
                                                         </div>
-                                                        <Button>View Details</Button>
                                                     </div>
                                                 </div>
                                             )

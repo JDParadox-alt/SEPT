@@ -1,29 +1,26 @@
 import React, { Component } from 'react';
-import Button from 'react-bootstrap/Button';
 
-export default class BusinessServiceDetails extends Component {
+export default class BookingDetails extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            found: "loading",
+            found: 'loading',
             id: 0,
-            name: "",
-            business: {},
-            description: "",
-            workingHours: [],
-            serviceDays: [],
-            startHour: "",
-            startMin: "",
-            endHour: "",
-            endMin: "",
-            employees: [],
-            bookings: []
+            businessService: {},
+            startDateTime: "",
+            endDateTime: "",
+            customer: "",
+            notes: "",
+            notify: "",
+            status: ""
+
+
         }
     }
 
-    getBusinessServiceDetails() {
+    getBookingDetails() {
         console.log(this.props.match.params.id)
-        fetch(`http://localhost:8080/api/businessServices/${this.props.match.params.id}`)
+        fetch(`http://localhost:8080/api/bookings/${this.props.match.params.id}`)
             .then(res => {
                 if (res.ok) {
                     this.setState({ found: "found" })
@@ -38,28 +35,24 @@ export default class BusinessServiceDetails extends Component {
                 if (this.state.found === "found") {
                     console.log(json)
                     this.setState({ id: json.id })
-                    this.setState({ name: json.name })
-                    this.setState({ business: json.business })
-                    this.setState({ description: json.description })
-                    this.setState({ workingHours: json.workingHours[0] })
-                    this.setState({ serviceDays: json.workingHours[0].days })
-                    this.setState({ startHour: json.workingHours[0].startTime.slice(0, 2) })
-                    this.setState({ startMin: json.workingHours[0].startTime.slice(3, 5) })
-                    this.setState({ endHour: json.workingHours[0].endTime.slice(0, 2) })
-                    this.setState({ endMin: json.workingHours[0].endTime.slice(3, 5) })
-                    this.setState({ employees: json.employees })
-                    this.setState({ bookings: json.bookings })
-                    console.log(json.workingHours[0])
-                    console.log(json.workingHours[0].days)
+                    this.setState({ businessService: json.businessService })
+                    this.setState({ startDateTime: json.startDateTime })
+                    this.setState({ endDateTime: json.endDateTime })
+                    this.setState({ customer: json.customer })
+                    this.setState({ notes: json.notes })
+                    this.setState({ notify: json.nofity })
+                    this.setState({ status: json.status })
                     console.log(this.state)
                 }
             })
     }
+
     componentDidMount() {
-        this.getBusinessServiceDetails()
+        this.getBookingDetails()
     }
+
     render() {
-        const render_businessService = () => {
+        const render_bookingDetails = () => {
             if (this.state.found === "loading") {
                 return (
                     <div className="container emp-profile" style={{ textAlign: 'center' }}>
@@ -77,56 +70,6 @@ export default class BusinessServiceDetails extends Component {
             else {
                 return (
                     <div className="container-fluid profile-container-bg py-3">
-                        <div className="row">
-                            <div className="col-1"></div>
-                            <div className="col-10">
-                                <div className="card my-3">
-                                    <h3 className="mt-3 ml-3">{this.state.business.name} - {this.state.name}</h3>
-                                    {/* <h4 className="ml-3">{this.state.name}</h4> */}
-                                    <div className="card-body">
-                                        <div className="card my-3">
-                                            <div className="card-body">
-                                                <table className="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Name</th>
-                                                            <th scope="col">Description</th>
-                                                            <th scope="col">ID/BusinessID</th>
-                                                            <th scope="col">From</th>
-                                                            <th scope="col">To</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>{this.state.name}</td>
-                                                            <td>{this.state.description}</td>
-                                                            <td>{this.state.id}/{this.state.business.id}</td>
-                                                            <td>{this.state.workingHours.startTime}</td>
-                                                            <td>{this.state.workingHours.endTime}</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                                <h5>Available On</h5>
-                                                <div className="row mb-3">{this.state.serviceDays.length > 0 && this.state.serviceDays.map((d, v) => {
-                                                    return (
-                                                        <div className="col-2 text-left" key={v}>{d}</div>
-                                                    )
-                                                })}</div>
-                                                <h5>Available Staff</h5>
-                                                <div className="row mb-3">
-                                                    {this.state.employees.length > 0 && this.state.employees.map((e, n) => {
-                                                        return (
-                                                            <div className="col-2" key={n}>{e}</div>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="col-1"></div>
-                        </div>
                         <div className="row">
                             <div className="col-1"></div>
                             <div className="col-10">
@@ -193,7 +136,6 @@ export default class BusinessServiceDetails extends Component {
                                                                 <p>{booking.status}</p>
                                                             </div>
                                                         </div>
-                                                        <Button>View Details</Button>
                                                     </div>
                                                 </div>
                                             )
@@ -208,11 +150,10 @@ export default class BusinessServiceDetails extends Component {
                 )
             }
         }
-
         return (
             <div>
                 {this.props.auth.isAuthenticated && this.props.auth.user ? <div className="container-fluid profile-container-bg py-3">
-                    {render_businessService()}
+                    {render_bookingDetails()}
                 </div> : null}
             </div>
         )
