@@ -24,6 +24,8 @@ import Booking from './components/Booking';
 import BusinessList from './components/BusinessList';
 import BusinessDetails from './components/BusinessDetails';
 import BusinessServiceDetails from './components/BusinessServiceDetails';
+import BookingEditForm from './components/BookingEditForm';
+import BookingDetail from './components/BookingDetail';
 library.add(faEdit);
 
 class App extends Component {
@@ -84,6 +86,8 @@ class App extends Component {
               <Route exact path="/business" render={(props) => <BusinessList {...props} auth={authProps} />} />
               <Route exact path="/business/:id" render={(props) => <BusinessDetails {...props} auth={authProps} />} />
               <Route exact path="/services/:id" render={(props) => <BusinessServiceDetails {...props} auth={authProps} /> } />
+              <Route exact path="/bookingeditform/:id" render={(props) => <BookingEditForm {...props} auth={authProps} />} />
+              <Route exact path="/bookingdetail/:id" render={(props) => <BookingDetail {...props} auth={authProps} />} />
             </Switch>
             <Footer />
           </div>
