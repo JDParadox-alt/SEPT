@@ -1,5 +1,8 @@
+import { API } from 'aws-amplify';
 import React, { Component, Fragment } from 'react';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class BookingDetail extends Component {
     constructor(props) {
         super(props);
@@ -8,7 +11,7 @@ export default class BookingDetail extends Component {
         }
     }
     fetchDetails(){
-        fetch('http://localhost:8080/api/bookings/'+this.props.match.params.id)
+        fetch(`${API_URL}/bookings/`+this.props.match.params.id)
         .then(res => res.json())
         .then(json => {
             console.log(json)

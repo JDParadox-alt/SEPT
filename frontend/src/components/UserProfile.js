@@ -5,6 +5,8 @@ import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
 import ReactTooltip from "react-tooltip";
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class UserProfile extends Component {
     constructor(props) {
         super(props);
@@ -49,7 +51,7 @@ export default class UserProfile extends Component {
         }
     }
     getCustomers(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -57,7 +59,7 @@ export default class UserProfile extends Component {
         })
     }
     checkCustomerProfile(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -84,7 +86,7 @@ export default class UserProfile extends Component {
         })
     }
     checkBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses')
+        fetch(`${API_URL}/businesses`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -141,28 +143,28 @@ export default class UserProfile extends Component {
         //     this.checkCustomerProfile()
         //     this.checkBusinessProfile()
         // })
-        window.location.reload();
+        this.props.history.push('/userprofile')
     }
 
     submitCustomerProfile(event){
-        var checkValidSum=0
-        // if(this.state.customerUsername){
+        // var checkValidSum=0
+        // // if(this.state.customerUsername){
+        // //     checkValidSum++
+        // // }
+        // // if(this.state.customerEmail){
+        // //     checkValidSum++
+        // // }
+        // if(this.state.customerPhone){
         //     checkValidSum++
         // }
-        // if(this.state.customerEmail){
+        // if(this.state.customerAddress){
         //     checkValidSum++
         // }
-        if(this.state.customerPhone){
-            checkValidSum++
-        }
-        if(this.state.customerAddress){
-            checkValidSum++
-        }
-        if(checkValidSum!==2){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(2-checkValidSum)+" errors)")
-            event.preventDefault();
-        } 
-        else {
+        // if(checkValidSum!==2){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(2-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } 
+        // else {
             var new_obj = {
                 username: this.props.auth.user.username,
                 email: this.props.auth.user.attributes.email,
@@ -171,7 +173,7 @@ export default class UserProfile extends Component {
                 bookings: []
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/customers', {
+            fetch(`${API_URL}/customers`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -181,30 +183,30 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is created.")
             // event.preventDefault();
-        }
+        // }
         this.reloadPage()
     }
     submitBusinessProfile(event){
-        var checkValidSum=0
-        if(this.state.businessName){
-            checkValidSum++
-        }
-        // if(this.state.businessEmail){
+        // var checkValidSum=0
+        // if(this.state.businessName){
         //     checkValidSum++
         // }
-        if(this.state.businessDescription){
-            checkValidSum++
-        }
-        if(this.state.businessPhone){
-            checkValidSum++
-        }
-        if(this.state.businessAddress){
-            checkValidSum++
-        }
-        if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // // if(this.state.businessEmail){
+        // //     checkValidSum++
+        // // }
+        // if(this.state.businessDescription){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessPhone){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessAddress){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==4){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 name: this.state.businessName,
                 email: this.props.auth.user.attributes.email,
@@ -214,7 +216,7 @@ export default class UserProfile extends Component {
                 businessServices: []
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/businesses', {
+            fetch(`${API_URL}/businesses`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -224,27 +226,27 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is created.")
             // event.preventDefault();
-        }
+        // }
         this.reloadPage()
     }
     editCustomerProfile(event){
-        var checkValidSum=0
-        if(this.state.customerUsername1){
-            checkValidSum++
-        }
-        if(this.state.customerEmail1){
-            checkValidSum++
-        }
-        if(this.state.customerPhone1){
-            checkValidSum++
-        }
-        if(this.state.customerAddress1){
-            checkValidSum++
-        }
-        if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // if(this.state.customerUsername1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerEmail1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerPhone1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerAddress1){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==4){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 id: this.state.customerUpdateId,
                 username: this.state.customerUsername1,
@@ -254,7 +256,7 @@ export default class UserProfile extends Component {
                 bookings: this.state.customerBookings1
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/customers', {
+            fetch(`${API_URL}/customers`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -264,30 +266,30 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is updated.")
             // event.preventDefault();
-        }
+        // }
         this.reloadPage()
     }
     editBusinessProfile(event){
-        var checkValidSum=0
-        if(this.state.businessName1){
-            checkValidSum++
-        }
-        if(this.state.businessEmail1){
-            checkValidSum++
-        }
-        if(this.state.businessDescription1){
-            checkValidSum++
-        }
-        if(this.state.businessPhone1){
-            checkValidSum++
-        }
-        if(this.state.businessAddress1){
-            checkValidSum++
-        }
-        if(checkValidSum!==5){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // if(this.state.businessName1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessEmail1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessDescription1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessPhone1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessAddress1){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==5){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 id: this.state.businessUpdateId,
                 name: this.state.businessName1,
@@ -298,7 +300,7 @@ export default class UserProfile extends Component {
                 businessServices: this.state.businessServices1
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/businesses', {
+            fetch(`${API_URL}/businesses`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -308,18 +310,18 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is updated.")
             // event.preventDefault();
-        }
+        // }
         this.reloadPage()
     }
     deleteCustomerProfile(){
-        fetch('http://localhost:8080/api/customers/' + this.state.customerUpdateId, {
+        fetch(`${API_URL}/customers/` + this.state.customerUpdateId, {
             method: 'DELETE',
         })
         alert("Your profile is deleted.")
         this.reloadPage()
     }
     deleteBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses/' + this.state.businessUpdateId, {
+        fetch(`${API_URL}/businesses/` + this.state.businessUpdateId, {
             method: 'DELETE',
         })
         alert("Your profile is deleted.")
@@ -327,7 +329,7 @@ export default class UserProfile extends Component {
     }
     
     deleteBooking(id){
-        fetch('http://localhost:8080/api/bookings/' + id, {
+        fetch(`${API_URL}/bookings/` + id, {
             method: 'DELETE',
         })
         alert("Your booking is deleted.")
@@ -358,11 +360,11 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput43">Phone Number</label>
-                                <input name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
+                                <input required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput53">Address</label>
-                                <input name='customerAddress' type="text" value={this.state.customerAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
+                                <input required name='customerAddress' type="text" value={this.state.customerAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
@@ -378,23 +380,23 @@ export default class UserProfile extends Component {
                         <form onSubmit={this.submitBusinessProfile.bind(this)}>
                             <div className="form-group">
                                 <label htmlFor="exampleInput14">Name</label>
-                                <input name='businessName' value={this.state.businessName} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
+                                <input required name='businessName' value={this.state.businessName} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput24">Email Address</label>
-                                <input name='businessEmail' readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
+                                <input required name='businessEmail' readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput64">Description</label>
-                                <input name='businessDescription' type="text" value={this.state.businessDescription} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
+                                <textarea required name='businessDescription' type="text" value={this.state.businessDescription} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput44">Phone Number</label>
-                                <input name='businessPhone' type="text" value={this.state.businessPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
+                                <input required name='businessPhone' type="text" value={this.state.businessPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput54">Address</label>
-                                <input name='businessAddress' type="text" value={this.state.businessAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
+                                <input required name='businessAddress' type="text" value={this.state.businessAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
@@ -413,19 +415,19 @@ export default class UserProfile extends Component {
                         <form onSubmit={this.editCustomerProfile.bind(this)}>
                             <div className="form-group">
                                 <label htmlFor="exampleInput1">Username</label>
-                                <input name='customerUsername1' readOnly value={this.state.customerUsername1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
+                                <input required name='customerUsername1' readOnly value={this.state.customerUsername1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput2">Email Address</label>
-                                <input name='customerEmail1' readOnly value={this.state.customerEmail1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
+                                <input required name='customerEmail1' readOnly value={this.state.customerEmail1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput4">Phone Number</label>
-                                <input name='customerPhone1' type="text" value={this.state.customerPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
+                                <input required name='customerPhone1' type="text" value={this.state.customerPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput5">Address</label>
-                                <input name='customerAddress1' type="text" value={this.state.customerAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
+                                <input required name='customerAddress1' type="text" value={this.state.customerAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary float-right">Submit</button>
                         </form>                                                     
@@ -457,7 +459,7 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput60">Description</label>
-                                <input name='businessDescription1' type="text" value={this.state.businessDescription1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
+                                <textarea name='businessDescription1' type="text" value={this.state.businessDescription1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput40">Phone Number</label>
@@ -812,15 +814,21 @@ export default class UserProfile extends Component {
                     {this.state.startCreateProfile===true ? <div>
                         {this.state.isCustomer===false && this.state.isBusiness===false ? <div>
                             <h6 className="text-center text-white">Choose an account type.</h6>
-                            <div className="row">
-                                <div className="col-5"></div>
-                                <div className="col-1">
-                                    <button type="button" className="btn btn-light" onClick={this.setIsCustomer.bind(this)}>Customer</button>
-                                </div>
-                                <div className="col-1">
-                                    <button type="button" className="btn btn-light" onClick={this.setIsBusiness.bind(this)}>Business</button>
-                                </div>
-                                <div className="col-5"></div>
+                            <div className="row justify-content-center">
+                                {/* <div className="col-5"></div> */}
+                                {/* <div className="col"> */}
+                                    <button data-tip data-for="createCustomer" type="button" className="btn btn-light m-1" onClick={this.setIsCustomer.bind(this)}>Customer</button>
+                                    <ReactTooltip id="createCustomer" place="bottom" effect="solid">
+                                        A customer profile can be used to book appointments on available services
+                                    </ReactTooltip>
+                                {/* </div> */}
+                                {/* <div className="col"> */}
+                                    <button data-tip data-for="createBusiness" type="button" className="btn btn-light m-1" onClick={this.setIsBusiness.bind(this)}>Business</button>
+                                    <ReactTooltip id="createBusiness" place="bottom" effect="solid">
+                                        A business profile can be used to create new services and manage appointments
+                                    </ReactTooltip>
+                                {/* </div> */}
+                                {/* <div className="col-5"></div> */}
                             </div>
                         </div> : null}
                         {this.state.isCustomer===true && this.state.isBusiness===false ? <div className="row">
@@ -846,9 +854,9 @@ export default class UserProfile extends Component {
             <div className="container-fluid profile-container-bg py-3">
                     {this.props.auth.isAuthenticated && this.props.auth.user ? 
                         <div>
-                        {render_main()}
-                        {render_EditCustomerModal()}
-                        {render_EditBusinessModal()}
+                            {render_main()}
+                            {render_EditCustomerModal()}
+                            {render_EditBusinessModal()}
                         </div> : 
                         <div>
                             <h4>Hold on, you're not authenticated. Please log in and try again.</h4>
