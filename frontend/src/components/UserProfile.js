@@ -47,7 +47,11 @@ export default class UserProfile extends Component {
             showEditCustomer: false,
             showEditBusiness: false,
             reloader: false,
-            carrier: {}
+            carrier: {},
+            customerNameError:'',
+            customerEmailError:'',
+            customerPhoneError:'',
+            customerAddressError:''
         }
     }
     getCustomers(){
@@ -144,6 +148,14 @@ export default class UserProfile extends Component {
         //     this.checkBusinessProfile()
         // })
         this.props.history.push('/userprofile')
+    }
+
+    validateCustomer(){
+
+    }
+
+    validateBusiness(){
+        
     }
 
     submitCustomerProfile(event){
@@ -361,6 +373,7 @@ export default class UserProfile extends Component {
                             <div className="form-group">
                                 <label htmlFor="exampleInput43">Phone Number</label>
                                 <input minLength='5' maxLength='15' required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
+                                <small className='text-danger'>{this.state.customerPhoneError}</small>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput53">Address</label>

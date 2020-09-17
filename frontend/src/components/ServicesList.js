@@ -7,8 +7,6 @@ import DateTimePicker from 'react-datetime-picker';
 import { Link, NavLink } from 'react-router-dom';
 import ReactTooltip from "react-tooltip";
 
-require('dotenv').config()
-const API_URL = process.env.REACT_APP_API_URL
 export default class ServiceList extends Component {
     constructor(props) {
         super(props)
@@ -60,7 +58,7 @@ export default class ServiceList extends Component {
         }
     }
     checkCustomerProfile(){
-        fetch(`${API_URL}/customers`)
+        fetch('http://localhost:8080/api/customers')
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -79,7 +77,7 @@ export default class ServiceList extends Component {
         })
     }
     checkBusinessProfile(){
-        fetch(`${API_URL}/businesses`)
+        fetch('http://localhost:8080/api/businesses')
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -98,7 +96,7 @@ export default class ServiceList extends Component {
         })
     }
     getCurrentServiceItem(id){
-        fetch(`${API_URL}/businessServices/`+id)
+        fetch('http://localhost:8080/api/businessServices/'+id)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -119,7 +117,7 @@ export default class ServiceList extends Component {
         })
     }
     checkServiceByProfile(){
-        fetch(`${API_URL}/businessServices`)
+        fetch('http://localhost:8080/api/businessServices')
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -184,7 +182,7 @@ export default class ServiceList extends Component {
         })
     }
     getAllServices(){
-        fetch(`${API_URL}/businessServices`)
+        fetch('http://localhost:8080/api/businessServices')
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -299,35 +297,80 @@ export default class ServiceList extends Component {
         this.setState({ endMin1: event.target.value })
     }
     createService(event){
-        var checkValidSum=0
-        if(this.state.businessProfileExists){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.businessProfileExists){
+            invalid = true
+            errorMsg = errorMsg + 'You do not even have a business profile. How did you even get here?\n'
         }
-        if(this.state.serviceName){
-            checkValidSum++
+        if(!this.state.serviceName){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription){
-            checkValidSum++
+        if(!this.state.serviceDescription){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour && this.state.startHour<=this.state.endHour && this.state.startMin){
-            checkValidSum++
+        if(!this.state.startHour || !this.state.startMin){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour && this.state.endHour>=this.state.startHour && this.state.endMin){
-            checkValidSum++
+        if(this.state.startHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour===this.state.endHour){
+        if(this.state.startHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour || !this.state.endMin){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour<this.state.startHour){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour===this.state.endHour){
             if((this.state.endMin-this.state.startMin)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==7){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -343,7 +386,7 @@ export default class ServiceList extends Component {
                 bookings: []
             }
             console.log(new_obj_1)
-            fetch(`${API_URL}/businessServices`, {
+            fetch('http://localhost:8080/api/businessServices', {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -367,32 +410,76 @@ export default class ServiceList extends Component {
         }
     }
     updateBusinessService(event, id){
-        var checkValidSum=0
-        if(this.state.serviceName1){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.serviceName1){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription1){
-            checkValidSum++
+        if(!this.state.serviceDescription1){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees1.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays1.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour1 && this.state.startHour1<=this.state.endHour1 && this.state.startMin1){
-            checkValidSum++
+        if(!this.state.startHour1 || !this.state.startMin1){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour1 && this.state.endHour1>=this.state.startHour1 && this.state.endMin1){
-            checkValidSum++
+        if(this.state.startHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour1===this.state.endHour1){
+        if(this.state.startHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour1 || !this.state.endMin1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour1<this.state.startHour1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour1===this.state.endHour1){
             if((this.state.endMin1-this.state.startMin1)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==6){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -409,7 +496,7 @@ export default class ServiceList extends Component {
                 bookings: this.state.serviceBookings1
             }
             console.log(new_obj_1)
-            fetch(`${API_URL}/businessServices`, {
+            fetch('http://localhost:8080/api/businessServices', {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -433,7 +520,7 @@ export default class ServiceList extends Component {
         }
     }
     deleteBusinessService(id){
-        fetch(`${API_URL}/businessServices/` + id, {
+        fetch('http://localhost:8080/api/businessServices/' + id, {
             method: 'DELETE',
         })
         alert("Your service is deleted.")
@@ -595,7 +682,7 @@ export default class ServiceList extends Component {
                 status: status1
             }
             console.log(new_obj_1)
-            fetch(`${API_URL}/bookings`, {
+            fetch('http://localhost:8080/api/bookings', {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -682,7 +769,7 @@ export default class ServiceList extends Component {
                                                         {sv.bookings.length>0 && sv.bookings.map((b, m)=>{
                                                             return(
                                                                 <div className="col-1" key={m}>
-                                                                    <Link data-tip data-for="detail_1" to={'booking/' + b.id}>
+                                                                    <Link data-tip data-for="detail_1" to={'bookingdetail/' + b.id}>
                                                                         {b.id}
                                                                     </Link>
                                                                     <ReactTooltip id="detail_1" place="top" effect="solid">
