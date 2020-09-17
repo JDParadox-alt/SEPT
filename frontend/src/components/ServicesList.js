@@ -7,6 +7,8 @@ import DateTimePicker from 'react-datetime-picker';
 import { Link, NavLink } from 'react-router-dom';
 import ReactTooltip from "react-tooltip";
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class ServiceList extends Component {
     constructor(props) {
         super(props)
@@ -58,7 +60,7 @@ export default class ServiceList extends Component {
         }
     }
     checkCustomerProfile(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -77,7 +79,7 @@ export default class ServiceList extends Component {
         })
     }
     checkBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses')
+        fetch(`${API_URL}/businesses`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -96,7 +98,7 @@ export default class ServiceList extends Component {
         })
     }
     getCurrentServiceItem(id){
-        fetch('http://localhost:8080/api/businessServices/'+id)
+        fetch(`${API_URL}/businessServices/`+id)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -117,7 +119,7 @@ export default class ServiceList extends Component {
         })
     }
     checkServiceByProfile(){
-        fetch('http://localhost:8080/api/businessServices')
+        fetch(`${API_URL}/businessServices`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -182,7 +184,7 @@ export default class ServiceList extends Component {
         })
     }
     getAllServices(){
-        fetch('http://localhost:8080/api/businessServices')
+        fetch(`${API_URL}/businessServices`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -386,7 +388,7 @@ export default class ServiceList extends Component {
                 bookings: []
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/businessServices', {
+            fetch(`${API_URL}/businessServices`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -496,7 +498,7 @@ export default class ServiceList extends Component {
                 bookings: this.state.serviceBookings1
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/businessServices', {
+            fetch(`${API_URL}/businessServices`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -520,7 +522,7 @@ export default class ServiceList extends Component {
         }
     }
     deleteBusinessService(id){
-        fetch('http://localhost:8080/api/businessServices/' + id, {
+        fetch(`${API_URL}/businessServices/` + id, {
             method: 'DELETE',
         })
         alert("Your service is deleted.")
@@ -682,7 +684,7 @@ export default class ServiceList extends Component {
                 status: status1
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/bookings', {
+            fetch(`${API_URL}/bookings`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
