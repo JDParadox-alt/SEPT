@@ -719,6 +719,59 @@ export default class ServiceList extends Component {
         console.log("Updated!!!")
     }
     render() {
+
+        const render_bookingForm = (sv) => {
+            return (
+                <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Booking Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputa1">Notes</label>
+                            <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
+                        </div>
+                        <div className="row">
+                            <div className="col-10">
+                                <div className="form-group">
+                                    <label>Allow Notification</label>
+                                    <div>
+                                        <div className="form-check form-check-inline">
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
+                                            <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
+                                        </div>                                                                                                                                                           
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label>From:</label>
+                                    <DateTimePicker
+                                        value={this.state.date}
+                                        onChange={this.onChangeDate}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>To:</label>
+                                    <DateTimePicker
+                                        value={this.state.date1}
+                                        onChange={this.onChangeDate1}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-2"></div>
+                        </div>
+                        <button type="submit" className="btn btn-primary float-right">Submit</button>
+                    </form>                                                     
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            )
+        }
+
         return(
             <div className="container-fluid profile-container-bg py-3">
                 <div className="row">
@@ -771,7 +824,7 @@ export default class ServiceList extends Component {
                                                         {sv.bookings.length>0 && sv.bookings.map((b, m)=>{
                                                             return(
                                                                 <div className="col-1" key={m}>
-                                                                    <Link data-tip data-for="detail_1" to={'bookingdetail/' + b.id}>
+                                                                    <Link data-tip data-for="detail_1" to={'booking/' + b.id}>
                                                                         {b.id}
                                                                     </Link>
                                                                     <ReactTooltip id="detail_1" place="top" effect="solid">
@@ -793,58 +846,7 @@ export default class ServiceList extends Component {
                                                     </ReactTooltip>
                                                     </Fragment>
                                                     }
-                                                    {/* <Button variant="primary float-right" onClick={(i)=>{
-                                                        this.handleShow2()
-                                                    }}>
-                                                        Book
-                                                    </Button> */}
-                                                    <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
-                                                        <Modal.Header closeButton>
-                                                            <Modal.Title>Booking Form</Modal.Title>
-                                                        </Modal.Header>
-                                                        <Modal.Body>
-                                                            <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputa1">Notes</label>
-                                                                    <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
-                                                                </div>
-                                                                <div className="row">
-                                                                    <div className="col-10">
-                                                                        <div className="form-group">
-                                                                            <label>Allow Notification</label>
-                                                                            <div>
-                                                                                <div className="form-check form-check-inline">
-                                                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
-                                                                                    <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
-                                                                                </div>                                                                                                                                                           
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>From:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date}
-                                                                                onChange={this.onChangeDate}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>To:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date1}
-                                                                                onChange={this.onChangeDate1}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2"></div>
-                                                                </div>
-                                                                <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                            </form>                                                     
-                                                        </Modal.Body>
-                                                        <Modal.Footer>
-                                                            <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
-                                                                Close
-                                                            </Button>
-                                                        </Modal.Footer>
-                                                    </Modal>
+                                                    {render_bookingForm(sv)}
                                                 </div>
                                             </div>
                                         )
