@@ -4,6 +4,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { get } from 'jquery';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class BusinessDetails extends Component {
     constructor(props) {
         super(props);
@@ -20,7 +22,7 @@ export default class BusinessDetails extends Component {
     }
     getBusinessDetails() {
         console.log(this.props.match.params.id)
-        fetch(`http://localhost:8080/api/businesses/${this.props.match.params.id}`)
+        fetch(`${API_URL}/businesses/${this.props.match.params.id}`)
             .then(res => {
                 if (res.ok) {
                     this.setState({ found: "found" })

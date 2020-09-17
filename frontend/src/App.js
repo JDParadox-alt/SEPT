@@ -5,8 +5,6 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.js';
 import Navbar from './components/Navbar';
 import Home from './components/Home';
-import Products from './components/Products';
-import ProductAdmin from './components/ProductAdmin';
 import LogIn from './components/auth/LogIn';
 import Register from './components/auth/Register';
 import ForgotPassword from './components/auth/ForgotPassword';
@@ -72,8 +70,6 @@ class App extends Component {
             <Navbar auth={authProps} />
             <Switch>
               <Route exact path="/" render={(props) => <Home {...props} auth={authProps} />} />
-              <Route exact path="/products" render={(props) => <Products {...props} auth={authProps} />} />
-              <Route exact path="/admin" render={(props) => <ProductAdmin {...props} auth={authProps} />} />
               <Route exact path="/login" render={(props) => <LogIn {...props} auth={authProps} />} />
               <Route exact path="/register" render={(props) => <Register {...props} auth={authProps} />} />
               <Route exact path="/forgotpassword" render={(props) => <ForgotPassword {...props} auth={authProps} />} />
@@ -89,7 +85,7 @@ class App extends Component {
               <Route exact path="/business/:id" render={(props) => <BusinessDetails {...props} auth={authProps} />} />
               <Route exact path="/service/:id" render={(props) => <BusinessServiceDetails {...props} auth={authProps} /> } />
               <Route exact path="/bookingeditform/:id" render={(props) => <BookingEditForm {...props} auth={authProps} />} />
-              <Route exact path="/bookingdetail/:id" render={(props) => <BookingDetail {...props} auth={authProps} />} />
+              <Route exact path="/booking/:id" render={(props) => <BookingDetail {...props} auth={authProps} />} />
             </Switch>
             <Footer />
           </div>

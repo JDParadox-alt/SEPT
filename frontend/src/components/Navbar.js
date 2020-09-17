@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Auth } from 'aws-amplify';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class Navbar extends Component {
   handleLogOut = async event => {
     event.preventDefault();

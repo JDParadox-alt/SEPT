@@ -4,6 +4,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
 
 const localizer = momentLocalizer(moment);
+
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class BusinessServiceDetails extends Component {
     constructor(props) {
         super(props);
@@ -27,7 +30,7 @@ export default class BusinessServiceDetails extends Component {
 
     getBusinessServiceDetails() {
         console.log(this.props.match.params.id)
-        fetch(`http://localhost:8080/api/businessServices/${this.props.match.params.id}`)
+        fetch(`${API_URL}/businessServices/${this.props.match.params.id}`)
             .then(res => {
                 if (res.ok) {
                     this.setState({ found: "found" })
@@ -157,19 +160,20 @@ export default class BusinessServiceDetails extends Component {
             return (
                 <div>
                     <Calendar
-                                localizer={localizer}
-                                events={serviceBookings}
-                                defaultDate={moment().toDate()}
-                                defaultView="week"
-                                startAccessor="start"
-                                endAccessor="end"
-                                onSelectEvent={event => this.redirectToBooking(event.id)}
-                                // eventPropGetter={event => {
-                                //     const eventData = holidays.find(ot => ot.id === event.id);
-                                //     const backgroundColor = eventData && eventData.color;
-                                //     return { style: { backgroundColor } };
-                                // }}
-                            />
+                        style={{height: '70vh'}}
+                        localizer={localizer}
+                        events={serviceBookings}
+                        defaultDate={moment().toDate()}
+                        defaultView="week"
+                        startAccessor="start"
+                        endAccessor="end"
+                        onSelectEvent={event => this.redirectToBooking(event.id)}
+                        // eventPropGetter={event => {
+                        //     const eventData = holidays.find(ot => ot.id === event.id);
+                        //     const backgroundColor = eventData && eventData.color;
+                        //     return { style: { backgroundColor } };
+                        // }}
+                    />
                 </div>
             )
         }
