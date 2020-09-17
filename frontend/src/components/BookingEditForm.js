@@ -93,16 +93,19 @@ export default class BookingEditForm extends Component {
             this.setState({ status: new_data.status }, ()=>{console.log(this.state.status)})
             this.setState({ customer: new_data.customer }, ()=>{console.log(this.state.customer)})
             this.getTargetService(new_data.businessService.id)
-            if (this.props.auth.user.attributes.email === new_data.businessService.business.email) {
-                this.setState({isBusiness: true})
-                console.log('This is the business account')
-            }
-            if (new_data.customer) {
-                if (this.props.auth.user.attributes.email === new_data.customer.email) {
-                    this.setState({isCustomer: true})
-                    console.log('This is the customer account')
+            if (this.props.auth.user != null) {
+                if (this.props.auth.user.attributes.email === new_data.businessService.business.email) {
+                    this.setState({isBusiness: true})
+                    console.log('This is the business account')
+                }
+                if (new_data.customer) {
+                    if (this.props.auth.user.attributes.email === new_data.customer.email) {
+                        this.setState({isCustomer: true})
+                        console.log('This is the customer account')
+                    }
                 }
             }
+            
             
         })
     }
