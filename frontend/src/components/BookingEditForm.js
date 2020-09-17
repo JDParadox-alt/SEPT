@@ -246,7 +246,7 @@ export default class BookingEditForm extends Component {
             method: 'DELETE',
         })
         alert("Your booking is deleted.")
-        this.reloadPage()
+        this.props.history.push('/')
     }
 
     componentDidMount() {
@@ -303,10 +303,10 @@ export default class BookingEditForm extends Component {
                                 
                                 <div className="col-2"></div>    
                             </div>
-                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                            <button type="submit" className="btn btn-primary float-right ml-1">Submit</button>
                             <button onClick={()=>this.deleteBooking(this.props.match.params.id)} className="btn btn-danger float-right">Delete</button>
                         </form>
-                    </div>
+                    </div> 
                 </div>
             )
         }
@@ -349,7 +349,8 @@ export default class BookingEditForm extends Component {
                                 </div>
                                 <div className="col-2"></div>
                             </div>
-                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                            <button type="submit" className="btn btn-primary float-right ml-1">Submit</button>
+                            <button onClick={()=>this.deleteBooking(this.props.match.params.id)} className="btn btn-danger float-right">Delete</button>
                         </form>
                     </div>
                 </div>
@@ -358,22 +359,24 @@ export default class BookingEditForm extends Component {
 
         return(
             <div className="container-fluid profile-container-bg py-3">
-                {this.state.isBusiness? 
-                    <Fragment>
-                        {render_forBusiness()} 
-                    </Fragment>
-                :
-                    <Fragment>
-                        {this.state.isCustomer?
-                            <Fragment>
-                                {render_forCustomer()} 
-                            </Fragment>
-                        :
-                            <Fragment>You're not authorised to edit this booking</Fragment>
-                        }
-                        
-                    </Fragment>
-                }
+                <div className='container'>
+                    {this.state.isBusiness? 
+                        <Fragment>
+                            {render_forBusiness()} 
+                        </Fragment>
+                    :
+                        <Fragment>
+                            {this.state.isCustomer?
+                                <Fragment>
+                                    {render_forCustomer()} 
+                                </Fragment>
+                            :
+                                <Fragment>You're not authorised to edit this booking</Fragment>
+                            }
+                            
+                        </Fragment>
+                    }
+                </div>
             </div>
         )
     }

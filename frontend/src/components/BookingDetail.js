@@ -30,7 +30,7 @@ export default class BookingDetail extends Component {
     render() {
         return(
             <div className="container-fluid profile-container-bg py-3">
-                <div className="card">
+                <div className="container card">
                     <div className="card-body">
                         <table className="table">
                             <thead>
@@ -75,7 +75,7 @@ export default class BookingDetail extends Component {
                                 }
                             </tbody>
                         </table>
-                        <a href={'/bookingeditform/'+this.state.details.id} className='btn btn-primary'>Edit Booking</a>
+                        <a href={'/bookingeditform/'+this.state.details.id} className='btn btn-primary float-right'>Edit Booking</a>
                     </div>
                 </div>
             </div>
