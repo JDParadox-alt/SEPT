@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
+import { Link } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
+import Icon from '@material-ui/core/Icon';
 
 const localizer = momentLocalizer(moment);
 
@@ -83,59 +86,98 @@ export default class BusinessServiceDetails extends Component {
                             <div key={booking.id} className="card my-3">
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Id</label>
+                                        <div className='col-10'>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Id</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.id}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Start Date Time</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.startDateTime}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>End Date Time</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.endDateTime}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Customer</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    {booking.customer != null? 
+                                                        <p>{booking.customer.id} | {booking.customer.username}</p>
+                                                    :
+                                                        <p>This customer account not longer exists</p>
+                                                    }
+                                                    
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Notes</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.notes}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Notify?</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.notify}</p>
+                                                </div>
+                                            </div>
+                                            <div className="row">
+                                                <div className="col-md-3">
+                                                    <label>Status</label>
+                                                </div>
+                                                <div className="col-md-9">
+                                                    <p>{booking.status}</p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.id}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Start Date Time</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.startDateTime}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>End Date Time</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.endDateTime}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Customer</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.customer.id} | {booking.customer.username}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Notes</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.notes}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Notify?</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.notify}</p>
-                                        </div>
-                                    </div>
-                                    <div className="row">
-                                        <div className="col-md-3">
-                                            <label>Status</label>
-                                        </div>
-                                        <div className="col-md-9">
-                                            <p>{booking.status}</p>
+                                        <div className='col-2'>
+                                            <div className="dropdown">
+                                                <button data-tip data-for="moreOptions2" className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                    <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                    <ReactTooltip id="moreOptions2" place="top" effect="solid">
+                                                        More Options
+                                                    </ReactTooltip>
+                                                </button>
+                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
+                                                    <a className="dropdown-item" href="#">
+                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                        <Link className="btn btn-white" 
+                                                            to={{pathname:`/booking/${booking.id}`
+                                                            // , state: {carrier: this.state.carrier}
+                                                            }}>
+                                                            View Details
+                                                        </Link>
+                                                    </a>
+                                                    <a className="dropdown-item" href="#">
+                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                        <Link className="btn btn-white" 
+                                                            to={{pathname:'/mycalendar'
+                                                            // , state: {carrier: this.state.carrier}
+                                                            }}>
+                                                            View In Calendar
+                                                        </Link>
+                                                    </a>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +194,13 @@ export default class BusinessServiceDetails extends Component {
             this.state.bookings.forEach((booking) => {
                 let bookStart = (new Date(booking.startDateTime))
                 let bookEnd = (new Date(booking.endDateTime))
-                let bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                let bookTitle = ''
+                if (booking.customer != null) {
+                    let bookTitle = 'By ' + booking.customer.username + ' | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                } else {
+                    let bookTitle = 'By NULL | Notes: ' + booking.notes + ' | Status: ' + booking.status
+                }
+                
                 
                 serviceBookings.push({ id: booking.id, title: bookTitle, start: bookStart, end: bookEnd, color: '#1E90FF', resource: 'false', type: 'appointment', allDay: false })
             })

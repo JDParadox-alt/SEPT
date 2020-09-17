@@ -673,7 +673,7 @@ export default class ServiceList extends Component {
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
             event.preventDefault();
         } else {
-            var status1="available"
+            var status1="Unseen"
             var new_obj_1 = {
                 businessService: {id: businessServiceId},
                 startDateTime: String(this.state.date),

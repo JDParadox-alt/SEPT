@@ -150,14 +150,6 @@ export default class UserProfile extends Component {
         this.props.history.push('/userprofile')
     }
 
-    validateCustomer(){
-
-    }
-
-    validateBusiness(){
-        
-    }
-
     submitCustomerProfile(event){
         // var checkValidSum=0
         // // if(this.state.customerUsername){
@@ -625,18 +617,21 @@ export default class UserProfile extends Component {
                                                                     <a className="dropdown-item" href="#">
                                                                         {/* <button className="btn btn-white">View In Calendar</button> */}
                                                                         <Link className="btn btn-white" 
+                                                                            to={{pathname:`/booking/${b.id}`
+                                                                            // , state: {carrier: this.state.carrier}
+                                                                            }}>
+                                                                            View Details
+                                                                        </Link>
+                                                                    </a>
+                                                                    <a className="dropdown-item" href="#">
+                                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                                        <Link className="btn btn-white" 
                                                                             to={{pathname:'/mycalendar'
                                                                             // , state: {carrier: this.state.carrier}
                                                                             }}>
                                                                             View In Calendar
                                                                         </Link>
                                                                     </a>
-                                                                    {b.businessService&&
-                                                                    <a className="dropdown-item" href="#">
-                                                                        <Link className="btn btn-white" to={'bookingeditform/' + b.id}>
-                                                                            Edit Booking
-                                                                        </Link>
-                                                                    </a>}
                                                                     <a className="dropdown-item" href="#">
                                                                         <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
                                                                     </a>
