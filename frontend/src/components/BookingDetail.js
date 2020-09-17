@@ -23,10 +23,6 @@ export default class BookingDetail extends Component {
         this.fetchDetails()
     }
 
-    gotoEdit(id){
-        this.props.history.push('/bookingeditform/'+id)
-    }
-
     render() {
         return(
             <div className="container-fluid profile-container-bg py-3">
