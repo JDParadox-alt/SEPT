@@ -47,7 +47,11 @@ export default class UserProfile extends Component {
             showEditCustomer: false,
             showEditBusiness: false,
             reloader: false,
-            carrier: {}
+            carrier: {},
+            customerNameError:'',
+            customerEmailError:'',
+            customerPhoneError:'',
+            customerAddressError:''
         }
     }
     getCustomers(){
@@ -361,6 +365,7 @@ export default class UserProfile extends Component {
                             <div className="form-group">
                                 <label htmlFor="exampleInput43">Phone Number</label>
                                 <input minLength='5' maxLength='15' required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
+                                <small className='text-danger'>{this.state.customerPhoneError}</small>
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput53">Address</label>
@@ -612,18 +617,21 @@ export default class UserProfile extends Component {
                                                                     <a className="dropdown-item" href="#">
                                                                         {/* <button className="btn btn-white">View In Calendar</button> */}
                                                                         <Link className="btn btn-white" 
+                                                                            to={{pathname:`/booking/${b.id}`
+                                                                            // , state: {carrier: this.state.carrier}
+                                                                            }}>
+                                                                            View Details
+                                                                        </Link>
+                                                                    </a>
+                                                                    <a className="dropdown-item" href="#">
+                                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                                        <Link className="btn btn-white" 
                                                                             to={{pathname:'/mycalendar'
                                                                             // , state: {carrier: this.state.carrier}
                                                                             }}>
                                                                             View In Calendar
                                                                         </Link>
                                                                     </a>
-                                                                    {b.businessService&&
-                                                                    <a className="dropdown-item" href="#">
-                                                                        <Link className="btn btn-white" to={'bookingeditform/' + b.id}>
-                                                                            Edit Booking
-                                                                        </Link>
-                                                                    </a>}
                                                                     <a className="dropdown-item" href="#">
                                                                         <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
                                                                     </a>
