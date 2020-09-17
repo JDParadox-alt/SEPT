@@ -360,11 +360,11 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput43">Phone Number</label>
-                                <input required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
+                                <input minLength='5' maxLength='15' required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput53">Address</label>
-                                <input required name='customerAddress' type="text" value={this.state.customerAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
+                                <input maxLength='256' required name='customerAddress' type="text" value={this.state.customerAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
@@ -380,7 +380,7 @@ export default class UserProfile extends Component {
                         <form onSubmit={this.submitBusinessProfile.bind(this)}>
                             <div className="form-group">
                                 <label htmlFor="exampleInput14">Name</label>
-                                <input required name='businessName' value={this.state.businessName} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
+                                <input minLength='3' maxLength='64' required name='businessName' value={this.state.businessName} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput24">Email Address</label>
@@ -388,15 +388,15 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput64">Description</label>
-                                <textarea required name='businessDescription' type="text" value={this.state.businessDescription} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
+                                <textarea maxLength='256' required name='businessDescription' type="text" value={this.state.businessDescription} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput44">Phone Number</label>
-                                <input required name='businessPhone' type="text" value={this.state.businessPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
+                                <input minLength='5' maxLength='15' required name='businessPhone' type="text" value={this.state.businessPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput54">Address</label>
-                                <input required name='businessAddress' type="text" value={this.state.businessAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
+                                <input maxLength='256' required name='businessAddress' type="text" value={this.state.businessAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary">Submit</button>
                         </form>
@@ -423,11 +423,11 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput4">Phone Number</label>
-                                <input required name='customerPhone1' type="text" value={this.state.customerPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
+                                <input minLength='5' maxLength='15' required name='customerPhone1' type="text" value={this.state.customerPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput5">Address</label>
-                                <input required name='customerAddress1' type="text" value={this.state.customerAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
+                                <input maxLength='256' required name='customerAddress1' type="text" value={this.state.customerAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary float-right">Submit</button>
                         </form>                                                     
@@ -450,7 +450,7 @@ export default class UserProfile extends Component {
                     <Modal.Body>
                         <form onSubmit={this.editBusinessProfile.bind(this)}>
                             <div className="form-group">
-                                <label htmlFor="exampleInput10">Name</label>
+                                <label minLength='3' maxLength='64' max htmlFor="exampleInput10">Name</label>
                                 <input name='businessName1' value={this.state.businessName1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput10" placeholder="Enter the name of your business" />
                             </div>
                             <div className="form-group">
@@ -459,15 +459,15 @@ export default class UserProfile extends Component {
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput60">Description</label>
-                                <textarea name='businessDescription1' type="text" value={this.state.businessDescription1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
+                                <textarea maxLength='256' name='businessDescription1' type="text" value={this.state.businessDescription1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput40">Phone Number</label>
-                                <input name='businessPhone1' type="text" value={this.state.businessPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput40" placeholder="Enter phone number" />
+                                <input minLength='5' maxLength='15' name='businessPhone1' type="text" value={this.state.businessPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput40" placeholder="Enter phone number" />
                             </div>
                             <div className="form-group">
                                 <label htmlFor="exampleInput50">Address</label>
-                                <input name='businessAddress1' type="text" value={this.state.businessAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput50" placeholder="Enter address" />
+                                <input maxLength='256' name='businessAddress1' type="text" value={this.state.businessAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput50" placeholder="Enter address" />
                             </div>
                             <button type="submit" className="btn btn-primary float-right">Submit</button>
                         </form>                                                     
