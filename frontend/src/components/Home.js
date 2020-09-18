@@ -2,6 +2,9 @@ import React, { Fragment } from 'react';
 import Hero from './Hero';
 // import HomeContent from './HomeContent';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
+
 export default function Home() {
   return (
     <Fragment>

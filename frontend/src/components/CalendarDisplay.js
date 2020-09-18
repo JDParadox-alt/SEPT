@@ -4,6 +4,9 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import moment from 'moment';
 
 const localizer = momentLocalizer(moment);
+
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class CalendarDisplay extends Component {
     constructor(props) {
         super(props);
@@ -59,6 +62,11 @@ export default class CalendarDisplay extends Component {
         this.getHolidaysList()
         console.log(this.state.customerProfile)
     }
+
+    redirectToBooking(id) {
+        this.props.history.push(`/booking/${id}`)
+    }
+
     render() {
         const holidays = []
         this.state.holidaysList.forEach((holiday) => {
@@ -81,12 +89,14 @@ export default class CalendarDisplay extends Component {
                     <div className="col-10">
                         <div className="jumbotron mt-4">
                             <Calendar
+                                style={{height: '70vh'}}
                                 localizer={localizer}
                                 events={customerSchedule}
                                 defaultDate={moment().toDate()}
                                 defaultView="week"
                                 startAccessor="start"
                                 endAccessor="end"
+                                onSelectEvent={event => this.redirectToBooking(event.id)}
                                 // eventPropGetter={event => {
                                 //     const eventData = holidays.find(ot => ot.id === event.id);
                                 //     const backgroundColor = eventData && eventData.color;

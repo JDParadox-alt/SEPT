@@ -3,7 +3,10 @@ import Icon from '@material-ui/core/Icon';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { Link } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class UserProfile extends Component {
     constructor(props) {
         super(props);
@@ -41,16 +44,18 @@ export default class UserProfile extends Component {
             businessDescription1: "",
             businessPhone1: "",
             businessAddress1: "",
-            show: false,
-            show1: false,
-            show2: false,
-            show3: false,
+            showEditCustomer: false,
+            showEditBusiness: false,
             reloader: false,
-            carrier: {}
+            carrier: {},
+            customerNameError:'',
+            customerEmailError:'',
+            customerPhoneError:'',
+            customerAddressError:''
         }
     }
     getCustomers(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -58,7 +63,7 @@ export default class UserProfile extends Component {
         })
     }
     checkCustomerProfile(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -85,7 +90,7 @@ export default class UserProfile extends Component {
         })
     }
     checkBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses')
+        fetch(`${API_URL}/businesses`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -120,87 +125,59 @@ export default class UserProfile extends Component {
     setIsBusiness(){
         this.setState({ isBusiness:true })
     }
-    handleChangeCustomerUsername(event) {
-        this.setState({customerUsername: event.target.value});
+    handleChange(e) {
+        this.setState({ [e.target.name] : e.target.value });
     }
-    handleChangeCustomerEmail(event) {
-        this.setState({customerEmail: event.target.value});
+    handleOpenEditCustomer(){
+        this.setState({showEditCustomer: true});
     }
-    handleChangeCustomerPhone(event) {
-        this.setState({customerPhone: event.target.value});
+    handleCloseEditCustomer(){
+        this.setState({showEditCustomer: false});
     }
-    handleChangeCustomerAddress(event) {
-        this.setState({customerAddress: event.target.value});
+    handleOpenEditBusiness(){
+        this.setState({showEditBusiness: true});
     }
-    handleChangeCustomerUsername1(event) {
-        this.setState({customerUsername1: event.target.value});
+    handleCloseEditBusiness(){
+        this.setState({showEditBusiness: false});
     }
-    handleChangeCustomerEmail1(event) {
-        this.setState({customerEmail1: event.target.value});
+
+    reloadPage(){
+        // this.setState({ reloader: !this.state.reloader}, ()=>{
+        //     console.log(this.state.reloader)
+        //     this.checkCustomerProfile()
+        //     this.checkBusinessProfile()
+        // })
+        this.props.history.push('/userprofile')
     }
-    handleChangeCustomerPhone1(event) {
-        this.setState({customerPhone1: event.target.value});
-    }
-    handleChangeCustomerAddress1(event) {
-        this.setState({customerAddress1: event.target.value});
-    }
-    handleChangeBusinessName(event){
-        this.setState({businessName: event.target.value})
-    }
-    handleChangeBusinessEmail(event){
-        this.setState({businessEmail: event.target.value})
-    }
-    handleChangeBusinessDescription(event){
-        this.setState({businessDescription: event.target.value})
-    }
-    handleChangeBusinessPhone(event){
-        this.setState({businessPhone: event.target.value})
-    }
-    handleChangeBusinessAddress(event){
-        this.setState({businessAddress: event.target.value})
-    }
-    handleChangeBusinessName1(event){
-        this.setState({businessName1: event.target.value})
-    }
-    handleChangeBusinessEmail1(event){
-        this.setState({businessEmail1: event.target.value})
-    }
-    handleChangeBusinessDescription1(event){
-        this.setState({businessDescription1: event.target.value})
-    }
-    handleChangeBusinessPhone1(event){
-        this.setState({businessPhone1: event.target.value})
-    }
-    handleChangeBusinessAddress1(event){
-        this.setState({businessAddress1: event.target.value})
-    }
+
     submitCustomerProfile(event){
-        var checkValidSum=0
-        if(this.state.customerUsername){
-            checkValidSum++
-        }
-        if(this.state.customerEmail){
-            checkValidSum++
-        }
-        if(this.state.customerPhone){
-            checkValidSum++
-        }
-        if(this.state.customerAddress){
-            checkValidSum++
-        }
-        if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // // if(this.state.customerUsername){
+        // //     checkValidSum++
+        // // }
+        // // if(this.state.customerEmail){
+        // //     checkValidSum++
+        // // }
+        // if(this.state.customerPhone){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerAddress){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==2){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(2-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } 
+        // else {
             var new_obj = {
-                username: this.state.customerUsername,
-                email: this.state.customerEmail,
+                username: this.props.auth.user.username,
+                email: this.props.auth.user.attributes.email,
                 phone: this.state.customerPhone,
                 address: this.state.customerAddress,
                 bookings: []
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/customers', {
+            fetch(`${API_URL}/customers`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -210,44 +187,40 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is created.")
             // event.preventDefault();
-        }
-        this.setState({ reloader: !this.state.reloader}, ()=>{
-            console.log(this.state.reloader)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        // }
+        this.reloadPage()
     }
     submitBusinessProfile(event){
-        var checkValidSum=0
-        if(this.state.businessName){
-            checkValidSum++
-        }
-        if(this.state.businessEmail){
-            checkValidSum++
-        }
-        if(this.state.businessDescription){
-            checkValidSum++
-        }
-        if(this.state.businessPhone){
-            checkValidSum++
-        }
-        if(this.state.businessAddress){
-            checkValidSum++
-        }
-        if(checkValidSum!==5){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(6-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // if(this.state.businessName){
+        //     checkValidSum++
+        // }
+        // // if(this.state.businessEmail){
+        // //     checkValidSum++
+        // // }
+        // if(this.state.businessDescription){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessPhone){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessAddress){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==4){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 name: this.state.businessName,
-                email: this.state.businessEmail,
+                email: this.props.auth.user.attributes.email,
                 description: this.state.businessDescription,
                 phone: this.state.businessPhone,
                 address: this.state.businessAddress,
                 businessServices: []
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/businesses', {
+            fetch(`${API_URL}/businesses`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -257,31 +230,27 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is created.")
             // event.preventDefault();
-        }
-        this.setState({ reloader: !this.state.reloader}, ()=>{
-            console.log(this.state.reloader)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        // }
+        this.reloadPage()
     }
     editCustomerProfile(event){
-        var checkValidSum=0
-        if(this.state.customerUsername1){
-            checkValidSum++
-        }
-        if(this.state.customerEmail1){
-            checkValidSum++
-        }
-        if(this.state.customerPhone1){
-            checkValidSum++
-        }
-        if(this.state.customerAddress1){
-            checkValidSum++
-        }
-        if(checkValidSum!==4){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // if(this.state.customerUsername1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerEmail1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerPhone1){
+        //     checkValidSum++
+        // }
+        // if(this.state.customerAddress1){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==4){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(4-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 id: this.state.customerUpdateId,
                 username: this.state.customerUsername1,
@@ -291,7 +260,7 @@ export default class UserProfile extends Component {
                 bookings: this.state.customerBookings1
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/customers', {
+            fetch(`${API_URL}/customers`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -301,34 +270,30 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is updated.")
             // event.preventDefault();
-        }
-        this.setState({ reloader: !this.state.reloader}, ()=>{
-            console.log(this.state.reloader)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        // }
+        this.reloadPage()
     }
     editBusinessProfile(event){
-        var checkValidSum=0
-        if(this.state.businessName1){
-            checkValidSum++
-        }
-        if(this.state.businessEmail1){
-            checkValidSum++
-        }
-        if(this.state.businessDescription1){
-            checkValidSum++
-        }
-        if(this.state.businessPhone1){
-            checkValidSum++
-        }
-        if(this.state.businessAddress1){
-            checkValidSum++
-        }
-        if(checkValidSum!==5){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(6-checkValidSum)+" errors)")
-            event.preventDefault();
-        } else {
+        // var checkValidSum=0
+        // if(this.state.businessName1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessEmail1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessDescription1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessPhone1){
+        //     checkValidSum++
+        // }
+        // if(this.state.businessAddress1){
+        //     checkValidSum++
+        // }
+        // if(checkValidSum!==5){
+        //     alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs. ("+(5-checkValidSum)+" errors)")
+        //     event.preventDefault();
+        // } else {
             var new_obj = {
                 id: this.state.businessUpdateId,
                 name: this.state.businessName1,
@@ -339,7 +304,7 @@ export default class UserProfile extends Component {
                 businessServices: this.state.businessServices1
             }
             console.log(new_obj)
-            fetch('http://localhost:8080/api/businesses', {
+            fetch(`${API_URL}/businesses`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -349,389 +314,462 @@ export default class UserProfile extends Component {
             })
             alert("Your profile is updated.")
             // event.preventDefault();
-        }
-        this.setState({ reloader: !this.state.reloader}, ()=>{
-            console.log(this.state.reloader)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        // }
+        this.reloadPage()
     }
     deleteCustomerProfile(){
-        fetch('http://localhost:8080/api/customers/' + this.state.customerUpdateId, {
+        fetch(`${API_URL}/customers/` + this.state.customerUpdateId, {
             method: 'DELETE',
         })
         alert("Your profile is deleted.")
-        this.setState({ customerProfile: {} }, ()=>{
-            console.log(this.state.customerProfile)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        this.reloadPage()
     }
     deleteBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses/' + this.state.businessUpdateId, {
+        fetch(`${API_URL}/businesses/` + this.state.businessUpdateId, {
             method: 'DELETE',
         })
         alert("Your profile is deleted.")
-        this.setState({ businessProfile: {} }, ()=>{
-            console.log(this.state.businessProfile)
-            this.checkCustomerProfile()
-            this.checkBusinessProfile()
-        })
+        this.reloadPage()
     }
-    handleShow(){
-        this.setState({ show: true })
-    }
-    handleClose(){
-        this.setState({ show: false })
-    }
-    handleShow1(){
-        this.setState({ show1: true })
-    }
-    handleClose1(){
-        this.setState({ show1: false })
-    }
-    handleShow2(){
-        this.setState({ show2: true })
-    }
-    handleClose2(){
-        this.setState({ show2: false })
-    }
-    handleShow3(){
-        this.setState({ show3: true })
-    }
-    handleClose3(){
-        this.setState({ show3: false })
-    }
+    
     deleteBooking(id){
-        fetch('http://localhost:8080/api/bookings/' + id, {
+        fetch(`${API_URL}/bookings/` + id, {
             method: 'DELETE',
         })
         alert("Your booking is deleted.")
-        // this.setState({ reloader: !this.state.reloader }, ()=>{
-        //     console.log(this.state.customerProfile)
-        //     this.checkCustomerProfile()
-        //     this.checkBusinessProfile()
-        // })
+        this.reloadPage()
     }
+
     componentDidMount() {
         this.getCustomers()
         this.checkCustomerProfile()
         this.checkBusinessProfile()
     }
+
     render() {
         let {customerProfileExists, businessProfileExists, startCreateProfile} = this.state;
-        const render_profile = ()=>{
-            if(customerProfileExists===true && businessProfileExists===true && startCreateProfile===false){
-                return (
-                    <div>
-                        <div className="container emp-profile">
-                            <form method="post">
+
+        const render_submitCustomerForm = () => {
+            return (
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={this.submitCustomerProfile.bind(this)}>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput13">Username</label>
+                                <input name='customerUsername' value={this.props.auth.user.username} readOnly onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput13" aria-describedby="usernameHelp"  />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput23">Email Address</label>
+                                <input name='customerEmail' readOnly value={this.props.auth.user.attributes.email} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput23" aria-describedby="emailHelp" placeholder="Enter email" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput43">Phone Number</label>
+                                <input minLength='5' maxLength='15' required name='customerPhone' type="text" value={this.state.customerPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
+                                <small className='text-danger'>{this.state.customerPhoneError}</small>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput53">Address</label>
+                                <input maxLength='256' required name='customerAddress' type="text" value={this.state.customerAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
+                            </div>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            )
+        }
+
+        const render_submitBusinessForm = () => {
+            return (
+                <div className="card">
+                    <div className="card-body">
+                        <form onSubmit={this.submitBusinessProfile.bind(this)}>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput14">Name</label>
+                                <input minLength='3' maxLength='64' required name='businessName' value={this.state.businessName} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter the name of your business" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput24">Email Address</label>
+                                <input required name='businessEmail' readOnly defaultValue={this.props.auth.user.attributes.email} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput64">Description</label>
+                                <textarea maxLength='256' required name='businessDescription' type="text" value={this.state.businessDescription} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput44">Phone Number</label>
+                                <input minLength='5' maxLength='15' required name='businessPhone' type="text" value={this.state.businessPhone} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput54">Address</label>
+                                <input maxLength='256' required name='businessAddress' type="text" value={this.state.businessAddress} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
+                            </div>
+                            <button type="submit" className="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            )
+        }
+
+        const render_EditCustomerModal = () => {
+            return (
+                <Modal show={this.state.showEditCustomer} onHide={this.handleCloseEditCustomer.bind(this)}>
+                    <Modal.Header closeButton>
+                        <Modal.Title>Edit Form</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form onSubmit={this.editCustomerProfile.bind(this)}>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput1">Username</label>
+                                <input required name='customerUsername1' readOnly value={this.state.customerUsername1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput2">Email Address</label>
+                                <input required name='customerEmail1' readOnly value={this.state.customerEmail1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput4">Phone Number</label>
+                                <input minLength='5' maxLength='15' required name='customerPhone1' type="text" value={this.state.customerPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput5">Address</label>
+                                <input maxLength='256' required name='customerAddress1' type="text" value={this.state.customerAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
+                            </div>
+                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                        </form>                                                     
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleCloseEditCustomer.bind(this)}>
+                        Close
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+            )
+        }
+
+        const render_EditBusinessModal = () => {
+            return (
+                <Modal show={this.state.showEditBusiness} onHide={this.handleCloseEditBusiness.bind(this)}>
+                    <Modal.Header closeButton>
+                    <Modal.Title>Edit Form</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <form onSubmit={this.editBusinessProfile.bind(this)}>
+                            <div className="form-group">
+                                <label minLength='3' maxLength='64' max htmlFor="exampleInput10">Name</label>
+                                <input name='businessName1' value={this.state.businessName1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput10" placeholder="Enter the name of your business" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput20">Email Address</label>
+                                <input name='businessEmail1' readOnly value={this.state.businessEmail1} onChange={this.handleChange.bind(this)} type="text" className="form-control" id="exampleInput20" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput60">Description</label>
+                                <textarea maxLength='256' name='businessDescription1' type="text" value={this.state.businessDescription1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput40">Phone Number</label>
+                                <input minLength='5' maxLength='15' name='businessPhone1' type="text" value={this.state.businessPhone1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput40" placeholder="Enter phone number" />
+                            </div>
+                            <div className="form-group">
+                                <label htmlFor="exampleInput50">Address</label>
+                                <input maxLength='256' name='businessAddress1' type="text" value={this.state.businessAddress1} onChange={this.handleChange.bind(this)} className="form-control" id="exampleInput50" placeholder="Enter address" />
+                            </div>
+                            <button type="submit" className="btn btn-primary float-right">Submit</button>
+                        </form>                                                     
+                    </Modal.Body>
+                    <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleCloseEditBusiness.bind(this)}>
+                        Close
+                    </Button>
+                    </Modal.Footer>
+                </Modal>
+            )
+        }
+
+        const render_customerProfile = () => {
+            return (
+                <div className="container emp-profile">
+                    <form method="post">
+                        <div className="row">
+                        <div className="col-md-4">
+                            <div className="profile-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                            <div className="file btn btn-lg btn-primary">
+                                Change Photo
+                                <input type="file" name="file" />
+                            </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="profile-head">
+                            <h5>
+                                {this.state.customerProfile.username}
+                            </h5>
+                            <ul className="nav nav-tabs" id="myTab" role="tablist">
+                                <li className="nav-item">
+                                <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                </li>
+                                <li className="nav-item">
+                                <a data-tip data-for="customerBookTip" className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
+                                <ReactTooltip id="customerBookTip" place="top" effect="solid">
+                                    Click here to view your booked appointments
+                                </ReactTooltip>
+                                </li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="dropdown ml-5">
+                                <button data-tip data-for="moreOptions1" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                    <ReactTooltip id="moreOptions1" place="top" effect="solid">
+                                        More Options
+                                    </ReactTooltip>
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                    <a className="dropdown-item" href="#">
+                                        <Button variant="white" onClick={this.handleOpenEditCustomer.bind(this)}>
+                                            Edit
+                                        </Button>
+                                    </a>
+                                    <a className="dropdown-item" href="#">
+                                        <Button variant="white" onClick={this.deleteCustomerProfile.bind(this)}>
+                                            Delete
+                                        </Button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div className="row">
+                        <div className="col-md-4">
+                        </div>
+                        <div className="col-md-8">
+                            <div className="tab-content profile-tab" id="myTabContent">
+                            <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
                                 <div className="row">
-                                <div className="col-md-4">
-                                    <div className="profile-img">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                                    <div className="file btn btn-lg btn-primary">
-                                        Change Photo
-                                        <input type="file" name="file" />
-                                    </div>
-                                    </div>
+                                <div className="col-md-6">
+                                    <label>Username</label>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="profile-head">
-                                    <h5>
-                                        {this.state.customerProfile.username}
-                                    </h5>
-                                    <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                        <li className="nav-item">
-                                        <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                                        </li>
-                                        <li className="nav-item">
-                                        <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div className="col-md-2">
-                                    <div className="dropdown ml-5">
-                                        <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                        </button>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.handleShow.bind(this)}>
-                                                    Edit
-                                                </Button>
-                                            </a>
-                                            <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
-                                                <Modal.Header closeButton>
-                                                <Modal.Title>Edit Form</Modal.Title>
-                                                </Modal.Header>
-                                                <Modal.Body>
-                                                    <form onSubmit={this.editCustomerProfile.bind(this)}>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput1">Username</label>
-                                                            <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput1" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
-                                                            <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput2">Email Address</label>
-                                                            <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput2" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                            <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput4">Phone Number</label>
-                                                            <input type="text" value={this.state.customerPhone1} onChange={this.handleChangeCustomerPhone1.bind(this)} className="form-control" id="exampleInput4" placeholder="Enter phone number" />
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput5">Address</label>
-                                                            <input type="text" value={this.state.customerAddress1} onChange={this.handleChangeCustomerAddress1.bind(this)} className="form-control" id="exampleInput5" placeholder="Enter address" />
-                                                        </div>
-                                                        <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                    </form>                                                     
-                                                </Modal.Body>
-                                                <Modal.Footer>
-                                                <Button variant="secondary" onClick={this.handleClose.bind(this)}>
-                                                    Close
-                                                </Button>
-                                                </Modal.Footer>
-                                            </Modal>
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.deleteCustomerProfile.bind(this)}>
-                                                    Delete
-                                                </Button>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <p data-tip data-for="customerNameTip">{this.props.auth.user.username} - {this.state.customerProfile.username}</p>
+                                    <ReactTooltip id="customerNameTip" place="top" effect="solid">
+                                        Session Username - Profile Username
+                                    </ReactTooltip>
                                 </div>
                                 </div>
                                 <div className="row">
-                                <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Email</label>
                                 </div>
-                                <div className="col-md-8">
-                                    <div className="tab-content profile-tab" id="myTabContent">
-                                    <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Username</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.props.auth.user.username} - {this.state.customerProfile.username}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Email</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.customerProfile.email}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Phone</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.customerProfile.phone}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Address</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.customerProfile.address}</p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                        Put schedule calender later here.
-                                        <div className="card">
-                                        {this.state.customerProfile.bookings && <div className="card-body">
-                                            {this.state.customerProfile.bookings.map((b, r)=>{
-                                                return(
-                                                    <div className="card" key={r}>
-                                                        <div className="card-body">
-                                                            <div className="row">
-                                                                <div className="col-10">
-                                                                    <h5>BookingID/ServiceID</h5>
-                                                                    <p>{b.id}/{b.businessService&&b.businessService.id}</p>
-                                                                    <h5>Date/Time</h5>
-                                                                    <p>From: {b.startDateTime}</p>
-                                                                    <p>To: {b.endDateTime}</p>
-                                                                    <h5>Notes</h5>
-                                                                    <p>{b.notes}</p>
-                                                                    <h5>Set Reminder</h5>
-                                                                    <p>{b.notify}</p>
-                                                                    <h5>Status</h5>
-                                                                    <p>{b.status}</p>
-                                                                </div>
-                                                                <div className="col-2">
-                                                                    <div className="dropdown">
-                                                                        <button className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                            <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                                                        </button>
-                                                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
-                                                                            <a className="dropdown-item" href="#">
-                                                                                {/* <button className="btn btn-white">View In Calendar</button> */}
-                                                                                <Link to={{pathname:'/calendar', state: {carrier: this.state.carrier}}}className="btn btn-white">View In Calendar</Link>
-                                                                            </a>
-                                                                            <a className="dropdown-item" href="#">
-                                                                                <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
-                                                                            </a>
-                                                                        </div>
-                                                                    </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.customerProfile.email}</p>
+                                </div>
+                                </div>
+                                <div className="row">
+                                <div className="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.customerProfile.phone}</p>
+                                </div>
+                                </div>
+                                <div className="row">
+                                <div className="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.customerProfile.address}</p>
+                                </div>
+                                </div>
+                            </div>
+                            <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                Put schedule calender later here.
+                                <div className="card">
+                                {this.state.customerProfile.bookings && <div className="card-body">
+                                    {this.state.customerProfile.bookings.map((b, r)=>{
+                                        return(
+                                            <div className="card" key={r}>
+                                                <div className="card-body">
+                                                    <div className="row">
+                                                        <div className="col-10">
+                                                            <h5>BookingID/ServiceID</h5>
+                                                            <p>{b.id}/{b.businessService&&b.businessService.id}</p>
+                                                            <h5>Date/Time</h5>
+                                                            <p>From: {b.startDateTime}</p>
+                                                            <p>To: {b.endDateTime}</p>
+                                                            <h5>Notes</h5>
+                                                            <p>{b.notes}</p>
+                                                            <h5>Set Reminder</h5>
+                                                            <p>{b.notify}</p>
+                                                            <h5>Status</h5>
+                                                            <p>{b.status}</p>
+                                                        </div>
+                                                        <div className="col-2">
+                                                            <div className="dropdown">
+                                                                <button data-tip data-for="moreOptions2" className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                    <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                                    <ReactTooltip id="moreOptions2" place="top" effect="solid">
+                                                                        More Options
+                                                                    </ReactTooltip>
+                                                                </button>
+                                                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
+                                                                    <a className="dropdown-item" href="#">
+                                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                                        <Link className="btn btn-white" 
+                                                                            to={{pathname:`/booking/${b.id}`
+                                                                            // , state: {carrier: this.state.carrier}
+                                                                            }}>
+                                                                            View Details
+                                                                        </Link>
+                                                                    </a>
+                                                                    <a className="dropdown-item" href="#">
+                                                                        {/* <button className="btn btn-white">View In Calendar</button> */}
+                                                                        <Link className="btn btn-white" 
+                                                                            to={{pathname:'/mycalendar'
+                                                                            // , state: {carrier: this.state.carrier}
+                                                                            }}>
+                                                                            View In Calendar
+                                                                        </Link>
+                                                                    </a>
+                                                                    {/* <a className="dropdown-item" href="#">
+                                                                        <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
+                                                                    </a> */}
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                )
-                                            })}
-                                        </div>}
-                                        </div>
-                                    </div>
-                                    </div>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>}
                                 </div>
-                                </div>
-                            </form>
+                            </div>
+                            </div>
                         </div>
-                        <div className="container emp-profile">
-                            <form method="post">
+                        </div>
+                    </form>
+                </div>
+            )
+        }
+
+        const render_BusinessProfile = () => {
+            return (
+                <div className="container emp-profile">
+                    <form method="post">
+                        <div className="row">
+                        <div className="col-md-4">
+                            <div className="profile-img">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
+                            <div className="file btn btn-lg btn-primary">
+                                Change Photo
+                                <input type="file" name="file" />
+                            </div>
+                            </div>
+                        </div>
+                        <div className="col-md-6">
+                            <div className="profile-head">
+                            <h5>
+                                {this.state.businessProfile.name}
+                            </h5>
+                            <ul className="nav nav-tabs" id="myTab1" role="tablist">
+                                <li className="nav-item">
+                                <a className="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="true">About</a>
+                                </li>
+                                <li className="nav-item">
+                                <a className="nav-link" id="profile-tab1" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Schedule</a>
+                                </li>
+                            </ul>
+                            </div>
+                        </div>
+                        <div className="col-md-2">
+                            <div className="dropdown ml-5">
+                                <button data-tip data-for="moreOptions3" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                    <ReactTooltip id="moreOptions3" place="top" effect="solid">
+                                        More Options
+                                    </ReactTooltip>
+                                </button>
+                                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <a className="dropdown-item" href="#">
+                                        <Button variant="white" onClick={this.handleOpenEditBusiness.bind(this)}>
+                                            Edit
+                                        </Button>
+                                    </a>
+                                    <a className="dropdown-item" href="#">
+                                        <Button variant="white" onClick={this.deleteBusinessProfile.bind(this)}>
+                                            Delete
+                                        </Button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+                        <div className="row">
+                        <div className="col-md-4">
+                        </div>
+                        <div className="col-md-8">
+                            <div className="tab-content profile-tab" id="myTabContent1">
+                            <div className="tab-pane fade show active" id="home1" role="tabpanel" aria-labelledby="home-tab1">
                                 <div className="row">
-                                <div className="col-md-4">
-                                    <div className="profile-img">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                                    <div className="file btn btn-lg btn-primary">
-                                        Change Photo
-                                        <input type="file" name="file" />
-                                    </div>
-                                    </div>
+                                <div className="col-md-6">
+                                    <label>Name</label>
                                 </div>
                                 <div className="col-md-6">
-                                    <div className="profile-head">
-                                    <h5>
-                                        {this.state.businessProfile.name}
-                                    </h5>
-                                    <ul className="nav nav-tabs" id="myTab1" role="tablist">
-                                        <li className="nav-item">
-                                        <a className="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="true">About</a>
-                                        </li>
-                                        <li className="nav-item">
-                                        <a className="nav-link" id="profile-tab1" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Schedule</a>
-                                        </li>
-                                    </ul>
-                                    </div>
-                                </div>
-                                <div className="col-md-2">
-                                    <div className="dropdown ml-5">
-                                        <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                        </button>
-                                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.handleShow1.bind(this)}>
-                                                    Edit
-                                                </Button>
-                                            </a>
-                                            <Modal show={this.state.show1} onHide={this.handleClose1.bind(this)}>
-                                                <Modal.Header closeButton>
-                                                <Modal.Title>Edit Form</Modal.Title>
-                                                </Modal.Header>
-                                                <Modal.Body>
-                                                    <form onSubmit={this.editBusinessProfile.bind(this)}>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput10">Name</label>
-                                                            <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput10" placeholder="Enter username" />
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput20">Email Address</label>
-                                                            <input value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput20" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                            <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput60">Description</label>
-                                                            <input type="text" value={this.state.businessDescription1} onChange={this.handleChangeBusinessDescription1.bind(this)} className="form-control" id="exampleInput60" placeholder="Enter description" />
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput40">Phone Number</label>
-                                                            <input type="text" value={this.state.businessPhone1} onChange={this.handleChangeBusinessPhone1.bind(this)} className="form-control" id="exampleInput40" placeholder="Enter phone number" />
-                                                        </div>
-                                                        <div className="form-group">
-                                                            <label htmlFor="exampleInput50">Address</label>
-                                                            <input type="text" value={this.state.businessAddress1} onChange={this.handleChangeBusinessAddress1.bind(this)} className="form-control" id="exampleInput50" placeholder="Enter address" />
-                                                        </div>
-                                                        <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                    </form>                                                     
-                                                </Modal.Body>
-                                                <Modal.Footer>
-                                                <Button variant="secondary" onClick={this.handleClose1.bind(this)}>
-                                                    Close
-                                                </Button>
-                                                </Modal.Footer>
-                                            </Modal>
-                                            <a className="dropdown-item" href="#">
-                                                <Button variant="white" onClick={this.deleteBusinessProfile.bind(this)}>
-                                                    Delete
-                                                </Button>
-                                            </a>
-                                        </div>
-                                    </div>
+                                    <p>{this.state.businessProfile.name}</p>
                                 </div>
                                 </div>
                                 <div className="row">
-                                <div className="col-md-4">
+                                <div className="col-md-6">
+                                    <label>Email</label>
                                 </div>
-                                <div className="col-md-8">
-                                    <div className="tab-content profile-tab" id="myTabContent1">
-                                    <div className="tab-pane fade show active" id="home1" role="tabpanel" aria-labelledby="home-tab1">
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Name</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.businessProfile.name}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Email</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.businessProfile.email}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Description</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.businessProfile.description}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Phone</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.businessProfile.phone}</p>
-                                        </div>
-                                        </div>
-                                        <div className="row">
-                                        <div className="col-md-6">
-                                            <label>Address</label>
-                                        </div>
-                                        <div className="col-md-6">
-                                            <p>{this.state.businessProfile.address}</p>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile-tab1">
-                                        Put schedule calender later here.
-                                    </div>
-                                    </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.businessProfile.email}</p>
                                 </div>
                                 </div>
-                            </form>
+                                <div className="row">
+                                <div className="col-md-6">
+                                    <label>Description</label>
+                                </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.businessProfile.description}</p>
+                                </div>
+                                </div>
+                                <div className="row">
+                                <div className="col-md-6">
+                                    <label>Phone</label>
+                                </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.businessProfile.phone}</p>
+                                </div>
+                                </div>
+                                <div className="row">
+                                <div className="col-md-6">
+                                    <label>Address</label>
+                                </div>
+                                <div className="col-md-6">
+                                    <p>{this.state.businessProfile.address}</p>
+                                </div>
+                                </div>
+                            </div>
+                            <div className="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile-tab1">
+                                Put schedule calender later here.
+                            </div>
+                            </div>
                         </div>
+                        </div>
+                    </form>
+                </div>
+            )
+        }
+
+        const render_main = ()=>{
+            if(customerProfileExists===true && businessProfileExists===true && startCreateProfile===false){
+                return (
+                    <div>
+                        {render_customerProfile()}
+                        {render_BusinessProfile()}
                     </div>
                 )
             } else if(customerProfileExists===true && businessProfileExists===false && startCreateProfile===false){
@@ -740,207 +778,11 @@ export default class UserProfile extends Component {
                         {this.state.isBusiness===true ? <div className="row">
                             <div className="col-3"></div>
                             <div className="col-6">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <form onSubmit={this.submitBusinessProfile.bind(this)}>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput11">Name</label>
-                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput11" placeholder="Enter username" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput21">Email Address</label>
-                                                <input value={this.state.businessEmail} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput21" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput61">Description</label>
-                                                <input type="text" value={this.state.businessDescription} onChange={this.handleChangeBusinessDescription.bind(this)} className="form-control" id="exampleInput61" placeholder="Enter description" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput41">Phone Number</label>
-                                                <input type="text" value={this.state.businessPhone} onChange={this.handleChangeBusinessPhone.bind(this)} className="form-control" id="exampleInput41" placeholder="Enter phone number" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput51">Address</label>
-                                                <input type="text" value={this.state.businessAddress} onChange={this.handleChangeBusinessAddress.bind(this)} className="form-control" id="exampleInput51" placeholder="Enter address" />
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                {render_submitBusinessForm()}
                             </div>
                             <div className="col-3"></div>
                         </div> : <div>
-                            <div className="container emp-profile">
-                                <form method="post">
-                                    <div className="row">
-                                    <div className="col-md-4">
-                                        <div className="profile-img">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                                        <div className="file btn btn-lg btn-primary">
-                                            Change Photo
-                                            <input type="file" name="file" />
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="profile-head">
-                                        <h5>
-                                            {this.state.customerProfile.username}
-                                        </h5>
-                                        <ul className="nav nav-tabs" id="myTab" role="tablist">
-                                            <li className="nav-item">
-                                            <a className="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                                            </li>
-                                            <li className="nav-item">
-                                            <a className="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Schedule</a>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <div className="dropdown ml-5">
-                                            <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                            </button>
-                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                                <a className="dropdown-item" href="#">
-                                                    <Button variant="white" onClick={this.handleShow2.bind(this)}>
-                                                        Edit
-                                                    </Button>
-                                                </a>
-                                                <Modal show={this.state.show2} onHide={this.handleClose2.bind(this)}>
-                                                    <Modal.Header closeButton>
-                                                    <Modal.Title>Edit Form</Modal.Title>
-                                                    </Modal.Header>
-                                                    <Modal.Body>
-                                                        <form onSubmit={this.editCustomerProfile.bind(this)}>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput15">Username</label>
-                                                                <input value={this.state.customerUsername1} onChange={this.handleChangeCustomerUsername1.bind(this)} type="text" className="form-control" id="exampleInput15" aria-describedby="usernameHelp" placeholder="Enter username" readOnly/>
-                                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput25">Email Address</label>
-                                                                <input value={this.state.customerEmail1} onChange={this.handleChangeCustomerEmail1.bind(this)} type="text" className="form-control" id="exampleInput25" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput45">Phone Number</label>
-                                                                <input type="text" value={this.state.customerPhone1} onChange={this.handleChangeCustomerPhone1.bind(this)} className="form-control" id="exampleInput45" placeholder="Enter phone number" />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput55">Address</label>
-                                                                <input type="text" value={this.state.customerAddress1} onChange={this.handleChangeCustomerAddress1.bind(this)} className="form-control" id="exampleInput55" placeholder="Enter address" />
-                                                            </div>
-                                                            <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                        </form>                                                     
-                                                    </Modal.Body>
-                                                    <Modal.Footer>
-                                                    <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
-                                                        Close
-                                                    </Button>
-                                                    </Modal.Footer>
-                                                </Modal>
-                                                <a className="dropdown-item" href="#">
-                                                    <Button variant="white" onClick={this.deleteCustomerProfile.bind(this)}>
-                                                        Delete
-                                                    </Button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div className="row">
-                                    <div className="col-md-4">
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="tab-content profile-tab" id="myTabContent">
-                                        <div className="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Username</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.props.auth.user.username} - {this.state.customerProfile.username}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Email</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.customerProfile.email}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Phone</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.customerProfile.phone}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Address</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.customerProfile.address}</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div className="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                            Put schedule calender later here.
-                                            <div className="card">
-                                            {this.state.customerProfile.bookings && <div className="card-body">
-                                                {this.state.customerProfile.bookings.map((b, r)=>{
-                                                    return(
-                                                        <div className="card" key={r}>
-                                                            <div className="card-body">
-                                                                <div className="row">
-                                                                    <div className="col-10">
-                                                                        <h5>BookingID/ServiceID</h5>
-                                                                        <p>{b.id}/{b.businessService&&b.businessService.id}</p>
-                                                                        <h5>Date/Time</h5>
-                                                                        <p>From: {b.startDateTime}</p>
-                                                                        <p>To: {b.endDateTime}</p>
-                                                                        <h5>Notes</h5>
-                                                                        <p>{b.notes}</p>
-                                                                        <h5>Set Reminder</h5>
-                                                                        <p>{b.notify}</p>
-                                                                        <h5>Status</h5>
-                                                                        <p>{b.status}</p>
-                                                                    </div>
-                                                                    <div className="col-2">
-                                                                        <div className="dropdown">
-                                                                            <button className="btn btn-white btn-sm dropdown-toggle ml-5" type="button" id="dropdownMenuButton1a" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                                                <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                                                            </button>
-                                                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton1a">
-                                                                                <a className="dropdown-item" href="#">
-                                                                                    {/* <button className="btn btn-white">View In Calendar</button> */}
-                                                                                    <Link to={{pathname:'/calendar', state: {carrier: this.state.carrier}}}className="btn btn-white">View In Calendar</Link>
-                                                                                </a>
-                                                                                <a className="dropdown-item" href="#">
-                                                                                    <button className="btn btn-white" onClick={()=>this.deleteBooking(b.id)}>Cancel Booking</button>
-                                                                                </a>
-                                                                            </div>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                })}
-                                            </div>}
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </form>
-                            </div>
+                            {render_customerProfile()}
                             <h6 className="text-center text-white">Are you a business man? Let's create a profile for your business.</h6> 
                             <div className="text-center mt-2">
                                 <button className="btn" onClick={this.setIsBusiness.bind(this)}><Icon className="fa fa-plus-circle" style={{ fontSize: 30, color: "white" }}/></button>
@@ -954,172 +796,11 @@ export default class UserProfile extends Component {
                         {this.state.isCustomer===true ? <div className="row">
                             <div className="col-3"></div>
                             <div className="col-6">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <form onSubmit={this.submitCustomerProfile.bind(this)}>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput12">Username</label>
-                                                <input value={this.state.customerUsername} onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput12" aria-describedby="usernameHelp" placeholder="Enter username" />
-                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput22">Email Address</label>
-                                                <input value={this.state.customerEmail} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput22" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput42">Phone Number</label>
-                                                <input type="text" value={this.state.customerPhone} onChange={this.handleChangeCustomerPhone.bind(this)} className="form-control" id="exampleInput42" placeholder="Enter phone number" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput52">Address</label>
-                                                <input type="text" value={this.state.customerAddress} onChange={this.handleChangeCustomerAddress.bind(this)} className="form-control" id="exampleInput52" placeholder="Enter address" />
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                {render_submitCustomerForm()}
                             </div>
                             <div className="col-3"></div>
                         </div> : <div>
-                            <div className="container emp-profile">
-                                <form method="post">
-                                    <div className="row">
-                                    <div className="col-md-4">
-                                        <div className="profile-img">
-                                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS52y5aInsxSm31CvHOFHWujqUx_wWTS9iM6s7BAm21oEN_RiGoog" alt="" />
-                                        <div className="file btn btn-lg btn-primary">
-                                            Change Photo
-                                            <input type="file" name="file" />
-                                        </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-6">
-                                        <div className="profile-head">
-                                        <h5>
-                                            {this.state.businessProfile.name}
-                                        </h5>
-                                        <ul className="nav nav-tabs" id="myTab1" role="tablist">
-                                            <li className="nav-item">
-                                            <a className="nav-link active" id="home-tab1" data-toggle="tab" href="#home1" role="tab" aria-controls="home1" aria-selected="true">About</a>
-                                            </li>
-                                            <li className="nav-item">
-                                            <a className="nav-link" id="profile-tab1" data-toggle="tab" href="#profile1" role="tab" aria-controls="profile1" aria-selected="false">Schedule</a>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                    </div>
-                                    <div className="col-md-2">
-                                        <div className="dropdown ml-5">
-                                            <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
-                                            </button>
-                                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                                <a className="dropdown-item" href="#">
-                                                    <Button variant="white" onClick={this.handleShow3.bind(this)}>
-                                                        Edit
-                                                    </Button>
-                                                </a>
-                                                <Modal show={this.state.show3} onHide={this.handleClose3.bind(this)}>
-                                                    <Modal.Header closeButton>
-                                                    <Modal.Title>Edit Form</Modal.Title>
-                                                    </Modal.Header>
-                                                    <Modal.Body>
-                                                        <form onSubmit={this.editBusinessProfile.bind(this)}>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput16">Name</label>
-                                                                <input value={this.state.businessName1} onChange={this.handleChangeBusinessName1.bind(this)} type="text" className="form-control" id="exampleInput16" placeholder="Enter username" />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput26">Email Address</label>
-                                                                <input value={this.state.businessEmail1} onChange={this.handleChangeBusinessEmail1.bind(this)} type="text" className="form-control" id="exampleInput26" aria-describedby="emailHelp" placeholder="Enter email" readOnly/>
-                                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput66">Description</label>
-                                                                <input type="text" value={this.state.businessDescription1} onChange={this.handleChangeBusinessDescription1.bind(this)} className="form-control" id="exampleInput66" placeholder="Enter description" />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput46">Phone Number</label>
-                                                                <input type="text" value={this.state.businessPhone1} onChange={this.handleChangeBusinessPhone1.bind(this)} className="form-control" id="exampleInput46" placeholder="Enter phone number" />
-                                                            </div>
-                                                            <div className="form-group">
-                                                                <label htmlFor="exampleInput56">Address</label>
-                                                                <input type="text" value={this.state.businessAddress1} onChange={this.handleChangeBusinessAddress1.bind(this)} className="form-control" id="exampleInput56" placeholder="Enter address" />
-                                                            </div>
-                                                            <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                        </form>                                                     
-                                                    </Modal.Body>
-                                                    <Modal.Footer>
-                                                    <Button variant="secondary" onClick={this.handleClose3.bind(this)}>
-                                                        Close
-                                                    </Button>
-                                                    </Modal.Footer>
-                                                </Modal>
-                                                <a className="dropdown-item" href="#">
-                                                    <Button variant="white" onClick={this.deleteBusinessProfile.bind(this)}>
-                                                        Delete
-                                                    </Button>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div className="row">
-                                    <div className="col-md-4">
-                                    </div>
-                                    <div className="col-md-8">
-                                        <div className="tab-content profile-tab" id="myTabContent1">
-                                        <div className="tab-pane fade show active" id="home1" role="tabpanel" aria-labelledby="home-tab1">
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Name</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.businessProfile.name}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Email</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.businessProfile.email}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Description</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.businessProfile.description}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Phone</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.businessProfile.phone}</p>
-                                            </div>
-                                            </div>
-                                            <div className="row">
-                                            <div className="col-md-6">
-                                                <label>Address</label>
-                                            </div>
-                                            <div className="col-md-6">
-                                                <p>{this.state.businessProfile.address}</p>
-                                            </div>
-                                            </div>
-                                        </div>
-                                        <div className="tab-pane fade" id="profile1" role="tabpanel" aria-labelledby="profile-tab1">
-                                            Put schedule calender later here.
-                                        </div>
-                                        </div>
-                                    </div>
-                                    </div>
-                                </form>
-                            </div>
+                            {render_BusinessProfile()}
                             <h6 className="text-center text-white">Are you also a customer? Let's create a customer profile for you.</h6> 
                             <div className="text-center mt-2">
                                 <button className="btn" onClick={this.setIsCustomer.bind(this)}><Icon className="fa fa-plus-circle" style={{ fontSize: 30, color: "white" }}/></button>
@@ -1141,79 +822,34 @@ export default class UserProfile extends Component {
                     {this.state.startCreateProfile===true ? <div>
                         {this.state.isCustomer===false && this.state.isBusiness===false ? <div>
                             <h6 className="text-center text-white">Choose an account type.</h6>
-                            <div className="row">
-                                <div className="col-5"></div>
-                                <div className="col-1">
-                                    <button type="button" className="btn btn-light" onClick={this.setIsCustomer.bind(this)}>Customer</button>
-                                </div>
-                                <div className="col-1">
-                                    <button type="button" className="btn btn-light" onClick={this.setIsBusiness.bind(this)}>Business</button>
-                                </div>
-                                <div className="col-5"></div>
+                            <div className="row justify-content-center">
+                                {/* <div className="col-5"></div> */}
+                                {/* <div className="col"> */}
+                                    <button data-tip data-for="createCustomer" type="button" className="btn btn-light m-1" onClick={this.setIsCustomer.bind(this)}>Customer</button>
+                                    <ReactTooltip id="createCustomer" place="bottom" effect="solid">
+                                        A customer profile can be used to book appointments on available services
+                                    </ReactTooltip>
+                                {/* </div> */}
+                                {/* <div className="col"> */}
+                                    <button data-tip data-for="createBusiness" type="button" className="btn btn-light m-1" onClick={this.setIsBusiness.bind(this)}>Business</button>
+                                    <ReactTooltip id="createBusiness" place="bottom" effect="solid">
+                                        A business profile can be used to create new services and manage appointments
+                                    </ReactTooltip>
+                                {/* </div> */}
+                                {/* <div className="col-5"></div> */}
                             </div>
                         </div> : null}
                         {this.state.isCustomer===true && this.state.isBusiness===false ? <div className="row">
                             <div className="col-3"></div>
                             <div className="col-6">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <form onSubmit={this.submitCustomerProfile.bind(this)}>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput13">Username</label>
-                                                <input value={this.state.customerUsername} onChange={this.handleChangeCustomerUsername.bind(this)} type="text" className="form-control" id="exampleInput13" aria-describedby="usernameHelp" placeholder="Enter username" />
-                                                <small id="usernameHelp" className="form-text text-muted">Make sure you enter the same username that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput23">Email Address</label>
-                                                <input value={this.state.customerEmail} onChange={this.handleChangeCustomerEmail.bind(this)} type="text" className="form-control" id="exampleInput23" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput43">Phone Number</label>
-                                                <input type="text" value={this.state.customerPhone} onChange={this.handleChangeCustomerPhone.bind(this)} className="form-control" id="exampleInput43" placeholder="Enter phone number" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput53">Address</label>
-                                                <input type="text" value={this.state.customerAddress} onChange={this.handleChangeCustomerAddress.bind(this)} className="form-control" id="exampleInput53" placeholder="Enter address" />
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                {render_submitCustomerForm()}
                             </div>
                             <div className="col-3"></div>
                         </div> : null}
                         {this.state.isCustomer===false && this.state.isBusiness===true ? <div className="row">
                             <div className="col-3"></div>
                             <div className="col-6">
-                                <div className="card">
-                                    <div className="card-body">
-                                        <form onSubmit={this.submitBusinessProfile.bind(this)}>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput14">Name</label>
-                                                <input value={this.state.businessName} onChange={this.handleChangeBusinessName.bind(this)} type="text" className="form-control" id="exampleInput14" placeholder="Enter username" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput24">Email Address</label>
-                                                <input value={this.state.businessEmail} onChange={this.handleChangeBusinessEmail.bind(this)} type="text" className="form-control" id="exampleInput24" aria-describedby="emailHelp" placeholder="Enter email" />
-                                                <small id="emailHelp" className="form-text text-muted">Make sure you enter the same email address that you used to sign up/login</small>
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput64">Description</label>
-                                                <input type="text" value={this.state.businessDescription} onChange={this.handleChangeBusinessDescription.bind(this)} className="form-control" id="exampleInput64" placeholder="Enter description" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput44">Phone Number</label>
-                                                <input type="text" value={this.state.businessPhone} onChange={this.handleChangeBusinessPhone.bind(this)} className="form-control" id="exampleInput44" placeholder="Enter phone number" />
-                                            </div>
-                                            <div className="form-group">
-                                                <label htmlFor="exampleInput54">Address</label>
-                                                <input type="text" value={this.state.businessAddress} onChange={this.handleChangeBusinessAddress.bind(this)} className="form-control" id="exampleInput54" placeholder="Enter address" />
-                                            </div>
-                                            <button type="submit" className="btn btn-primary">Submit</button>
-                                        </form>
-                                    </div>
-                                </div>
+                                {render_submitBusinessForm()}
                             </div>
                             <div className="col-3"></div>
                         </div> : null}
@@ -1223,10 +859,17 @@ export default class UserProfile extends Component {
             }
         }
         return (
-            <div>
-                {this.props.auth.isAuthenticated && this.props.auth.user ? <div className="container-fluid profile-container-bg py-3">
-                    {render_profile()}
-                </div> : null}
+            <div className="container-fluid profile-container-bg py-3">
+                    {this.props.auth.isAuthenticated && this.props.auth.user ? 
+                        <div>
+                            {render_main()}
+                            {render_EditCustomerModal()}
+                            {render_EditBusinessModal()}
+                        </div> : 
+                        <div>
+                            <h4>Hold on, you're not authenticated. Please log in and try again.</h4>
+                        </div>
+                    }
             </div>
         )
     }

@@ -3,6 +3,9 @@ import { Card, CardContent, Divider, Grid, Paper, makeStyles, Box } from '@mater
 import { NavLink } from 'react-router-dom'
 // import classes from '*.module.css';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
+
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -41,7 +44,7 @@ export default class BusinessList extends Component {
     }
 
     componentDidMount() {
-        fetch(`http://localhost:8080/api/businesses/`)
+        fetch(`${API_URL}/businesses/`)
             .then(res => res.json())
             .then(json => {
                 console.log(json)
