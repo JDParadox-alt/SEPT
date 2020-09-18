@@ -1,6 +1,8 @@
 import React, { Component, Fragment } from 'react'
 import { Auth } from 'aws-amplify';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
 export default class Navbar extends Component {
   handleLogOut = async event => {
     event.preventDefault();
@@ -17,7 +19,7 @@ export default class Navbar extends Component {
       <nav className="navbar" role="navigation" aria-label="main navigation">
         <div className="navbar-brand">
           <a className="navbar-item" href="/">
-            <img src={process.env.PUBLIC_URL + "/app-logo.png"} width="112" height="28" alt="hexal logo" />
+            <img src={"https://i.ibb.co/M8Bmns2/app-logo.png"} width="112" height="28" alt="hexal logo" />
           </a>
         </div>
 
@@ -37,11 +39,11 @@ export default class Navbar extends Component {
                 <a href="/business" className="navbar-item">
                   Businesses
                 </a>
-                <a href="/booking" className="navbar-item">
+                <a href="/service" className="navbar-item">
                   Services
                 </a>
-                <a href="/calendar" className="navbar-item">
-                  Calendar
+                <a href="/mycalendar" className="navbar-item">
+                  My Calendar
                 </a>
               </Fragment>
             )}

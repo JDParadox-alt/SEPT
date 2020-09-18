@@ -4,8 +4,12 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
+import { Link, NavLink } from 'react-router-dom';
+import ReactTooltip from "react-tooltip";
 
-export default class Booking extends Component {
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
+export default class ServiceList extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -43,8 +47,8 @@ export default class Booking extends Component {
             businessServiceItem: {},
             updateId: 0,
             show: false,
-            show1: false,
-            show2: false,
+            show1: 0,
+            show2: 0,
             allServices: [],
             //Booking Form
             bookingNotes: "",
@@ -56,7 +60,7 @@ export default class Booking extends Component {
         }
     }
     checkCustomerProfile(){
-        fetch('http://localhost:8080/api/customers')
+        fetch(`${API_URL}/customers`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -75,7 +79,7 @@ export default class Booking extends Component {
         })
     }
     checkBusinessProfile(){
-        fetch('http://localhost:8080/api/businesses')
+        fetch(`${API_URL}/businesses`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -94,7 +98,7 @@ export default class Booking extends Component {
         })
     }
     getCurrentServiceItem(id){
-        fetch('http://localhost:8080/api/businessServices/'+id)
+        fetch(`${API_URL}/businessServices/`+id)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -115,7 +119,7 @@ export default class Booking extends Component {
         })
     }
     checkServiceByProfile(){
-        fetch('http://localhost:8080/api/businessServices')
+        fetch(`${API_URL}/businessServices`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -180,7 +184,7 @@ export default class Booking extends Component {
         })
     }
     getAllServices(){
-        fetch('http://localhost:8080/api/businessServices')
+        fetch(`${API_URL}/businessServices`)
         .then(res => res.json())
         .then(json => {
             console.log(json)
@@ -295,35 +299,80 @@ export default class Booking extends Component {
         this.setState({ endMin1: event.target.value })
     }
     createService(event){
-        var checkValidSum=0
-        if(this.state.businessProfileExists){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.businessProfileExists){
+            invalid = true
+            errorMsg = errorMsg + 'You do not even have a business profile. How did you even get here?\n'
         }
-        if(this.state.serviceName){
-            checkValidSum++
+        if(!this.state.serviceName){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription){
-            checkValidSum++
+        if(!this.state.serviceDescription){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour && this.state.startHour<=this.state.endHour && this.state.startMin){
-            checkValidSum++
+        if(!this.state.startHour || !this.state.startMin){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour && this.state.endHour>=this.state.startHour && this.state.endMin){
-            checkValidSum++
+        if(this.state.startHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour===this.state.endHour){
+        if(this.state.startHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour || !this.state.endMin){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour<this.state.startHour){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour===this.state.endHour){
             if((this.state.endMin-this.state.startMin)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==7){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -339,7 +388,7 @@ export default class Booking extends Component {
                 bookings: []
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/businessServices', {
+            fetch(`${API_URL}/businessServices`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -363,32 +412,76 @@ export default class Booking extends Component {
         }
     }
     updateBusinessService(event, id){
-        var checkValidSum=0
-        if(this.state.serviceName1){
-            checkValidSum++
+        var invalid=false
+        var errorMsg = ''
+        if(!this.state.serviceName1){
+            invalid = true
+            errorMsg = errorMsg + 'Service name cannot be empty\n'
         }
-        if(this.state.serviceDescription1){
-            checkValidSum++
+        if(!this.state.serviceDescription1){
+            invalid = true
+            errorMsg = errorMsg + 'Service description cannot be empty\n'
         }
-        if(this.state.serviceEmployees1.length>0){
-            checkValidSum++
+        if(!this.state.serviceEmployees1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'Employee list cannot be empty\n'
         }
-        if(this.state.serviceDays1.length>0){
-            checkValidSum++
+        if(!this.state.serviceDays1.length>0){
+            invalid = true
+            errorMsg = errorMsg + 'At least one working day is required\n'
         }
-        if(this.state.startHour1 && this.state.startHour1<=this.state.endHour1 && this.state.startMin1){
-            checkValidSum++
+        if(!this.state.startHour1 || !this.state.startMin1){
+            invalid = true
+            errorMsg = errorMsg + 'Start time cannot be empty\n'
         }
-        if(this.state.endHour1 && this.state.endHour1>=this.state.startHour1 && this.state.endMin1){
-            checkValidSum++
+        if(this.state.startHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be less than 0\n'
         }
-        if(this.state.startHour1===this.state.endHour1){
+        if(this.state.startHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'Starting hour cannot be higher than 24\n'
+        }
+        if(this.state.endHour1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be less than 0\n'
+        }
+        if(this.state.endHour1 > 23) {
+            invalid = true
+            errorMsg = errorMsg + 'End hour cannot be higher than 24\n'
+        }
+        if(this.state.startMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be less than 0\n'
+        }
+        if(this.state.startMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'Start minute cannot be higher than 59\n'
+        }
+        if(this.state.endMin1 < 0) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be less than 0\n'
+        }
+        if(this.state.endMin1 > 59) {
+            invalid = true
+            errorMsg = errorMsg + 'End minute cannot be higher than 59\n'
+        }
+        if(!this.state.endHour1 || !this.state.endMin1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be empty\n'
+        }
+        if(this.state.endHour1<this.state.startHour1){
+            invalid = true
+            errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
+        }
+        else if(this.state.startHour1===this.state.endHour1){
             if((this.state.endMin1-this.state.startMin1)<0){
-                checkValidSum=checkValidSum-1
+                invalid = true
+                errorMsg = errorMsg + 'End time cannot be earlier than start time\n'
             }
         }
-        if(checkValidSum!==6){
-            alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
+        if(invalid){
+            alert(errorMsg)
             event.preventDefault();
         } else {
             var new_obj_1 = {
@@ -405,7 +498,7 @@ export default class Booking extends Component {
                 bookings: this.state.serviceBookings1
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/businessServices', {
+            fetch(`${API_URL}/businessServices`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -429,7 +522,7 @@ export default class Booking extends Component {
         }
     }
     deleteBusinessService(id){
-        fetch('http://localhost:8080/api/businessServices/' + id, {
+        fetch(`${API_URL}/businessServices/` + id, {
             method: 'DELETE',
         })
         alert("Your service is deleted.")
@@ -496,17 +589,17 @@ export default class Booking extends Component {
     handleClose(){
         this.setState({ show: false })
     }
-    handleShow1(){
-        this.setState({ show1: true })
+    handleShow1 = value => {
+        this.setState({ show1: value })
     }
-    handleClose1(){
-        this.setState({ show1: false })
+    handleClose1 = value => {
+        this.setState({ show1: 0 })
     }
-    handleShow2(){
-        this.setState({ show2: true })
+    handleShow2 = value => {
+        this.setState({ show2: value })
     }
-    handleClose2(){
-        this.setState({ show2: false })
+    handleClose2 = value => {
+        this.setState({ show2: 0 })
     }
     handleBookingNotes(event){
         this.setState({ bookingNotes: event.target.value })
@@ -549,38 +642,47 @@ export default class Booking extends Component {
                 console.log(Math.ceil(Math.abs(endDate-startDate)/(1000 * 60 * 60 * 24)))
                 console.log(startDate-today)
                 console.log(Math.ceil(Math.abs(startDate-today)/(1000 * 60 * 60 * 24)))
+                //End date is not before start and it is same day, is not today, not further than 7 days
             }
+
             for (var i = 0; i < target_service.workingHours[0].days.length; i++) {
                 new_days_arr.push(target_service.workingHours[0].days[i].slice(0,3))
             }
+
             for (var i = 0; i < new_days_arr.length; i++) {
                 if(str_startDate.slice(0,3)===new_days_arr[i]&&str_endDate.slice(0,3)===new_days_arr[i]){
                     checkValidSum++
                     console.log(checkValidSum)
                 }
             }
+            //Check if day is in serviceDays
+
             if(parseInt(str_startDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_startDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))<=parseInt(target_service.workingHours[0].endTime.slice(0,2))&&parseInt(str_endDate.slice(16,18))>=parseInt(target_service.workingHours[0].startTime.slice(0,2))){
+                //start time is between service hours, end time is between service hours
                 if(parseInt(str_startDate.slice(16,18))===parseInt(target_service.workingHours[0].startTime.slice(0,2))){
                     if(parseInt(str_startDate.slice(19,21))>=parseInt(target_service.workingHours[0].startTime.slice(-2))){
                     } else {
                         checkValidSum=checkValidSum-1
+                        //if start time = start time, check minutes higher
                     }
                 }
                 if(parseInt(str_endDate.slice(16,18))===parseInt(target_service.workingHours[0].endTime.slice(0,2))){
                     if(parseInt(str_endDate.slice(19,21))<=parseInt(target_service.workingHours[0].endTime.slice(-2))){
                     } else {
                         checkValidSum=checkValidSum-1
+                        //if end time = end time, check minutes lower
                     }
                 }
                 checkValidSum++//check if hour is within available service working hour
                 console.log(checkValidSum)
             }
         }
+
         if(checkValidSum!==6){
             alert("Some inputs are missing or wrongly entered. Please re-fill the form with all required inputs.")
             event.preventDefault();
         } else {
-            var status1="available"
+            var status1="Unseen"
             var new_obj_1 = {
                 businessService: {id: businessServiceId},
                 startDateTime: String(this.state.date),
@@ -591,7 +693,7 @@ export default class Booking extends Component {
                 status: status1
             }
             console.log(new_obj_1)
-            fetch('http://localhost:8080/api/bookings', {
+            fetch(`${API_URL}/bookings`, {
              headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
@@ -626,6 +728,59 @@ export default class Booking extends Component {
         console.log("Updated!!!")
     }
     render() {
+
+        const render_bookingForm = (sv) => {
+            return (
+                <Modal show={this.state.show2 === sv.id} onHide={()=>this.handleClose2(sv.id)}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Booking Form</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
+                        <div className="form-group">
+                            <label htmlFor="exampleInputa1">Notes</label>
+                            <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
+                        </div>
+                        <div className="row">
+                            <div className="col-10">
+                                <div className="form-group">
+                                    <label>Allow Notification</label>
+                                    <div>
+                                        <div className="form-check form-check-inline">
+                                            <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
+                                            <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
+                                        </div>                                                                                                                                                           
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label>From:</label>
+                                    <DateTimePicker
+                                        value={this.state.date}
+                                        onChange={this.onChangeDate}
+                                    />
+                                </div>
+                                <div className="form-group">
+                                    <label>To:</label>
+                                    <DateTimePicker
+                                        value={this.state.date1}
+                                        onChange={this.onChangeDate1}
+                                    />
+                                </div>
+                            </div>
+                            <div className="col-2"></div>
+                        </div>
+                        <button type="submit" className="btn btn-primary float-right">Submit</button>
+                    </form>                                                     
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
+                        Close
+                    </Button>
+                </Modal.Footer>
+            </Modal>
+            )
+        }
+
         return(
             <div className="container-fluid profile-container-bg py-3">
                 <div className="row">
@@ -677,68 +832,30 @@ export default class Booking extends Component {
                                                     <div className="row">
                                                         {sv.bookings.length>0 && sv.bookings.map((b, m)=>{
                                                             return(
-                                                                <div className="col-1" key={m}>{b.id}</div>
+                                                                <div className="col-1" key={m}>
+                                                                    <Link data-tip data-for="detail_1" to={'booking/' + b.id}>
+                                                                        {b.id}
+                                                                    </Link>
+                                                                    <ReactTooltip id="detail_1" place="top" effect="solid">
+                                                                        Click here to view this book detail
+                                                                    </ReactTooltip>
+                                                                </div>
                                                             )
                                                         })}
                                                     </div>
                                                     {this.state.customerProfileExists&&
-                                                    <Button variant="primary float-right" onClick={(i)=>{
-                                                        this.handleShow2()
+                                                    <Fragment>
+                                                    <Button data-tip data-for="bookButtonTip" variant="primary float-right" onClick={()=>{
+                                                        this.handleShow2(sv.id)
                                                     }}>
                                                         Book
-                                                    </Button>}
-                                                    {/* <Button variant="primary float-right" onClick={(i)=>{
-                                                        this.handleShow2()
-                                                    }}>
-                                                        Book
-                                                    </Button> */}
-                                                    <Modal show={this.state.show2} onHide={this.handleClose2.bind(this)}>
-                                                        <Modal.Header closeButton>
-                                                            <Modal.Title>Booking Form</Modal.Title>
-                                                        </Modal.Header>
-                                                        <Modal.Body>
-                                                            <form onSubmit={(event)=>this.createBooking(event, sv.id, sv)}>
-                                                                <div className="form-group">
-                                                                    <label htmlFor="exampleInputa1">Notes</label>
-                                                                    <input value={this.state.bookingNotes} onChange={this.handleBookingNotes.bind(this)} type="text" className="form-control" id="exampleInputa1" placeholder="Enter notes" />
-                                                                </div>
-                                                                <div className="row">
-                                                                    <div className="col-10">
-                                                                        <div className="form-group">
-                                                                            <label>Allow Notification</label>
-                                                                            <div>
-                                                                                <div className="form-check form-check-inline">
-                                                                                    <input className="form-check-input" type="checkbox" id="inlineCheckbox10a" onChange={this.onChangeCheckboxNotify.bind(this)} defaultChecked={false} value="true" />
-                                                                                    <label className="form-check-label" htmlFor="inlineCheckbox10a">Send you a reminder</label>
-                                                                                </div>                                                                                                                                                           
-                                                                            </div>
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>From:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date}
-                                                                                onChange={this.onChangeDate}
-                                                                            />
-                                                                        </div>
-                                                                        <div className="form-group">
-                                                                            <label>To:</label>
-                                                                            <DateTimePicker
-                                                                                value={this.state.date1}
-                                                                                onChange={this.onChangeDate1}
-                                                                            />
-                                                                        </div>
-                                                                    </div>
-                                                                    <div className="col-2"></div>
-                                                                </div>
-                                                                <button type="submit" className="btn btn-primary float-right">Submit</button>
-                                                            </form>                                                     
-                                                        </Modal.Body>
-                                                        <Modal.Footer>
-                                                            <Button variant="secondary" onClick={this.handleClose2.bind(this)}>
-                                                                Close
-                                                            </Button>
-                                                        </Modal.Footer>
-                                                    </Modal>
+                                                    </Button>
+                                                    <ReactTooltip id="bookButtonTip" place="top" effect="solid">
+                                                        Click here to make an appointment with service providers
+                                                    </ReactTooltip>
+                                                    </Fragment>
+                                                    }
+                                                    {render_bookingForm(sv)}
                                                 </div>
                                             </div>
                                         )
@@ -795,26 +912,36 @@ export default class Booking extends Component {
                                                         <div className="row">
                                                             {service.bookings.length>0 && service.bookings.map((booking, u)=>{
                                                                 return(
-                                                                    <div className="col-1" key={u}>{booking.id}</div>
+                                                                    <div className="col-1" key={u}>
+                                                                        <Link data-tip data-for="detail_2" to={'bookingdetail/' + booking.id}>
+                                                                            {booking.id}
+                                                                        </Link>
+                                                                        <ReactTooltip id="detail_2" place="top" effect="solid">
+                                                                            Click here to view this book detail 
+                                                                        </ReactTooltip>
+                                                                    </div>
                                                                 )
                                                             })}
                                                         </div>
                                                         </div>
                                                         <div className="col-2">
                                                             <div className="dropdown ml-5">
-                                                                <button className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                                <button data-tip data-for="bookingMoreTip" className="btn btn-white btn-sm ml-5 dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                                                     <Icon className="fa fa-cog" style={{ fontSize: 20, color: "dark" }}/>
+                                                                    <ReactTooltip id="bookingMoreTip" place="top" effect="solid">
+                                                                        More Options
+                                                                    </ReactTooltip>
                                                                 </button>
                                                                 <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                                                     {/* <a className="dropdown-item" href="true">Edit</a> */}
                                                                     <a className="dropdown-item" href="#">
-                                                                        <Button variant="white" onClick={(i)=>{
-                                                                            this.handleShow1()
+                                                                        <Button variant="white" onClick={()=>{
+                                                                            this.handleShow1(service.id)
                                                                             this.getCurrentServiceItem(service.id)
                                                                         }}>
                                                                             Edit
                                                                         </Button>
-                                                                        <Modal show={this.state.show1} onHide={this.handleClose1.bind(this)}>
+                                                                        <Modal show={this.state.show1 === service.id} onHide={()=>this.handleClose1(service.id)}>
                                                                             <Modal.Header closeButton>
                                                                                 <Modal.Title>Edit Your Service</Modal.Title>
                                                                             </Modal.Header>
@@ -948,8 +1075,11 @@ export default class Booking extends Component {
                                             )
                                         })}
                                     </div>}
-                                    {this.state.businessProfileExists&&<button className="btn btn-white btn-sm ml-5 float-right" type="button" onClick={this.handleShow.bind(this)}>
+                                    {this.state.businessProfileExists&&<button className="btn btn-white btn-sm ml-5 float-right" data-tip data-for="createServiceTip" type="button" onClick={this.handleShow.bind(this)}>
                                         <Icon className="fa fa-plus" style={{ fontSize: 20, color: "dark" }}/>
+                                        <ReactTooltip id="createServiceTip" place="top" effect="solid">
+                                            Click here to create a service for your business
+                                        </ReactTooltip>
                                     </button>}
                                     <Modal show={this.state.show} onHide={this.handleClose.bind(this)}>
                                         <Modal.Header closeButton>

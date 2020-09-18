@@ -1,5 +1,8 @@
 import React from 'react';
 
+require('dotenv').config()
+const API_URL = process.env.REACT_APP_API_URL
+
 export default function Hero() {
   return (
     <section className="hero is-primary">
